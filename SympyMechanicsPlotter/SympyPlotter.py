@@ -160,7 +160,7 @@ class PlotVector(PlotBase):
         Examples
         ========
 
-        >>> from SymPyPlotter import PlotVector
+        >>> from SympyPlotter import PlotVector
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.mechanics import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -241,7 +241,7 @@ class PlotVector(PlotBase):
         Examples
         ========
 
-        >>> from SymPyPlotter import PlotVector
+        >>> from SympyPlotter import PlotVector
         >>> from matplotlib.pyplot import figure, pause
         >>> from sympy.physics.mechanics import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -369,7 +369,7 @@ class PlotFrame(PlotBase):
         Examples
         ========
 
-        >>> from SymPyPlotter import PlotFrame
+        >>> from SympyPlotter import PlotFrame
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.vector import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -516,7 +516,7 @@ class MechanicsPlotter(PlotBase):
         Examples
         ========
 
-        >>> from SymPyPlotter import MechanicsPlotter
+        >>> from SympyPlotter import MechanicsPlotter
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.vector import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
