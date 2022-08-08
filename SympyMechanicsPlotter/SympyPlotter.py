@@ -4,10 +4,10 @@ from sympy.physics.mechanics import ReferenceFrame, Point
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import proj3d
 
 
 class Vector3D(FancyArrowPatch):
-    """TODO: Add some documentation"""
     # Source: https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c
     def __init__(self, origin, vector, *args, **kwargs):
         super().__init__((0, 0), (0, 0), *args, **kwargs)
@@ -15,7 +15,7 @@ class Vector3D(FancyArrowPatch):
         self._vector = vector
 
     def do_3d_projection(self, renderer=None):
-        # Source: https://github.com/matplotlib/matplotlib/issues/21688
+        # https://github.com/matplotlib/matplotlib/issues/21688
         xs, ys, zs = proj_transform(*[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M)
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         return min(zs)
@@ -126,10 +126,20 @@ class PlotBase:
         self._visible = bool(is_visible)
 
 
+class PlotPoint(PlotBase):
+    # TODO Implement this class
+    point = PlotBase.origin  # Alias of origin
+
+    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
+                 point: Point, **kwargs):
+        super().__init__(inertial_frame, zero_point, point)
+
+
 class PlotVector(PlotBase):
     """Class for plotting vectors."""
 
-    def __init__(self, inertial_frame, zero_point, vector, origin=None, style='default', name=None, **kwargs):
+    def __init__(self, inertial_frame, zero_point, vector, origin=None,
+                 style='default', name=None, **kwargs):
         """Initialize a PlotVector instance.
 
         Parameters
@@ -160,7 +170,7 @@ class PlotVector(PlotBase):
         Examples
         ========
 
-        >>> from SympyPlotter import PlotVector
+        >>> from SympyMechanicsPlotter import PlotVector
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.mechanics import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -205,7 +215,8 @@ class PlotVector(PlotBase):
         """Returns the coordinates of the tip of the vector.
         Raising an error if there are still free symbols, which have not been evaluated.
         """
-        return self._vector_coords if self._vector_coords is not None else self._vector_to_coords(self._vector)
+        return self._vector_coords if self._vector_coords is not None else self._vector_to_coords(
+            self._vector)
 
     @property
     def origin_coords(self):
@@ -213,7 +224,8 @@ class PlotVector(PlotBase):
         Raising an error if there are still free symbols, which have not been evaluated.
         """
         if self._origin_coords is None:
-            self._origin_coords = self._vector_to_coords(self.origin.pos_from(self.zero_point))
+            self._origin_coords = self._vector_to_coords(
+                self.origin.pos_from(self.zero_point))
         return self._origin_coords
 
     @property
@@ -241,7 +253,7 @@ class PlotVector(PlotBase):
         Examples
         ========
 
-        >>> from SympyPlotter import PlotVector
+        >>> from SympyMechanicsPlotter import PlotVector
         >>> from matplotlib.pyplot import figure, pause
         >>> from sympy.physics.mechanics import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -356,7 +368,7 @@ class PlotFrame(PlotBase):
                 None: No properties of the matplotlib.patches.FancyArrowPatch will be set
                 'default': Nice default frame with as color 'rgb' for xyz
         scale : float, optional
-            Length of the vectors of the reference frame.
+            Lenght of the vectors of the reference frame.
 
         Other Parameters
         ================
@@ -369,7 +381,7 @@ class PlotFrame(PlotBase):
         Examples
         ========
 
-        >>> from SympyPlotter import PlotFrame
+        >>> from SympyMechanicsPlotter import PlotFrame
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.vector import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -516,7 +528,7 @@ class MechanicsPlotter(PlotBase):
         Examples
         ========
 
-        >>> from SympyPlotter import MechanicsPlotter
+        >>> from SympyMechanicsPlotter import MechanicsPlotter
         >>> from matplotlib.pyplot import figure
         >>> from sympy.physics.vector import Point, ReferenceFrame
         >>> N = ReferenceFrame('N')
@@ -537,9 +549,9 @@ class MechanicsPlotter(PlotBase):
         super().__init__(inertial_frame, zero_point, zero_point)
         self._ax = ax
         self.add_frame(inertial_frame, **inertial_frame_properties)
-        self.annot = self._ax.text(0, 0, 0, '', bbox=dict(boxstyle='round4', fc='linen', ec='k', lw=1))
+        self.annot = self._ax.text2D(0, 0, '', bbox=dict(boxstyle='round4', fc='linen', ec='k', lw=1), transform=None)
         self.annot.set_visible(False)
-        self.annot_location = 'object'
+        self.annot_location = 'mouse'
         self.picked = False
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self.hover)
 
@@ -571,10 +583,11 @@ class MechanicsPlotter(PlotBase):
                 'object' : Gets annotation location from the plot_object itself.
 
         """
-        if new_annot_location == 'object':
+        if new_annot_location == 'object' or new_annot_location == 'mouse':
             self._annot_location = new_annot_location
         else:
-            raise NotImplementedError(f"Annotation location '{new_annot_location}' is not been implemented.")
+            raise NotImplementedError(
+                f"Annotation location '{new_annot_location}' is not been implemented.")
 
     def get_object(self, sympy_object):
         """Returns the plot_object based on a SymPy object.
@@ -634,7 +647,7 @@ class MechanicsPlotter(PlotBase):
         ==========
         prettify : bool, optional
             If True prettify the axes.
-            TODO Not working well yet
+            TODO Not working to well yet
         ax_scale : float, optional
             Makes the axes bigger in the figure.
             This function is part of prettifying the figure and only works nicely if it is the only subplot.
@@ -646,7 +659,9 @@ class MechanicsPlotter(PlotBase):
                 axis.set_ticklabels([])
                 axis.set_ticks_position('none')
             if ax_scale:
-                self._ax.set_position([-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
+                self._ax.set_position(
+                    [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale,
+                     ax_scale])
         for plot_object in self.plot_objects:
             plot_object.plot(self._ax)
 
@@ -659,18 +674,22 @@ class MechanicsPlotter(PlotBase):
                 return plot_object
         return None
 
-    def update_annot(self, plot_object):
+    def update_annot(self, plot_object, event):
         """Updates the annotation to the given plot_object."""
         self.annot.set_text(f'${plot_object}$')
         if self.annot_location == 'object':
-            self.annot.set_position_3d(plot_object.annot_coords)
+            x, y, _ = proj3d.proj_transform(*plot_object.annot_coords, self._ax.get_proj())
+            self.annot.set_position(self._ax.transData.transform((x, y)))
+            # self.annot.set_position_3d(plot_object.annot_coords)
+        elif self.annot_location == 'mouse':
+            self.annot.set_position(self._ax.transData.transform((event.xdata, event.ydata)))
 
     def hover(self, event):
         """Shows an annotation if the mouseevent is hovering over the plot_object."""
         if event.inaxes == self._ax:
             plot_object = self.get_selected_object(event)
             if plot_object is not None:
-                self.update_annot(plot_object)
+                self.update_annot(plot_object, event)
                 self.annot.set_visible(True)
                 self._ax.figure.canvas.draw_idle()
             elif self.annot.get_visible():
