@@ -1,12 +1,13 @@
 from sympy import lambdify
 from sympy.physics.vector import ReferenceFrame, Point, Vector
 from mpl_toolkits.mplot3d.proj3d import proj_transform
-from symmeplot.plot_objects import PlotPoint, PlotVector, PlotFrame
+from symmeplot.plot_objects import PlotPoint, PlotVector, PlotFrame, PlotBody
 from symmeplot.plot_base import PlotBase
-from typing import TYPE_CHECKING
+from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mpl_toolkits.mplot3d import Axes3D
+    from sympy.physics.mechanics import Particle, RigidBody
 
 
 class SymMePlotter(PlotBase):
@@ -156,18 +157,38 @@ class SymMePlotter(PlotBase):
         """Add a sympy Vector to the plotter."""
         self._children.append(
             PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs))
+        return self._children[-1]
 
-    def add_vector(self, vector, origin=None, name=None, **kwargs):
+    def add_vector(self, vector: Vector,
+                   origin: Optional[Union[Point, Vector]] = None,
+                   name: Optional[str]=None, style: Optional[str] = 'default',
+                   **kwargs):
         """Add a sympy Vector to the plotter."""
         self._children.append(
             PlotVector(self.inertial_frame, self.zero_point, vector,
-                       origin=origin, name=name, **kwargs))
+                       origin=origin, name=name, style=style, **kwargs))
+        return self._children[-1]
 
-    def add_frame(self, frame: ReferenceFrame, origin=None, **kwargs):
+    def add_frame(self, frame: ReferenceFrame,
+                  origin: Optional[Union[Point, Vector]] = None,
+                  style: Optional[str] = 'default', scale: float = 0.1,
+                  **kwargs):
         """Add a sympy ReferenceFrame to the plotter."""
         self._children.append(
             PlotFrame(self.inertial_frame, self.zero_point, frame,
-                      origin=origin, **kwargs))
+                      origin=origin, style=style, scale=scale, **kwargs))
+        return self._children[-1]
+
+    def add_body(self, body: 'Union[Particle, RigidBody]',
+                 style: Optional[str] = 'default',
+                 plot_frame_properties: Optional[dict] = None,
+                 plot_point_properties: Optional[dict] = None, **kwargs):
+        """Add a sympy body to the plotter."""
+        self._children.append(
+            PlotBody(self.inertial_frame, self.zero_point, body, style=style,
+                     plot_frame_properties=plot_frame_properties,
+                     plot_point_properties=plot_point_properties, **kwargs))
+        return self._children[-1]
 
     def plot(self, prettify: bool = True, ax_scale: float = 1.5) -> list:
         """Plots all plotobjects.
@@ -220,7 +241,6 @@ class SymMePlotter(PlotBase):
         if event.inaxes == self._ax:
             plot_object = self._get_selected_object(event)
             if plot_object is not None:
-                print('detected')
                 self._update_annot(plot_object, event)
                 self.annot.set_visible(True)
                 self._ax.figure.canvas.draw_idle()

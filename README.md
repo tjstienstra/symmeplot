@@ -1,6 +1,9 @@
 # SymMePlot
 This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
 
+## Requirements
+There is no requirements file yet, but this package currently relies on `sympy`, `numpy` and `matplotlib`. One should also note that I'm currently using `Python 3.10`.
+
 ## Usage
 This can be done in the following steps:
 1. Create your system in sympy using the objects from `sympy.physics.mechanics`.

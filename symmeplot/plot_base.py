@@ -1,13 +1,19 @@
 from abc import ABC, abstractmethod
+from sympy import MatrixBase
 from sympy.physics.vector import Vector, ReferenceFrame, Point
+from symmeplot.utilities import vector_to_numpy
 from matplotlib.pyplot import gca
-from typing import Optional, Union, Tuple, List, TYPE_CHECKING
+from typing import Optional, Union, Tuple, List, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mpl_toolkits.mplot3d import Axes3D
     from sympy import Expr
     from matplotlib.pyplot import Artist
     import numpy as np
+    TArtist = TypeVar('TArtist', bound=Artist)
+    TAxes3D = TypeVar('TAxes3D', bound=Axes3D)
+    TExpr = TypeVar('TExpr', bound=Expr)
+    TPlotBase = TypeVar('TPlotBase', bound='PlotBase')
 
 
 __all__ = ['PlotBase']
@@ -37,14 +43,14 @@ class PlotBase(ABC):
             that will be plotted.
 
         """
-        self._children: List[PlotBase] = []
+        self._children: 'List[TPlotBase]' = []
         self.inertial_frame: ReferenceFrame = inertial_frame
         self.zero_point: Point = zero_point
         self.origin: Point = origin
         self.visible: bool = True
         self.name: Optional[str] = name
         self._values: list = []
-        self._artists_self: 'Tuple[Artist]' = tuple()
+        self._artists_self: 'Tuple[TArtist]' = tuple()
 
     def __repr__(self):
         """Representation showing some basic information of the instance."""
@@ -57,11 +63,11 @@ class PlotBase(ABC):
         return self.name
 
     @property
-    def children(self) -> 'Tuple[PlotBase]':
+    def children(self) -> 'Tuple[TPlotBase]':
         return tuple(self._children)
 
     @property
-    def artists(self) -> 'Tuple[Artist]':
+    def artists(self) -> 'Tuple[TArtist]':
         return self._artists_self + tuple(
             artist for child in self._children for artist in child.artists)
 
@@ -148,7 +154,7 @@ class PlotBase(ABC):
             child.values = vals
 
     @abstractmethod
-    def _get_expressions_to_evaluate_self(self) -> 'List[Expr]':
+    def _get_expressions_to_evaluate_self(self) -> 'List[TExpr]':
         """Returns a list of the necessary expressions for plotting."""
         pass
 
@@ -156,6 +162,14 @@ class PlotBase(ABC):
         """Returns a list of the necessary expressions for plotting."""
         return [self._get_expressions_to_evaluate_self()] + [
             child.get_expressions_to_evaluate() for child in self._children]
+
+    @staticmethod
+    def _evalf_list(lst: 'List[TExpr]', *args, **kwargs):
+        while not hasattr(lst, 'evalf'):
+            return [PlotBase._evalf_list(expr, *args, **kwargs) for expr in lst]
+        if isinstance(lst, MatrixBase):
+            return vector_to_numpy(lst.evalf(*args, **kwargs))
+        return lst.evalf(*args, **kwargs)
 
     def evalf(self, *args, **kwargs) -> list:
         """Evaluates the expressions describing the object, using the ``evalf``
@@ -168,12 +182,12 @@ class PlotBase(ABC):
 
         """
         expressions = self._get_expressions_to_evaluate_self()
-        self._values = [expr.evalf(*args, **kwargs) for expr in expressions]
+        self._values = self._evalf_list(expressions, *args, **kwargs)
         for child in self._children:
             child.evalf(*args, **kwargs)
         return self.values
 
-    def plot(self, ax: 'Optional[Axes3D]' = None) -> 'Tuple[Artist]':
+    def plot(self, ax: 'Optional[TAxes3D]' = None) -> 'Tuple[TArtist]':
         """Adds the object artists to the matplotlib ``Axes``. Note that the
         object should be evaluated before plotting with for example the
         ``evalf`` method.
@@ -196,10 +210,10 @@ class PlotBase(ABC):
         return artists
 
     @abstractmethod
-    def _update_self(self) -> 'Tuple[Artist]':
+    def _update_self(self) -> 'Tuple[TArtist]':
         pass
 
-    def update(self) -> 'Tuple[Artist]':
+    def update(self) -> 'Tuple[TArtist]':
         """Updates the artists parameters, based on a current values."""
         artists = self._update_self()
         for child in self._children:
@@ -213,6 +227,6 @@ class PlotBase(ABC):
 
     def contains(self, event) -> bool:
         for artist in self.artists:
-            if artist is not None and artist.contains(event)[0]:
+            if artist.contains(event)[0]:
                 return True
         return False

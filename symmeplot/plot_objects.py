@@ -1,16 +1,18 @@
 from symmeplot.plot_base import PlotBase
-from symmeplot.plot_artists import Point3D, Vector3D
-from sympy import latex
-from sympy.physics.vector import ReferenceFrame, Vector, Point
-from typing import Optional, Union, List, Tuple, TYPE_CHECKING
-from symmeplot.utilities import vector_to_numpy
+from symmeplot.plot_artists import Point3D, Vector3D, Circle3D
+from sympy import latex, sympify
+from sympy.physics.mechanics import (ReferenceFrame, Vector, Point, Particle,
+                                     RigidBody)
+from typing import Optional, Union, List, Tuple, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from sympy import Matrix, Expr
     from matplotlib.pyplot import Artist
     import numpy as np
+    TArtist = TypeVar('TArtist', bound=Artist)
+    TExpr = TypeVar('TExpr', bound=Expr)
 
-__all__ = ['PlotPoint', 'PlotVector', 'PlotFrame']
+__all__ = ['PlotPoint', 'PlotVector', 'PlotFrame', 'PlotBody']
 
 
 class PlotPoint(PlotBase):
@@ -68,7 +70,7 @@ class PlotPoint(PlotBase):
     @property
     def point_coords(self) -> 'np.array':
         """Coordinates of the point."""
-        return vector_to_numpy(self._values[0])
+        return self._values[0]
 
     @property
     def artist_point(self):
@@ -181,12 +183,12 @@ class PlotVector(PlotBase):
     @property
     def origin_coords(self) -> 'np.array':
         """Coordinates of the vector origin."""
-        return vector_to_numpy(self._values[0])
+        return self._values[0]
 
     @property
     def vector_coords(self) -> 'np.array':
         """Coordinates of the vector end point."""
-        return vector_to_numpy(self._values[1])
+        return self._values[1]
 
     @property
     def annot_coords(self) -> 'np.array':
@@ -286,12 +288,12 @@ class PlotFrame(PlotBase):
             self._children.append(PlotVector(
                 inertial_frame, zero_point, scale * vector, origin, **prop))
 
-    def _get_expressions_to_evaluate_self(self) -> 'List[Expr]':
+    def _get_expressions_to_evaluate_self(self) -> 'List[TExpr]':
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
         return []
 
-    def _update_self(self) -> 'Tuple[Artist]':
-        return tuple()  # Children are handled in PlotBase.update
+    def _update_self(self) -> 'Tuple[TArtist]':
+        return self._artists_self  # Children are handled in PlotBase.update
 
     @property
     def frame(self) -> ReferenceFrame:
@@ -356,3 +358,175 @@ class PlotFrame(PlotBase):
             return properties
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
+
+
+class PlotBody(PlotBase):
+    """Class for plotting bodies."""
+
+    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
+                 body: Union[Particle, RigidBody],
+                 style: Optional[str] = 'default', plot_frame_properties=None,
+                 plot_point_properties=None, **kwargs):
+        """Initialize a PlotFrame instance.
+
+        Parameters
+        ==========
+        inertial_frame : ReferenceFrame
+            The reference frame with respect to which the object is oriented.
+        zero_point : Point
+            The absolute origin with respect to which the object is positioned.
+        frame : ReferenceFrame
+            Reference frame that should be plotted.
+        origin : Point, Vector, optional
+            The origin of the object itself with respect to the zero_point. If a
+            ``Vector`` is provided the ``origin`` will be at the tip of the
+            vector with respect to the ``zero_point``. The default is the
+            ``zero_point``.
+        style : str, optional
+            Reference to what style should be used for plotting the frame.
+            Styles:
+                None: No properties of the vectors will be set
+                'default': Nice default frame with as color 'rgb' for xyz
+        scale : float, optional
+            Lenght of the vectors of the reference frame.
+
+        Other Parameters
+        ================
+        **kwargs : dict, optional
+            Kwargs that are parsed to ``PlotVector``s, which parses them to
+            ``matplotlib.patches.FancyArrow``, so ``color='r'`` will make all
+            vectors of the reference frame red.
+
+        Examples
+        ========
+
+        >>> from symmeplot import PlotBody
+        >>> from matplotlib.pyplot import subplots
+        >>> from sympy.physics.mechanics import Point, ReferenceFrame, RigidBody
+        >>> N = ReferenceFrame('N')
+        >>> A = ReferenceFrame('A')
+        >>> A.orient_axis(N, N.z, 1)
+        >>> N0 = Point('N_0')
+        >>> A0 = N0.locatenew('A_0', 0.2 * N.x + 0.2 * N.y + 0.7 * N.z)
+        >>> ground = RigidBody('ground', N0, N, 1, (N.x.outer(N.x), N0))
+        >>> body = RigidBody('body', A0, A, 1, (A.x.outer(A.x), A0))
+        >>> ground_plot = PlotBody(N, N0, ground)
+        >>> body_plot = PlotBody(N, N0, body)
+        >>> body_plot.attach_circle(body.masscenter, 0.3, A.x + A.y + A.z,
+        ...                         facecolor='none', edgecolor='k')
+        >>> fig, ax = subplots(subplot_kw={'projection': '3d'})
+        >>> ground_plot.evalf()
+        >>> body_plot.evalf()
+        >>> ground_plot.plot(ax)
+        >>> body_plot.plot(ax)
+        >>> fig.show()
+
+        """
+        super().__init__(inertial_frame, zero_point, body.masscenter, str(body))
+        self.body: Union[Particle, RigidBody] = body
+        properties = self._get_style_properties(style)
+        if plot_frame_properties is not None:
+            properties[0].update(plot_frame_properties)
+        if plot_point_properties is not None:
+            properties[1].update(plot_point_properties)
+        for prop in properties:
+            prop.update(kwargs)
+        if hasattr(body, 'frame'):
+            self._children.append(PlotFrame(
+                inertial_frame, zero_point, body.frame, body.masscenter,
+                **properties[0]))
+        self._children.append(PlotPoint(
+            inertial_frame, zero_point, body.masscenter,
+            **properties[1]))
+        self._expressions_self: list = []
+
+    def _get_expressions_to_evaluate_self(self) -> list:
+        return self._expressions_self
+
+    def _update_self(self) -> 'Tuple[TArtist]':
+        for artist, values in zip(self._artists_self, self._values):
+            artist.update_data(*values)
+        return self._artists_self  # Children are handled in PlotBase.update
+
+    def attach_circle(self, center: Optional[Union[Point, Vector]],
+                      radius: float, normal: Optional[Union[Point, Vector]],
+                      **kwargs):
+        """Attaches a circle to a point to represent the body.
+
+        Parameters
+        ==========
+        center : Point, Vector
+            Center of the circle.
+        radius : Sympifyable
+            Radius of the circle.
+        normal : Vector
+            Normal of the circle.
+
+        """
+        if isinstance(center, Point):
+            center = center.pos_from(self.zero_point)
+        if isinstance(center, Vector):
+            center = center.to_matrix(self.inertial_frame)
+        else:
+            raise TypeError(f"'center' should be a {type(Point)}.")
+        if isinstance(normal, Vector):
+            normal = normal.to_matrix(self.inertial_frame)
+        else:
+            raise TypeError(f"'center' should be a {type(Vector)}.")
+        self._artists_self += (Circle3D((0, 0, 0), 0, (0, 0, 1), **kwargs),)
+        self._expressions_self.append((center, sympify(radius), normal))
+
+    @property
+    def body(self) -> Union[Particle, RigidBody]:
+        """Return the internal body."""
+        return self._body
+
+    @body.setter
+    def body(self, body):
+        if not isinstance(body, (Particle, RigidBody)):
+            raise TypeError("'body' should be a sympy body.")
+        else:
+            self._body = body
+            self._values = []
+
+    @property
+    def plot_frame(self) -> PlotFrame:
+        """Returns the plot frame."""
+        if len(self._children) == 2:
+            return self._children[0]
+
+    @property
+    def plot_masscenter(self) -> PlotPoint:
+        """Returns the plot frame."""
+        return (self._children[1] if len(self._children) == 2 else
+                self._children[2])
+
+    @property
+    def annot_coords(self) -> 'np.array':
+        """Coordinates where the annotation text is displayed."""
+        return self.plot_masscenter.annot_coords
+
+    def _get_style_properties(self, style: Optional[str]) -> List[dict]:
+        """Gets the properties of the vectors belonging to a certain style.
+
+        Parameters
+        ==========
+        style : str, None
+            Name of the style or None, if no style should be set.
+            Available styles:
+                'default' : Uses the default style of all children plot objects.
+
+        """
+        properties = [{}, {}]
+        if style is None:
+            return properties
+        elif style == 'default':
+            properties[0] = {'style': 'default'}
+            properties[1] = {'color': 'k', 'marker': r'$\bigoplus$',
+                             'markersize': 8, 'markeredgewidth': .5}
+            return properties
+        else:
+            raise NotImplementedError(f"Style '{style}' is not implemented.")
+
+
+
