@@ -220,6 +220,7 @@ class SymMePlotter(PlotBase):
         if event.inaxes == self._ax:
             plot_object = self._get_selected_object(event)
             if plot_object is not None:
+                print('detected')
                 self._update_annot(plot_object, event)
                 self.annot.set_visible(True)
                 self._ax.figure.canvas.draw_idle()

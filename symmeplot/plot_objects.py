@@ -1,11 +1,11 @@
 from symmeplot.plot_base import PlotBase
 from symmeplot.plot_artists import Point3D, Vector3D
+from sympy import latex
 from sympy.physics.vector import ReferenceFrame, Vector, Point
-from typing import Optional, Union, List, TYPE_CHECKING
+from typing import Optional, Union, List, Tuple, TYPE_CHECKING
 from symmeplot.utilities import vector_to_numpy
 
 if TYPE_CHECKING:
-    from mpl_toolkits.mplot3d import Axes3D
     from sympy import Matrix, Expr
     from matplotlib.pyplot import Artist
     import numpy as np
@@ -63,25 +63,24 @@ class PlotPoint(PlotBase):
 
         """
         super().__init__(inertial_frame, zero_point, point, point.name)
-        self.artist_point: Point3D = Point3D((0, 0, 0), **kwargs)
+        self._artists_self: Tuple[Point3D] = (Point3D((0, 0, 0), **kwargs),)
 
     @property
     def point_coords(self) -> 'np.array':
         """Coordinates of the point."""
         return vector_to_numpy(self._values[0])
 
+    @property
+    def artist_point(self):
+        return self._artists_self[0]
+
     def _get_expressions_to_evaluate_self(self) -> 'List[Matrix]':
         return [
             self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)]
 
-    def _plot_self(self, ax: 'Axes3D') -> List[Point3D]:
-        self.update()
-        ax.add_artist(self.artist_point)
-        return [self.artist_point]
-
-    def _update_self(self) -> List[Point3D]:
+    def _update_self(self) -> Tuple[Point3D]:
         self.artist_point.update_data(self.point_coords)
-        return [self.artist_point]
+        return self._artists_self
 
     @property
     def annot_coords(self) -> 'np.array':
@@ -143,25 +142,27 @@ class PlotVector(PlotBase):
         >>> fig.show()
 
         """
+        if name is None:
+            name = str(latex(vector))
         super().__init__(inertial_frame, zero_point, origin, name)
         self.vector: Vector = vector
         self._values: list = []  # origin, vector
         self._properties: dict = {}
-        self.artist_arrow: Vector3D = Vector3D(
-            (0, 0, 0), (0, 0, 0), **self._get_style_properties(style) | kwargs)
+        self._artists_self: Tuple[Vector3D] = (
+            Vector3D((0, 0, 0), (0, 0, 0),
+                     **self._get_style_properties(style) | kwargs),)
+
+    @property
+    def artist_arrow(self):
+        return self._artists_self[0]
 
     def _get_expressions_to_evaluate_self(self) -> 'List[Matrix]':
         return [self.origin.pos_from(self.zero_point).to_matrix(
             self.inertial_frame), self.vector.to_matrix(self.inertial_frame)]
 
-    def _plot_self(self, ax: 'Axes3D') -> List[Vector3D]:
-        self.update()
-        ax.add_artist(self.artist_arrow)
-        return [self.artist_arrow]
-
-    def _update_self(self) -> List[Vector3D]:
+    def _update_self(self) -> Tuple[Vector3D]:
         self.artist_arrow.update_data(self.origin_coords, self.vector_coords)
-        return [self.artist_arrow]
+        return self._artists_self
 
     @property
     def vector(self) -> Vector:
@@ -289,11 +290,8 @@ class PlotFrame(PlotBase):
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
         return []
 
-    def _plot_self(self, ax: 'Axes3D') -> 'List[Artist]':
-        return []  # Children are handled in PlotBase.plot
-
-    def _update_self(self) -> 'List[Artist]':
-        return []  # Children are handled in PlotBase.update
+    def _update_self(self) -> 'Tuple[Artist]':
+        return tuple()  # Children are handled in PlotBase.update
 
     @property
     def frame(self) -> ReferenceFrame:

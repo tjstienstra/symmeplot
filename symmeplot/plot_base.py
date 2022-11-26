@@ -38,13 +38,13 @@ class PlotBase(ABC):
 
         """
         self._children: List[PlotBase] = []
-        self.inertial_frame = inertial_frame
-        self.zero_point = zero_point
-        self.origin = origin
-        self.visible = True
-        self.name = name
-        self._values = []
-        self._artists = []
+        self.inertial_frame: ReferenceFrame = inertial_frame
+        self.zero_point: Point = zero_point
+        self.origin: Point = origin
+        self.visible: bool = True
+        self.name: Optional[str] = name
+        self._values: list = []
+        self._artists_self: 'Tuple[Artist]' = tuple()
 
     def __repr__(self):
         """Representation showing some basic information of the instance."""
@@ -61,9 +61,9 @@ class PlotBase(ABC):
         return tuple(self._children)
 
     @property
-    def artists(self) -> 'List[Artist]':
-        return self._artists + [
-            artist for child in self._children for artist in child.artists]
+    def artists(self) -> 'Tuple[Artist]':
+        return self._artists_self + tuple(
+            artist for child in self._children for artist in child.artists)
 
     @property
     def name(self) -> str:
@@ -72,7 +72,7 @@ class PlotBase(ABC):
 
     @name.setter
     def name(self, name: Optional[str]):
-        self._name = str(name) if name is not None else name
+        self._name = str(name)
 
     @property
     def inertial_frame(self) -> ReferenceFrame:
@@ -173,11 +173,7 @@ class PlotBase(ABC):
             child.evalf(*args, **kwargs)
         return self.values
 
-    @abstractmethod
-    def _plot_self(self, ax: 'Axes3D') -> 'List[Artist]':
-        pass
-
-    def plot(self, ax: 'Optional[Axes3D]' = None) -> 'List[Artist]':
+    def plot(self, ax: 'Optional[Axes3D]' = None) -> 'Tuple[Artist]':
         """Adds the object artists to the matplotlib ``Axes``. Note that the
         object should be evaluated before plotting with for example the
         ``evalf`` method.
@@ -191,16 +187,19 @@ class PlotBase(ABC):
         """
         if ax is None:
             ax = gca()
-        artists = self._plot_self(ax)
+        self.update()
+        for artist in self._artists_self:
+            ax.add_artist(artist)
+        artists = self._artists_self
         for child in self._children:
             artists += child.plot(ax)
         return artists
 
     @abstractmethod
-    def _update_self(self) -> 'List[Artist]':
+    def _update_self(self) -> 'Tuple[Artist]':
         pass
 
-    def update(self) -> 'List[Artist]':
+    def update(self) -> 'Tuple[Artist]':
         """Updates the artists parameters, based on a current values."""
         artists = self._update_self()
         for child in self._children:
