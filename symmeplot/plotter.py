@@ -197,7 +197,7 @@ class SymMePlotter(PlotBase):
         ==========
         prettify : bool, optional
             If True prettify the axes.
-            TODO Not working to well yet
+            TODO Not working too well yet
         ax_scale : float, optional
             Makes the axes bigger in the figure.
             This function is part of prettifying the figure and only works nicely if it is the only subplot.

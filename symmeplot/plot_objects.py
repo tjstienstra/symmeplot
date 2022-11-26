@@ -523,7 +523,8 @@ class PlotBody(PlotBase):
         elif style == 'default':
             properties[0] = {'style': 'default'}
             properties[1] = {'color': 'k', 'marker': r'$\bigoplus$',
-                             'markersize': 8, 'markeredgewidth': .5}
+                             'markersize': 8, 'markeredgewidth': .5,
+                             'zorder': 10}
             return properties
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
