@@ -1,4 +1,4 @@
-# SymMePlotter
+# SymMePlot
 This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
 
 ## Usage
