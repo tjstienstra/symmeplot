@@ -153,7 +153,7 @@ class SymMePlotter(PlotBase):
                 f'Sympy object of type {type(sympy_object)} has not been '
                 f'implemented.')
 
-    def add_point(self, point, **kwargs):
+    def add_point(self, point: Point, **kwargs) -> PlotPoint:
         """Add a sympy Vector to the plotter."""
         self._children.append(
             PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs))
@@ -162,7 +162,7 @@ class SymMePlotter(PlotBase):
     def add_vector(self, vector: Vector,
                    origin: Optional[Union[Point, Vector]] = None,
                    name: Optional[str]=None, style: Optional[str] = 'default',
-                   **kwargs):
+                   **kwargs) -> PlotVector:
         """Add a sympy Vector to the plotter."""
         self._children.append(
             PlotVector(self.inertial_frame, self.zero_point, vector,
@@ -172,7 +172,7 @@ class SymMePlotter(PlotBase):
     def add_frame(self, frame: ReferenceFrame,
                   origin: Optional[Union[Point, Vector]] = None,
                   style: Optional[str] = 'default', scale: float = 0.1,
-                  **kwargs):
+                  **kwargs) -> PlotFrame:
         """Add a sympy ReferenceFrame to the plotter."""
         self._children.append(
             PlotFrame(self.inertial_frame, self.zero_point, frame,
@@ -182,7 +182,8 @@ class SymMePlotter(PlotBase):
     def add_body(self, body: 'Union[Particle, RigidBody]',
                  style: Optional[str] = 'default',
                  plot_frame_properties: Optional[dict] = None,
-                 plot_point_properties: Optional[dict] = None, **kwargs):
+                 plot_point_properties: Optional[dict] = None,
+                 **kwargs) -> PlotBody:
         """Add a sympy body to the plotter."""
         self._children.append(
             PlotBody(self.inertial_frame, self.zero_point, body, style=style,
