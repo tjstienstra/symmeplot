@@ -191,7 +191,7 @@ class SymMePlotter(PlotBase):
         return self._children[-1]
 
     def plot(self, prettify: bool = True, ax_scale: float = 1.5) -> list:
-        """Plots all plotobjects.
+        """Plots all plot objects.
 
         Parameters
         ==========
@@ -216,8 +216,8 @@ class SymMePlotter(PlotBase):
         return artists
 
     def _get_selected_object(self, event):
-        """Gets the plot_object where the mouseevent is currently on.
-        Returns None if no object contains the mouseevent.
+        """Gets the ``plot_object`` where the mouseevent is currently on.
+        Returns ``None`` if no object contains the mouseevent.
         """
         for plot_object in self._children:
             if plot_object.contains(event):
@@ -287,6 +287,7 @@ class SymMePlotter(PlotBase):
         self._lambdified_system = lambdify(
             args, self.get_expressions_to_evaluate(), modules=modules,
             printer=printer, use_imps=use_imps, dummify=dummify, cse=cse)
+        return self.evaluate_system
 
     def evaluate_system(self, *args):
         """Evaluates the system using the function created with
