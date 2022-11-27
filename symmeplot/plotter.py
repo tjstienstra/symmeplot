@@ -1,13 +1,14 @@
 from sympy import lambdify
-from sympy.physics.vector import ReferenceFrame, Point, Vector
+from sympy.physics.mechanics import (ReferenceFrame, Point, Vector, Particle,
+                                     RigidBody)
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 from symmeplot.plot_objects import PlotPoint, PlotVector, PlotFrame, PlotBody
 from symmeplot.plot_base import PlotBase
-from typing import Optional, Union, TYPE_CHECKING
+from typing import Optional, Union, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mpl_toolkits.mplot3d import Axes3D
-    from sympy.physics.mechanics import Particle, RigidBody
+    TAxes3D = TypeVar('TAxes3D', bound=Axes3D)
 
 
 class SymMePlotter(PlotBase):
@@ -15,7 +16,7 @@ class SymMePlotter(PlotBase):
 
     origin = PlotBase.zero_point
 
-    def __init__(self, ax: 'Axes3D', inertial_frame: ReferenceFrame,
+    def __init__(self, ax: 'TAxes3D', inertial_frame: ReferenceFrame,
                  origin: Point, **inertial_frame_properties):
         """Initialize a PlotFrame instance.
 
@@ -65,34 +66,30 @@ class SymMePlotter(PlotBase):
         if not hasattr(ax, 'get_zlim'):
             raise TypeError('The axes should be a 3d axes')
         super().__init__(inertial_frame, origin, origin)
-        self._ax = ax
+        self._ax: 'TAxes3D' = ax
         self.add_frame(inertial_frame, **inertial_frame_properties)
         self.annot = self._ax.text2D(0, 0, '',
                                      bbox=dict(boxstyle='round4', fc='linen',
                                                ec='k', lw=1), transform=None)
         self.annot.set_visible(False)
-        self.annot_location = 'mouse'
-        self.picked = False
+        self.annot_location: str = 'mouse'
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self._hover)
-        self._lambdified_system = system_not_lambdified_error
+        self._lambdified_system: callable = system_not_lambdified_error
 
-    def _get_expressions_to_evaluate_self(self) -> list:
+    def _get_expressions_to_evaluate_self(self) -> tuple:
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
-        return []
-
-    def _plot_self(self, ax: 'Axes3D') -> list:
-        return []  # Redundant see SymMePlotter.plot
+        return ()
 
     def _update_self(self) -> list:
         return []  # Children are handled in PlotBase.update
 
     @property
-    def axes(self) -> 'Axes3D':
+    def axes(self) -> 'TAxes3D':
         """Axes used by the plotter"""
         return self._ax
 
     @property
-    def plot_objects(self) -> list:
+    def plot_objects(self) -> tuple:
         """Returns all plot objects."""
         return self.children
 
@@ -102,7 +99,7 @@ class SymMePlotter(PlotBase):
         return self._annot_location
 
     @annot_location.setter
-    def annot_location(self, new_annot_location):
+    def annot_location(self, new_annot_location: str):
         if new_annot_location == 'object' or new_annot_location == 'mouse':
             self._annot_location = new_annot_location
         else:
@@ -122,7 +119,7 @@ class SymMePlotter(PlotBase):
 
         Parameters
         ==========
-        sympy_object : ReferenceFrame, Vector, Point, str
+        sympy_object : ReferenceFrame, Vector, Point, Body, str
             sympy object to search for. If it is a string it will check for the
             name, ``PlotVector``s can be given different names, while
             ``PlotPoint``s and ``PlotFrame``s use the name of the sympy object
@@ -138,6 +135,11 @@ class SymMePlotter(PlotBase):
             for plot_object in self.plot_objects:
                 if (isinstance(plot_object, PlotPoint) and
                         sympy_object is plot_object.point):
+                    return plot_object
+        elif isinstance(sympy_object, (Particle, RigidBody)):
+            for plot_object in self.plot_objects:
+                if (isinstance(plot_object, PlotBody) and
+                        sympy_object is plot_object.body):
                     return plot_object
         elif isinstance(sympy_object, Vector):
             for plot_object in self.plot_objects:
@@ -161,7 +163,7 @@ class SymMePlotter(PlotBase):
 
     def add_vector(self, vector: Vector,
                    origin: Optional[Union[Point, Vector]] = None,
-                   name: Optional[str]=None, style: Optional[str] = 'default',
+                   name: Optional[str] = None, style: Optional[str] = 'default',
                    **kwargs) -> PlotVector:
         """Add a sympy Vector to the plotter."""
         self._children.append(
@@ -179,7 +181,7 @@ class SymMePlotter(PlotBase):
                       origin=origin, style=style, scale=scale, **kwargs))
         return self._children[-1]
 
-    def add_body(self, body: 'Union[Particle, RigidBody]',
+    def add_body(self, body: Union[Particle, RigidBody],
                  style: Optional[str] = 'default',
                  plot_frame_properties: Optional[dict] = None,
                  plot_point_properties: Optional[dict] = None,
@@ -191,7 +193,8 @@ class SymMePlotter(PlotBase):
                      plot_point_properties=plot_point_properties, **kwargs))
         return self._children[-1]
 
-    def plot(self, prettify: bool = True, ax_scale: float = 1.5) -> list:
+    def plot(self, prettify: bool = True,
+             ax_scale: float = 1.5) -> tuple:
         """Plots all plot objects.
 
         Parameters
@@ -211,7 +214,7 @@ class SymMePlotter(PlotBase):
                 axis.set_ticks_position('none')
             if ax_scale:
                 self._ax.set_position([-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
-        artists = []
+        artists = ()
         for plot_object in self._children:
             artists += plot_object.plot(self._ax)
         return artists
@@ -249,7 +252,8 @@ class SymMePlotter(PlotBase):
                 self.annot.set_visible(False)
                 self._ax.figure.canvas.draw_idle()
 
-    def set_visibility(self, sympy_object, is_visible, raise_error=True):
+    def set_visibility(self, sympy_object, is_visible: bool,
+                       raise_error: bool = True):
         """Hides or shows a plot_object based on a sympy_object.
 
         Parameters
@@ -280,7 +284,7 @@ class SymMePlotter(PlotBase):
         self._children = [self._children[0]]
 
     def lambdify_system(self, args, modules=None, printer=None, use_imps=True,
-                        dummify=False, cse=True):
+                        dummify=False, cse=True) -> callable:
         """Lambdifies the system for faster evaluation using
         ``evaluate_system``. The workings are the same as for the lambdify
         function in sympy.

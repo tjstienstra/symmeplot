@@ -1,4 +1,6 @@
+from abc import ABC, abstractmethod
 import numpy as np
+import numpy.typing as npt
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 from mpl_toolkits.mplot3d.art3d import PathPatch3D
 from matplotlib.patches import FancyArrowPatch, Circle
@@ -9,22 +11,28 @@ from matplotlib import Path
 __all__ = ['Point3D', 'Vector3D', 'Circle3D']
 
 
-class Point3D(Line3D):
+class ArtistBase(ABC):
+    @abstractmethod
+    def update_data(self, *args):
+        pass
+
+
+class Point3D(Line3D, ArtistBase):
     def __init__(self, position: Sequence[float], *args, **kwargs):
-        super().__init__(*([position[i]] for i in range(3)), *args,
+        super().__init__(*([np.float64(position[i])] for i in range(3)), *args,
                          **{'marker': 'o'} | kwargs)
 
     def update_data(self, position: Sequence[float]):
-        self.set_data_3d(*([position[i]] for i in range(3)))
+        self.set_data_3d(*([np.float64(position[i])] for i in range(3)))
 
 
-class Vector3D(FancyArrowPatch):
+class Vector3D(FancyArrowPatch, ArtistBase):
     # Source: https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c
     def __init__(self, origin: Sequence[float], vector: Sequence[float], *args,
                  **kwargs):
         super().__init__((0, 0), (0, 0), *args, **kwargs)
-        self._origin = origin
-        self._vector = vector
+        self._origin = np.array(origin, dtype=np.float64)
+        self._vector = np.array(vector, dtype=np.float64)
 
     def do_3d_projection(self, renderer=None):
         # https://github.com/matplotlib/matplotlib/issues/21688
@@ -35,35 +43,34 @@ class Vector3D(FancyArrowPatch):
         return min(zs)
 
     def update_data(self, origin: Sequence[float], vector: Sequence[float]):
-        self._origin, self._vector = origin, vector
+        self._origin = np.array(origin, dtype=np.float64)
+        self._vector = np.array(vector, dtype=np.float64)
 
 
-class Circle3D(PathPatch3D):
+class Circle3D(PathPatch3D, ArtistBase):
     """Patch to plot 3D circles
     Inpired by: https://stackoverflow.com/a/18228967/20185124
     """
     def __init__(self, center: Sequence[float], radius: float,
                  normal: Sequence[float] = (0, 0, 1), **kwargs):
-        path_2d = self._get_2d_path(radius)
+        path_2d = self._get_2d_path(np.float64(radius))
         super().__init__(path_2d, **{'zs': 0} | kwargs)
-        self._segment3d = self._get_segment3d(path_2d, center, normal)
+        self._segment3d = self._get_segment3d(
+            path_2d,
+            np.array(center, dtype=np.float64),
+            np.array(normal, dtype=np.float64))
 
     @staticmethod
-    def _get_2d_path(radius: float):
+    def _get_2d_path(radius: np.float64):
         circle_2d = Circle((0, 0), radius)
         path = circle_2d.get_path()  # Get the path and the associated transform
         trans = circle_2d.get_patch_transform()
         return trans.transform_path(path)  # Apply the transform
 
     @staticmethod
-    def _get_segment3d(path_2d: Path, center: Sequence[float],
-                       normal: Sequence[float]):
-        if isinstance(normal, str):  # Translate strings to normal vectors
-            index = "xyz".index(normal)
-            normal = np.roll((1.0, 0, 0), index)
-        else:
-            normal = np.array(normal, dtype=np.float64)
-            normal /= np.linalg.norm(normal)
+    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64],
+                       normal: npt.NDArray[np.float64]):
+        normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
         d = np.cross(normal, (0, 0, 1))  # Obtain the rotation vector
         M = Circle3D._rotation_matrix(d)  # Get the rotation matrix
@@ -93,5 +100,7 @@ class Circle3D(PathPatch3D):
 
     def update_data(self, center: Sequence[float], radius: float,
                     normal: Sequence[float]):
-        self._segment3d = self._get_segment3d(self._get_2d_path(radius), center,
-                                              normal)
+        self._segment3d = self._get_segment3d(
+            self._get_2d_path(np.float64(radius)),
+            np.array(center, dtype=np.float64),
+            np.array(normal, dtype=np.float64))

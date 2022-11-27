@@ -1,18 +1,15 @@
 from abc import ABC, abstractmethod
 from sympy import MatrixBase
 from sympy.physics.vector import Vector, ReferenceFrame, Point
-from symmeplot.utilities import vector_to_numpy
 from matplotlib.pyplot import gca
 from typing import Optional, Union, Tuple, List, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mpl_toolkits.mplot3d import Axes3D
-    from sympy import Expr
     from matplotlib.pyplot import Artist
     import numpy as np
     TArtist = TypeVar('TArtist', bound=Artist)
     TAxes3D = TypeVar('TAxes3D', bound=Axes3D)
-    TExpr = TypeVar('TExpr', bound=Expr)
     TPlotBase = TypeVar('TPlotBase', bound='PlotBase')
 
 
@@ -154,21 +151,21 @@ class PlotBase(ABC):
             child.values = vals
 
     @abstractmethod
-    def _get_expressions_to_evaluate_self(self) -> 'List[TExpr]':
+    def _get_expressions_to_evaluate_self(self) -> tuple:
         """Returns a list of the necessary expressions for plotting."""
         pass
 
-    def get_expressions_to_evaluate(self) -> list:
+    def get_expressions_to_evaluate(self) -> tuple:
         """Returns a list of the necessary expressions for plotting."""
-        return [self._get_expressions_to_evaluate_self()] + [
-            child.get_expressions_to_evaluate() for child in self._children]
+        return (self._get_expressions_to_evaluate_self(),) + tuple(
+            child.get_expressions_to_evaluate() for child in self._children)
 
     @staticmethod
-    def _evalf_list(lst: 'List[TExpr]', *args, **kwargs):
+    def _evalf_list(lst: tuple, *args, **kwargs):
         while not hasattr(lst, 'evalf'):
             return [PlotBase._evalf_list(expr, *args, **kwargs) for expr in lst]
         if isinstance(lst, MatrixBase):
-            return vector_to_numpy(lst.evalf(*args, **kwargs))
+            return lst.evalf(*args, **kwargs)
         return lst.evalf(*args, **kwargs)
 
     def evalf(self, *args, **kwargs) -> list:

@@ -6,11 +6,9 @@ from sympy.physics.mechanics import (ReferenceFrame, Vector, Point, Particle,
 from typing import Optional, Union, List, Tuple, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from sympy import Matrix, Expr
     from matplotlib.pyplot import Artist
     import numpy as np
     TArtist = TypeVar('TArtist', bound=Artist)
-    TExpr = TypeVar('TExpr', bound=Expr)
 
 __all__ = ['PlotPoint', 'PlotVector', 'PlotFrame', 'PlotBody']
 
@@ -73,12 +71,12 @@ class PlotPoint(PlotBase):
         return self._values[0]
 
     @property
-    def artist_point(self):
+    def artist_point(self) -> Point3D:
         return self._artists_self[0]
 
-    def _get_expressions_to_evaluate_self(self) -> 'List[Matrix]':
-        return [
-            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)]
+    def _get_expressions_to_evaluate_self(self) -> tuple:
+        return tuple(self.point.pos_from(self.zero_point).to_matrix(
+            self.inertial_frame)[:]),
 
     def _update_self(self) -> Tuple[Point3D]:
         self.artist_point.update_data(self.point_coords)
@@ -158,9 +156,10 @@ class PlotVector(PlotBase):
     def artist_arrow(self):
         return self._artists_self[0]
 
-    def _get_expressions_to_evaluate_self(self) -> 'List[Matrix]':
-        return [self.origin.pos_from(self.zero_point).to_matrix(
-            self.inertial_frame), self.vector.to_matrix(self.inertial_frame)]
+    def _get_expressions_to_evaluate_self(self) -> tuple:
+        return tuple(self.origin.pos_from(self.zero_point).to_matrix(
+            self.inertial_frame)[:]), tuple(
+            self.vector.to_matrix(self.inertial_frame)[:])
 
     def _update_self(self) -> Tuple[Vector3D]:
         self.artist_arrow.update_data(self.origin_coords, self.vector_coords)
@@ -288,9 +287,9 @@ class PlotFrame(PlotBase):
             self._children.append(PlotVector(
                 inertial_frame, zero_point, scale * vector, origin, **prop))
 
-    def _get_expressions_to_evaluate_self(self) -> 'List[TExpr]':
+    def _get_expressions_to_evaluate_self(self) -> tuple:
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
-        return []
+        return ()
 
     def _update_self(self) -> 'Tuple[TArtist]':
         return self._artists_self  # Children are handled in PlotBase.update
@@ -316,7 +315,8 @@ class PlotFrame(PlotBase):
     @property
     def annot_coords(self) -> 'np.array':
         """Coordinates where the annotation text is displayed."""
-        return self.vectors[0].origin_coords + 0.3 * sum([v.vector_coords for v in self.vectors])
+        return self.vectors[0].origin_coords + 0.3 * sum(
+            [v.vector_coords for v in self.vectors])
 
     @property
     def x(self) -> PlotVector:
@@ -438,9 +438,9 @@ class PlotBody(PlotBase):
         self._children.append(PlotPoint(
             inertial_frame, zero_point, body.masscenter,
             **properties[1]))
-        self._expressions_self: list = []
+        self._expressions_self: tuple = ()
 
-    def _get_expressions_to_evaluate_self(self) -> list:
+    def _get_expressions_to_evaluate_self(self) -> tuple:
         return self._expressions_self
 
     def _update_self(self) -> 'Tuple[TArtist]':
@@ -450,7 +450,7 @@ class PlotBody(PlotBase):
 
     def attach_circle(self, center: Optional[Union[Point, Vector]],
                       radius: float, normal: Optional[Union[Point, Vector]],
-                      **kwargs):
+                      **kwargs) -> Circle3D:
         """Attaches a circle to a point to represent the body.
 
         Parameters
@@ -466,15 +466,16 @@ class PlotBody(PlotBase):
         if isinstance(center, Point):
             center = center.pos_from(self.zero_point)
         if isinstance(center, Vector):
-            center = center.to_matrix(self.inertial_frame)
+            center = tuple(center.to_matrix(self.inertial_frame)[:])
         else:
             raise TypeError(f"'center' should be a {type(Point)}.")
         if isinstance(normal, Vector):
-            normal = normal.to_matrix(self.inertial_frame)
+            normal = tuple(normal.to_matrix(self.inertial_frame)[:])
         else:
             raise TypeError(f"'center' should be a {type(Vector)}.")
         self._artists_self += (Circle3D((0, 0, 0), 0, (0, 0, 1), **kwargs),)
-        self._expressions_self.append((center, sympify(radius), normal))
+        self._expressions_self += ((center, sympify(radius), normal),)
+        return self._artists_self[-1]
 
     @property
     def body(self) -> Union[Particle, RigidBody]:
@@ -482,7 +483,7 @@ class PlotBody(PlotBase):
         return self._body
 
     @body.setter
-    def body(self, body):
+    def body(self, body: Union[Particle, RigidBody]):
         if not isinstance(body, (Particle, RigidBody)):
             raise TypeError("'body' should be a sympy body.")
         else:
