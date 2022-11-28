@@ -234,7 +234,8 @@ class SymMePlotter(PlotBase):
             return
         _min = np.min([artist.min() for artist in _artists], axis=0)
         _max = np.max([artist.max() for artist in _artists], axis=0)
-        extra = (scale - 1) * (_max - _min)
+        size = scale * np.max(_max - _min)
+        extra = (size - (_max - _min)) / 2
         self._ax.set_xlim(_min[0] - extra[0], _max[0] + extra[0])
         self._ax.set_ylim(_min[1] - extra[1], _max[1] + extra[1])
         self._ax.set_zlim(_min[2] - extra[2], _max[2] + extra[2])
