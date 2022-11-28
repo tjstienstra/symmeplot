@@ -16,6 +16,14 @@ class ArtistBase(ABC):
     def update_data(self, *args):
         pass
 
+    @abstractmethod
+    def min(self) -> np.array:
+        pass
+
+    @abstractmethod
+    def max(self) -> np.array:
+        pass
+
 
 class Line3D(_Line3D, ArtistBase):
     def __init__(self, x: Sequence[float], y: Sequence[float],
@@ -29,6 +37,12 @@ class Line3D(_Line3D, ArtistBase):
         self.set_data_3d(np.array(x, dtype=np.float64),
                          np.array(y, dtype=np.float64),
                          np.array(z, dtype=np.float64))
+
+    def min(self) -> np.array:
+        return np.array([axes.min() for axes in self.get_data_3d()])
+
+    def max(self) -> np.array:
+        return np.array([axes.max() for axes in self.get_data_3d()])
 
 
 class Vector3D(FancyArrowPatch, ArtistBase):
@@ -50,6 +64,12 @@ class Vector3D(FancyArrowPatch, ArtistBase):
     def update_data(self, origin: Sequence[float], vector: Sequence[float]):
         self._origin = np.array(origin, dtype=np.float64)
         self._vector = np.array(vector, dtype=np.float64)
+
+    def min(self) -> np.array:
+        return np.min([self._origin, self._origin + self._vector], axis=0)
+
+    def max(self) -> np.array:
+        return np.max([self._origin, self._origin + self._vector], axis=0)
 
 
 class Circle3D(PathPatch3D, ArtistBase):
@@ -110,3 +130,9 @@ class Circle3D(PathPatch3D, ArtistBase):
             self._get_2d_path(np.float64(radius)),
             np.array(center, dtype=np.float64),
             np.array(normal, dtype=np.float64))
+
+    def min(self) -> np.array:
+        return self._segment3d.min(axis=0)
+
+    def max(self) -> np.array:
+        return self._segment3d.max(axis=0)

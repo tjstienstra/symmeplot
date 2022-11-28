@@ -5,6 +5,7 @@ from mpl_toolkits.mplot3d.proj3d import proj_transform
 from symmeplot.plot_objects import (PlotPoint, PlotLine, PlotVector, PlotFrame,
                                     PlotBody)
 from symmeplot.plot_base import PlotBase
+import numpy as np
 from typing import Optional, Union, TypeVar, Sequence, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -214,6 +215,9 @@ class SymMePlotter(PlotBase):
             This function is part of prettifying the figure and only works nicely if it is the only subplot.
             Disabled if set to 0.
         """
+        artists = ()
+        for plot_object in self._children:
+            artists += plot_object.plot(self._ax)
         if prettify:
             self._ax.autoscale_view()
             for axis in (self._ax.xaxis, self._ax.yaxis, self._ax.zaxis):
@@ -221,10 +225,20 @@ class SymMePlotter(PlotBase):
                 axis.set_ticks_position('none')
             if ax_scale:
                 self._ax.set_position([-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
-        artists = ()
-        for plot_object in self._children:
-            artists += plot_object.plot(self._ax)
+            self.auto_zoom()
         return artists
+
+    def auto_zoom(self, scale=1.1):
+        _artists = self.artists
+        if not _artists:
+            return
+        _min = np.min([artist.min() for artist in _artists], axis=0)
+        _max = np.max([artist.max() for artist in _artists], axis=0)
+        extra = (scale - 1) * (_max - _min)
+        self._ax.set_xlim(_min[0] - extra[0], _max[0] + extra[0])
+        self._ax.set_ylim(_min[1] - extra[1], _max[1] + extra[1])
+        self._ax.set_zlim(_min[2] - extra[2], _max[2] + extra[2])
+        return _min, _max
 
     def _get_selected_object(self, event):
         """Gets the ``plot_object`` where the mouseevent is currently on.
