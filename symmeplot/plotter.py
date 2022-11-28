@@ -2,9 +2,10 @@ from sympy import lambdify
 from sympy.physics.mechanics import (ReferenceFrame, Point, Vector, Particle,
                                      RigidBody)
 from mpl_toolkits.mplot3d.proj3d import proj_transform
-from symmeplot.plot_objects import PlotPoint, PlotVector, PlotFrame, PlotBody
+from symmeplot.plot_objects import (PlotPoint, PlotLine, PlotVector, PlotFrame,
+                                    PlotBody)
 from symmeplot.plot_base import PlotBase
-from typing import Optional, Union, TypeVar, TYPE_CHECKING
+from typing import Optional, Union, TypeVar, Sequence, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mpl_toolkits.mplot3d import Axes3D
@@ -159,6 +160,12 @@ class SymMePlotter(PlotBase):
         """Add a sympy Vector to the plotter."""
         self._children.append(
             PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs))
+        return self._children[-1]
+
+    def add_line(self, points: Sequence[Point], **kwargs) -> PlotPoint:
+        """Add a sympy Vector to the plotter."""
+        self._children.append(
+            PlotLine(self.inertial_frame, self.zero_point, points, **kwargs))
         return self._children[-1]
 
     def add_vector(self, vector: Vector,

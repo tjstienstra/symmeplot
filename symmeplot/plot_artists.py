@@ -4,11 +4,11 @@ import numpy.typing as npt
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 from mpl_toolkits.mplot3d.art3d import PathPatch3D
 from matplotlib.patches import FancyArrowPatch, Circle
-from mpl_toolkits.mplot3d.art3d import Line3D
+from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
 from typing import Sequence
 from matplotlib import Path
 
-__all__ = ['Point3D', 'Vector3D', 'Circle3D']
+__all__ = ['Line3D', 'Vector3D', 'Circle3D']
 
 
 class ArtistBase(ABC):
@@ -17,13 +17,18 @@ class ArtistBase(ABC):
         pass
 
 
-class Point3D(Line3D, ArtistBase):
-    def __init__(self, position: Sequence[float], *args, **kwargs):
-        super().__init__(*([np.float64(position[i])] for i in range(3)), *args,
-                         **{'marker': 'o'} | kwargs)
+class Line3D(_Line3D, ArtistBase):
+    def __init__(self, x: Sequence[float], y: Sequence[float],
+                 z: Sequence[float], *args, **kwargs):
+        super().__init__(np.array(x, dtype=np.float64),
+                         np.array(y, dtype=np.float64),
+                         np.array(z, dtype=np.float64), *args, **kwargs)
 
-    def update_data(self, position: Sequence[float]):
-        self.set_data_3d(*([np.float64(position[i])] for i in range(3)))
+    def update_data(self, x: Sequence[float], y: Sequence[float],
+                    z: Sequence[float]):
+        self.set_data_3d(np.array(x, dtype=np.float64),
+                         np.array(y, dtype=np.float64),
+                         np.array(z, dtype=np.float64))
 
 
 class Vector3D(FancyArrowPatch, ArtistBase):
@@ -51,6 +56,7 @@ class Circle3D(PathPatch3D, ArtistBase):
     """Patch to plot 3D circles
     Inpired by: https://stackoverflow.com/a/18228967/20185124
     """
+
     def __init__(self, center: Sequence[float], radius: float,
                  normal: Sequence[float] = (0, 0, 1), **kwargs):
         path_2d = self._get_2d_path(np.float64(radius))

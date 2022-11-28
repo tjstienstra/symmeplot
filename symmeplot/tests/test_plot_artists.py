@@ -1,5 +1,5 @@
 import pytest
-from symmeplot.plot_artists import Point3D, Vector3D, Circle3D
+from symmeplot.plot_artists import Line3D, Vector3D, Circle3D
 from symmeplot.tests.utilities import mpl3d_image_comparison
 from matplotlib.testing.decorators import cleanup
 from matplotlib.pyplot import subplots
@@ -9,8 +9,8 @@ class TestPoint3D:
     @pytest.fixture
     def setup_basic(self):
         self.fig, self.ax = subplots(subplot_kw={'projection': '3d'})
-        self.p1 = Point3D([.5, .2, .6], color='g')
-        self.p2 = Point3D([.2, .4, .9], color='k')
+        self.p1 = Line3D([.5, .2, .6], color='g')
+        self.p2 = Line3D([.2, .4, .9], color='k')
         self.ax.add_artist(self.p1)
         self.ax.add_artist(self.p2)
 

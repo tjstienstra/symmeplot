@@ -1,16 +1,17 @@
 from symmeplot.plot_base import PlotBase
-from symmeplot.plot_artists import Point3D, Vector3D, Circle3D
+from symmeplot.plot_artists import Line3D, Vector3D, Circle3D
 from sympy import latex, sympify
 from sympy.physics.mechanics import (ReferenceFrame, Vector, Point, Particle,
                                      RigidBody)
-from typing import Optional, Union, List, Tuple, TypeVar, TYPE_CHECKING
+from typing import (Optional, Union, List, Tuple, TypeVar, Sequence,
+                    TYPE_CHECKING)
+import numpy as np
 
 if TYPE_CHECKING:
     from matplotlib.pyplot import Artist
-    import numpy as np
     TArtist = TypeVar('TArtist', bound=Artist)
 
-__all__ = ['PlotPoint', 'PlotVector', 'PlotFrame', 'PlotBody']
+__all__ = ['PlotPoint', 'PlotLine', 'PlotVector', 'PlotFrame', 'PlotBody']
 
 
 class PlotPoint(PlotBase):
@@ -18,7 +19,7 @@ class PlotPoint(PlotBase):
     point = PlotBase.origin  # Alias of origin
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 point: Optional[Union[Point, Vector]], **kwargs):
+                 point: Union[Point, Vector], style='default', **kwargs):
         """Initialize a PlotPoint instance.
 
         Parameters
@@ -27,11 +28,17 @@ class PlotPoint(PlotBase):
             The reference frame with respect to which the object is oriented.
         zero_point : Point
             The absolute origin with respect to which the object is positioned.
-        point : Point, Vector, optional
+        point : Point, Vector
             The point that should be plotted with respect to the ``zero_point``.
             If a ``Vector`` is provided the ``origin`` will be at the tip of the
             vector with respect to the ``zero_point``. The default is the
             ``zero_point``.
+        style : str, optional
+            Reference to what style should be used for plotting the point. The
+            default style is ``'default'``.
+            Available styles:
+                None: Default of the Line3D
+                'default': Normal point
 
         Other Parameters
         ================
@@ -63,29 +70,137 @@ class PlotPoint(PlotBase):
 
         """
         super().__init__(inertial_frame, zero_point, point, point.name)
-        self._artists_self: Tuple[Point3D] = (Point3D((0, 0, 0), **kwargs),)
+        self._artists_self: Tuple[Line3D] = (
+            Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
 
     @property
-    def point_coords(self) -> 'np.array':
+    def point_coords(self) -> np.array:
         """Coordinates of the point."""
         return self._values[0]
 
     @property
-    def artist_point(self) -> Point3D:
+    def artist_point(self) -> Line3D:
         return self._artists_self[0]
 
     def _get_expressions_to_evaluate_self(self) -> tuple:
         return tuple(self.point.pos_from(self.zero_point).to_matrix(
             self.inertial_frame)[:]),
 
-    def _update_self(self) -> Tuple[Point3D]:
-        self.artist_point.update_data(self.point_coords)
+    def _update_self(self) -> Tuple[Line3D]:
+        self.artist_point.update_data(*self.point_coords)
         return self._artists_self
 
     @property
-    def annot_coords(self) -> 'np.array':
+    def annot_coords(self) -> np.array:
         """Coordinates where the annotation text is displayed."""
         return self.point_coords
+
+    def _get_style_properties(self, style: Optional[str]) -> dict:
+        """Gets the properties of the vector belonging to a certain style."""
+        if style is None:
+            return {}
+        elif style == 'default':
+            return {'marker': 'o'}
+        else:
+            raise NotImplementedError(f"Style '{style}' is not implemented.")
+
+
+class PlotLine(PlotBase):
+    """Class for plotting points."""
+    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
+                 points: Sequence[Union[Point, Vector]], name=None, **kwargs):
+        """Initialize a PlotLine instance.
+
+        Parameters
+        ==========
+        inertial_frame : ReferenceFrame
+            The reference frame with respect to which the object is oriented.
+        zero_point : Point
+            The absolute origin with respect to which the object is positioned.
+        points : Point, Vector
+            The point that should be plotted with respect to the ``zero_point``.
+            If a ``Vector`` is provided the ``origin`` will be at the tip of the
+            vector with respect to the ``zero_point``. The default is the
+            ``zero_point``.
+        name : str, optional
+            Name of the line.
+
+        Other Parameters
+        ================
+        **kwargs : dict, optional
+            Kwargs that are parsed to ``mpl_toolkits.mplot3d.art3d.Line3D``, so
+            ``color='r'`` will make the plotted point red.
+
+        Examples
+        ========
+
+        >>> from sympy import symbols
+        >>> from sympy.physics.mechanics import ReferenceFrame, Point
+        >>> from symmeplot import PlotLine
+        >>> from matplotlib.pyplot import subplots, pause
+        >>> l1, l2, l3 = symbols('l:3')
+        >>> subs_zero = {l1: 0, l2: 0, l3: 0}
+        >>> subs_move = {l1: 0.2, l2: 0.6, l3: 0.3}
+        >>> N, O = ReferenceFrame('N'), Point('O')
+        >>> P1 = Point('P1')
+        >>> P1.set_pos(O, (l1 * N.x + l2 * N.y + l3 * N.z))
+        >>> P2 = P1.locatenew('P2', -0.3 * N.x)
+        >>> fig, ax = subplots(subplot_kw={'projection': '3d'})
+        >>> line_plot = PlotLine(N, O, [O, P1, P2], color='k')
+        >>> line_plot.evalf(subs=subs_zero)
+        >>> line_plot.plot()  # Plot the point
+        >>> fig.show()
+        >>> pause(2)
+        >>> line_plot.evalf(subs=subs_move)
+        >>> line_plot.update()  # The point will now be on its new position
+
+        """
+        super().__init__(inertial_frame, zero_point, points[0], name)
+        self._artists_self: Tuple[Line3D] = (Line3D([0], [0], [0], **kwargs),)
+        self.points = points
+
+    @property
+    def points(self) -> Tuple[Point]:
+        return self._points
+
+    @points.setter
+    def points(self, points):
+        if isinstance(points, Point):
+            self._points = (points,)
+            self._values = ()
+            return
+        _points = []
+        for point in points:
+            if not isinstance(point, Point):
+                raise TypeError("'points' should be a list of Point objects.")
+            _points.append(point)
+        self._points = tuple(_points)
+        self._values = ()
+
+    @property
+    def coordinates(self):
+        return self._values
+
+    @property
+    def artist_point(self) -> Line3D:
+        return self._artists_self[0]
+
+    def _get_expressions_to_evaluate_self(self) -> tuple:
+        vs = []
+        for point in self.points:
+            vs.append(point.pos_from(
+                self.zero_point).to_matrix(self.inertial_frame)[:])
+        arr = np.array(vs, dtype=object).T
+        return tuple(map(tuple, arr))
+
+    def _update_self(self) -> Tuple[Line3D]:
+        self.artist_point.update_data(*self.coordinates)
+        return self._artists_self
+
+    @property
+    def annot_coords(self) -> np.array:
+        """Coordinates where the annotation text is displayed."""
+        return np.array(self._values, dtype=np.float64).mean(axis=1)
 
 
 class PlotVector(PlotBase):
