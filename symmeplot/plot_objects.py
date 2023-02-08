@@ -564,7 +564,7 @@ class PlotBody(PlotBase):
         return self._artists_self  # Children are handled in PlotBase.update
 
     def attach_circle(self, center: Optional[Union[Point, Vector]],
-                      radius: float, normal: Optional[Union[Point, Vector]],
+                      radius, normal: Optional[Union[Point, Vector]],
                       **kwargs) -> Circle3D:
         """Attaches a circle to a point to represent the body.
 

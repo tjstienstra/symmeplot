@@ -162,7 +162,7 @@ class PlotBase(ABC):
 
     @staticmethod
     def _evalf_list(lst: tuple, *args, **kwargs):
-        while not hasattr(lst, 'evalf'):
+        if not hasattr(lst, 'evalf'):
             return [PlotBase._evalf_list(expr, *args, **kwargs) for expr in lst]
         if isinstance(lst, MatrixBase):
             return lst.evalf(*args, **kwargs)

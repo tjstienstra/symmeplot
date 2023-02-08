@@ -98,30 +98,28 @@ class Circle3D(PathPatch3D, ArtistBase):
                        normal: npt.NDArray[np.float64]):
         normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
-        d = np.cross(normal, (0, 0, 1))  # Obtain the rotation vector
-        M = Circle3D._rotation_matrix(d)  # Get the rotation matrix
+        M = Circle3D._rotation_matrix(normal)  # Get the rotation matrix
         segment3d = np.array([np.dot(M, (x, y, 0)) for x, y in verts])
         for i, offset in enumerate(center):
             segment3d[:, i] += offset
         return segment3d
 
     @staticmethod
-    def _rotation_matrix(d: np.array):
+    def _rotation_matrix(normal: np.array):
         """
         Calculates a rotation matrix given a vector d. The direction of d
         corresponds to the rotation axis. The length of d corresponds to
         the sin of the angle of rotation.
+        Based on: https://math.stackexchange.com/a/476311
         """
-        sin_angle = np.linalg.norm(d)
+        v = np.cross((0, 0, 1), normal)
+        sin_angle = np.linalg.norm(v)
         if sin_angle == 0:
             return np.identity(3)
-        d /= sin_angle
-        eye = np.eye(3)
-        ddt = np.outer(d, d)
-        skew = np.array([[0, d[2], -d[1]],
-                         [-d[2], 0, d[0]],
-                         [d[1], -d[0], 0]], dtype=np.float64)
-        M = ddt + np.sqrt(1 - sin_angle ** 2) * (eye - ddt) + sin_angle * skew
+        skew = np.array([[0, -v[2], v[1]],
+                         [v[2], 0, -v[0]],
+                         [-v[1], v[0], 0]], dtype=np.float64)
+        M = np.eye(3) + skew + (skew @ skew) * (1 / (1 + normal[2]))
         return M
 
     def update_data(self, center: Sequence[float], radius: float,
