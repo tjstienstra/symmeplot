@@ -1,1 +1,5 @@
 symmeplot/tests/result_images
+doc/_build
+doc/_static
+doc/_templates
+doc/jupyter_execute

@@ -44,7 +44,6 @@ class TestPlotPoint:
 
 
 class TestPlotVector:
-    @pytest.fixture()
     def setup_values(self):
         self.l = symbols('l:6')
         self.subs1 = {self.l[0]: 1.0, self.l[1]: 0, self.l[2]: 0,
@@ -57,8 +56,8 @@ class TestPlotVector:
         self.v = (self.l[3] * self.N.x + self.l[4] * self.N.y +
                   self.l[5] * self.N.z)
 
-    @pytest.fixture()
-    def setup_basic_arrow(self, setup_values):
+    def setup_basic_arrow(self):
+        self.setup_values()
         self.fig, self.ax = subplots(subplot_kw={'projection': '3d'})
         self.plot_vector = PlotVector(self.N, self.O, self.v, self.O_v)
         self.plot_vector.evalf(subs=self.subs1)
@@ -66,18 +65,18 @@ class TestPlotVector:
 
     @cleanup
     @mpl3d_image_comparison(['plot_vector_basic_arrow.png'])
-    def test_plot_vector_basic_arrow(self, setup_basic_arrow):
-        pass
+    def test_plot_vector_basic_arrow(self):
+        self.setup_basic_arrow()
 
     @cleanup
     @mpl3d_image_comparison(['plot_vector_update_arrow.png'])
-    def test_plot_vector_update_arrow(self, setup_basic_arrow):
+    def test_plot_vector_update_arrow(self):
+        self.setup_basic_arrow()
         self.plot_vector.evalf(subs=self.subs2)
         self.plot_vector.update()
 
 
 class TestPlotFrame:
-    @pytest.fixture()
     def setup_values(self):
         self.l, self.q = symbols('l:3'), symbols('q')
         self.subs_zero = {self.l[0]: 0, self.l[1]: 0, self.l[2]: 0, self.q: -1}
@@ -89,8 +88,8 @@ class TestPlotFrame:
         self.A_o = self.O.locatenew('A_o', (self.l[0] * self.N.x + self.l[1] *
                                             self.N.y + self.l[2] * self.N.z))
 
-    @pytest.fixture()
-    def setup_basic_frame(self, setup_values):
+    def setup_basic_frame(self):
+        self.setup_values()
         self.fig, self.ax = subplots(subplot_kw={'projection': '3d'})
         self.N_plot = PlotFrame(self.N, self.O, self.N, self.O)
         self.A_plot = PlotFrame(self.N, self.O, self.A, self.A_o,
@@ -102,11 +101,12 @@ class TestPlotFrame:
 
     @cleanup
     @mpl3d_image_comparison(['plot_frame_basic.png'])
-    def test_plot_vector_basic_arrow(self, setup_basic_frame):
-        pass
+    def test_plot_vector_basic_arrow(self):
+        self.setup_basic_frame()
 
     @cleanup
     @mpl3d_image_comparison(['plot_frame_update.png'])
-    def test_plot_vector_update_arrow(self, setup_basic_frame):
+    def test_plot_vector_update_arrow(self):
+        self.setup_basic_frame()
         self.A_plot.evalf(subs=self.subs_move)
         self.A_plot.update()
