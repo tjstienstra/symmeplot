@@ -134,7 +134,7 @@ class PlotBase(ABC):
         for artist in self._artists_self:
             artist.set_visible(is_visible)
         for child in self._children:
-            child._visible = bool(is_visible)
+            child.visible = bool(is_visible)
         self._visible = bool(is_visible)
 
     @property
