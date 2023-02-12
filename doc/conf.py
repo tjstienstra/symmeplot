@@ -10,6 +10,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('..'))
+package_path = os.path.abspath('..')
+os.environ['PYTHONPATH'] = ''.join((package_path, os.environ.get('PYTHONPATH', '')))
 
 project = 'symmeplot'
 copyright = '2023, TJStienstra'
@@ -31,17 +33,13 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
 
 intersphinx_mapping = {
     'sympy': ('https://docs.sympy.org/dev/', None),
     'matplotlib': ('https://matplotlib.org/stable/', None),
     'numpy': ('https://numpy.org/doc/stable/', None),
 }
-
-exec_code_working_dir = '..'
-exec_code_source_folders = ['../symmeplot']
-exec_code_example_dir = '.'
 
 napoleon_numpy_docstring = True
 napoleon_custom_sections = [('Other Attributes', 'Attributes')]
