@@ -1,7 +1,5 @@
-import pytest
 from symmeplot.plot_artists import Line3D, Vector3D, Circle3D
 from symmeplot.tests.utilities import mpl3d_image_comparison
-from matplotlib.testing.decorators import cleanup
 from matplotlib.pyplot import subplots
 
 
@@ -13,12 +11,10 @@ class TestPoint3D:
         self.ax.add_artist(self.p1)
         self.ax.add_artist(self.p2)
 
-    @cleanup
     @mpl3d_image_comparison(['point3d_basic.png'])
     def test_basic(self):
         self.setup_basic()
 
-    @cleanup
     @mpl3d_image_comparison(['point3d_update.png'])
     def test_update(self):
         self.setup_basic()
@@ -35,12 +31,10 @@ class TestVector3D:
         self.ax.add_artist(self.v1)
         self.ax.add_artist(self.v2)
 
-    @cleanup
     @mpl3d_image_comparison(['vector3d_basic.png'])
     def test_basic(self):
         self.setup_basic()
 
-    @cleanup
     @mpl3d_image_comparison(['vector3d_update.png'])
     def test_update(self):
         self.setup_basic()
@@ -55,12 +49,10 @@ class TestCircle3D:
         self.ax.add_artist(self.c1)
         self.ax.add_artist(self.c2)
 
-    @cleanup
     @mpl3d_image_comparison(['circle3d_basic.png'])
     def test_basic(self):
         self.setup_basic()
 
-    @cleanup
     @mpl3d_image_comparison(['circle3d_update.png'])
     def test_update(self):
         self.setup_basic()

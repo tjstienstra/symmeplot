@@ -1,3 +1,17 @@
+Metadata-Version: 2.1
+Name: symmeplot
+Version: 0.0.1
+Summary: SymPy Mechanics Plotter
+Author-email: Timo Stienstra <timostienstra00@gmail.com>
+Project-URL: Homepage, https://github.com/TJStienstra/symmeplot
+Project-URL: Bug Tracker, https://github.com/TJStienstra/symmeplot/issues
+Project-URL: Documentation, https://tjstienstra.github.io/symmeplot/
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
 # SymMePlot
 This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
 

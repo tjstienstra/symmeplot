@@ -3,7 +3,7 @@ from sympy.physics.mechanics import ReferenceFrame, Point
 from sympy import symbols
 from symmeplot import PlotPoint, PlotVector, PlotFrame
 from symmeplot.tests.utilities import mpl3d_image_comparison
-from matplotlib.testing.decorators import check_figures_equal, cleanup
+from matplotlib.testing.decorators import check_figures_equal
 from matplotlib.pyplot import subplots
 from symmeplot.tests.utilities import equalize_axis_limits
 
@@ -63,12 +63,10 @@ class TestPlotVector:
         self.plot_vector.evalf(subs=self.subs1)
         self.plot_vector.plot(self.ax)
 
-    @cleanup
     @mpl3d_image_comparison(['plot_vector_basic_arrow.png'])
     def test_plot_vector_basic_arrow(self):
         self.setup_basic_arrow()
 
-    @cleanup
     @mpl3d_image_comparison(['plot_vector_update_arrow.png'])
     def test_plot_vector_update_arrow(self):
         self.setup_basic_arrow()
@@ -99,12 +97,10 @@ class TestPlotFrame:
         self.N_plot.plot(self.ax)
         self.A_plot.plot(self.ax)
 
-    @cleanup
     @mpl3d_image_comparison(['plot_frame_basic.png'])
     def test_plot_vector_basic_arrow(self):
         self.setup_basic_frame()
 
-    @cleanup
     @mpl3d_image_comparison(['plot_frame_update.png'])
     def test_plot_vector_update_arrow(self):
         self.setup_basic_frame()

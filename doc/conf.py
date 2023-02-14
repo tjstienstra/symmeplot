@@ -16,7 +16,7 @@ os.environ['PYTHONPATH'] = ''.join((package_path, os.environ.get('PYTHONPATH', '
 project = 'symmeplot'
 copyright = '2023, TJStienstra'
 author = 'TJStienstra'
-release = '0.1'
+release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

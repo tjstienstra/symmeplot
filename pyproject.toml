@@ -1,0 +1,24 @@
+[project]
+name = "symmeplot"
+version = "0.0.1"
+authors = [
+  { name="Timo Stienstra", email="timostienstra00@gmail.com" },
+]
+description = "SymPy Mechanics Plotter"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/TJStienstra/symmeplot"
+"Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
+"Documentation" = "https://tjstienstra.github.io/symmeplot/"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "symmeplot/tests",
+]
