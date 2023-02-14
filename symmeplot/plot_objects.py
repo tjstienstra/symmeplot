@@ -17,7 +17,7 @@ class PlotPoint(PlotBase):
         The sympy Point, which is being plotted.
     artist_point : Line3D
         Corresponding artist for visualizing the point in matplotlib.
-    point_coords : numpy.array
+    point_coord : numpy.array
         Coordinate values of the plotted point.
 
     Other Attributes
@@ -90,7 +90,7 @@ class PlotPoint(PlotBase):
         self._artists_self = (Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
 
     @property
-    def point_coords(self):
+    def point_coord(self):
         return self._values[0]
 
     @property
@@ -101,12 +101,12 @@ class PlotPoint(PlotBase):
         return tuple(self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]),
 
     def _update_self(self):
-        self.artist_point.update_data(*self.point_coords)
+        self.artist_point.update_data(*[[c] for c in self.point_coord])
         return self._artists_self
 
     @property
     def annot_coords(self):
-        return self.point_coords
+        return self.point_coord
 
     def _get_style_properties(self, style):
         """Gets the properties of the vector belonging to a certain style."""
