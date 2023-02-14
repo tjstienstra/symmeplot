@@ -3,3 +3,5 @@ doc/_build
 doc/_static
 doc/_templates
 doc/jupyter_execute
+result_images/
+symmeplot.egg_info/
