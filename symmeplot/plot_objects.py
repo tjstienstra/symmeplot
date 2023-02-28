@@ -48,17 +48,17 @@ class PlotPoint(PlotBase):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     point : Point or Vector
-        The point or vector that should be plotted with respect to the `zero_point`. If a vector is provided, the
-        `origin` will be at the tip of the vector with respect to the `zero_point`. If not specified, the default is the
-        `zero_point`.
+        The point or vector that should be plotted with respect to the `zero_point`. If
+        a vector is provided, the `origin` will be at the tip of the vector with respect
+        to the `zero_point`. If not specified, the default is the `zero_point`.
     style : str, optional
-        Reference to what style should be used for plotting the point. The default style is `'default'`.
-        Available styles:
-        - None: Default of the Line3D
-        - 'default': Normal point
+        Reference to what style should be used for plotting the point. The default style
+        is `'default'`. Available styles:
+        - None: Default of the :class:`mpl_toolkits.mplot3d.art3d.Line3D`.
+        - 'default': Normal point.
     **kwargs : dict, optional
-        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted point
-        red.
+        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+        `color='r'` will make the plotted point red.
 
     Examples
     --------
@@ -87,7 +87,8 @@ class PlotPoint(PlotBase):
 
     def __init__(self, inertial_frame, zero_point, point, style='default', **kwargs):
         super().__init__(inertial_frame, zero_point, point, point.name)
-        self._artists_self = (Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
+        self._artists_self = (
+            Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
 
     @property
     def point_coord(self):
@@ -98,7 +99,8 @@ class PlotPoint(PlotBase):
         return self._artists_self[0]
 
     def _get_expressions_to_evaluate_self(self):
-        return tuple(self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]),
+        return tuple(
+            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]),
 
     def _update_self(self):
         self.artist_point.update_data(*[[c] for c in self.point_coord])
@@ -159,13 +161,14 @@ class PlotLine(PlotBase):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     points : list of Point or Vector
-        The points or vectors through which the line should be plotted with respect to the `zero_point`. If a vector is
-        provided, the `origin` will be at the tip of the vector with respect to the `zero_point`.
+        The points or vectors through which the line should be plotted with respect to
+        the `zero_point`. If a vector is provided, the `origin` will be at the tip of
+        the vector with respect to the `zero_point`.
     name : str, optional
         The name of the line. Default is `None`.
     **kwargs : dict, optional
-        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted point
-        red.
+        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+        `color='r'` will make the plotted point red.
 
     Examples
     --------
@@ -284,18 +287,19 @@ class PlotVector(PlotBase):
     vector : Vector
         The vector that should be plotted with respect to the `zero_point`.
     origin : Point or Vector, optional
-        The origin of the vector with respect to the `zero_point`. If a :class:`sympy.physics.vector.vector.Vector` is
-        provided the `origin` is at the tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the vector with respect to the `zero_point`. If a
+        :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
+        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
     name : str
         Name of the plot object. Default is the vector as string.
     style : str, optional
-        Reference to what style should be used for plotting the vector. The default style is `'default'`.
-        Available styles:
-        - None: Default of the Line3D
-        - 'default': Normal black arrow
+        Reference to what style should be used for plotting the vector. The default
+        style is `'default'`. Available styles:
+        - None: Default of the :class:`mpl_toolkits.mplot3d.art3d.Line3D`.
+        - 'default': Normal black arrow.
     **kwargs : dict, optional
-        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted arrow
-        red.
+        Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+        `color='r'` will make the plotted arrow red.
 
     Examples
     --------
@@ -316,22 +320,27 @@ class PlotVector(PlotBase):
 
     """
 
-    def __init__(self, inertial_frame, zero_point, vector, origin=None, name=None, style='default', **kwargs):
+    def __init__(self, inertial_frame, zero_point, vector, origin=None, name=None,
+                 style='default', **kwargs):
         if name is None:
             name = str(latex(vector))
         super().__init__(inertial_frame, zero_point, origin, name)
         self.vector = vector
         self._values = []  # origin, vector
         self._properties = {}
-        self._artists_self = (Vector3D((0, 0, 0), (0, 0, 0), **self._get_style_properties(style) | kwargs),)
+        self._artists_self = (
+            Vector3D((0, 0, 0), (0, 0, 0),
+                     **self._get_style_properties(style) | kwargs),)
 
     @property
     def artist_arrow(self):
         return self._artists_self[0]
 
     def _get_expressions_to_evaluate_self(self):
-        return (tuple(self.origin.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]),
-                tuple(self.vector.to_matrix(self.inertial_frame)[:]))
+        return (
+            tuple(self.origin.pos_from(self.zero_point).to_matrix(self.inertial_frame)[
+                  :]),
+            tuple(self.vector.to_matrix(self.inertial_frame)[:]))
 
     def _update_self(self):
         self.artist_arrow.update_data(self.origin_coords, self.vector_coords)
@@ -434,18 +443,20 @@ class PlotFrame(PlotBase):
     frame : ReferenceFrame
         The reference frame that should be plotted.
     origin : Point or Vector, optional
-        The origin of the frame with respect to the `zero_point`. If a :class:`sympy.physics.vector.vector.Vector` is
-        provided the `origin` is at the tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the frame with respect to the `zero_point`. If a
+        :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
+        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
     style : str, optional
-        Reference to what style should be used for plotting the frame. The default style is `'default'`.
-        Available styles:
-        - None: No properties of the vectors will be set
-        - 'default': Nice default frame with as color 'rgb' for xyz
+        Reference to what style should be used for plotting the frame. The default style
+        is `'default'`. Available styles:
+        - None: No properties of the vectors will be set.
+        - 'default': Nice default frame with as color 'rgb' for xyz.
     scale : float, optional
         Length of the vectors of the reference frame.
     **kwargs : dict, optional
         Kwargs that are parsed to :class:`~.PlotVector`s, which possibly parses them to
-        :class:`matplotlib.patches.FancyArrow`, so `color='r'` will make all vectors of the reference frame red.
+        :class:`matplotlib.patches.FancyArrow`, so `color='r'` will make all vectors of
+        the reference frame red.
 
     Examples
     --------
@@ -470,14 +481,16 @@ class PlotFrame(PlotBase):
 
     """
 
-    def __init__(self, inertial_frame, zero_point, frame, origin=None, style='default', scale=0.1, **kwargs):
+    def __init__(self, inertial_frame, zero_point, frame, origin=None, style='default',
+                 scale=0.1, **kwargs):
         super().__init__(inertial_frame, zero_point, origin, frame.name)
         self.frame = frame
         properties = self._get_style_properties(style)
         for prop in properties:
             prop.update(kwargs)
         for vector, prop in zip(frame, properties):
-            self._children.append(PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop))
+            self._children.append(
+                PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop))
 
     def _get_expressions_to_evaluate_self(self):
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
@@ -520,11 +533,13 @@ class PlotFrame(PlotBase):
         return self.vectors[2]
 
     def _get_style_properties(self, style):
-        """Gets the properties of the vectors belonging to a certain style.
+        """
+        Gets the properties of the vectors belonging to a certain style.
 
         style : str, None
             Name of the style or None, if no style should be set. Available styles:
-            - 'default' : Uses the default vectors, overwriting the colors to rgb for xyz
+            - 'default' : Uses the default vectors, overwriting the colors to rgb for
+            xyz.
 
         """
         properties = [{}, {}, {}]
@@ -585,18 +600,21 @@ class PlotBody(PlotBase):
     body : RigidBody or Particle
         The body that should be plotted.
     origin : Point or Vector, optional
-        The origin of the frame with respect to the `zero_point`. If a :class:`sympy.physics.vector.vector.Vector` is
-        provided the `origin` is at the tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the frame with respect to the `zero_point`. If a
+        :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
+        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
     style : str, optional
-        Reference to what style should be used for plotting the body. The default style is `'default'`.
-        Available styles:
-        - None: No properties of the vectors will be set
-        - 'default': Uses a special point for the center of mass and a frame with as color 'rgb' for xyz
+        Reference to what style should be used for plotting the body. The default style
+        is `'default'`. Available styles:
+        - None: No properties of the vectors will be set.
+        - 'default': Uses a special point for the center of mass and a frame with as
+        color 'rgb' for xyz.
     plot_frame_properties : dict, optional
-        Dictionary of keyword arguments that should be parsed to the :class:`~.PlotFrame`.
+        Dictionary of keyword arguments that should be parsed to the
+        :class:`~.PlotFrame`.
     plot_point_properties : dict, optional
-        Dictionary of keyword arguments that should be parsed to the :class:`~.PlotPoint` representing the center of
-        mass.
+        Dictionary of keyword arguments that should be parsed to the
+        :class:`~.PlotPoint` representing the center of mass.
     **kwargs : dict, optional
         Kwargs that are parsed to both internally used plot objects.
 
@@ -627,7 +645,8 @@ class PlotBody(PlotBase):
 
     """
 
-    def __init__(self, inertial_frame, zero_point, body, style='default', plot_frame_properties=None,
+    def __init__(self, inertial_frame, zero_point, body, style='default',
+                 plot_frame_properties=None,
                  plot_point_properties=None, **kwargs):
         super().__init__(inertial_frame, zero_point, body.masscenter, str(body))
         self.body = body
@@ -639,8 +658,11 @@ class PlotBody(PlotBase):
         for prop in properties:
             prop.update(kwargs)
         if hasattr(body, 'frame'):
-            self._children.append(PlotFrame(inertial_frame, zero_point, body.frame, body.masscenter, **properties[0]))
-        self._children.append(PlotPoint(inertial_frame, zero_point, body.masscenter, **properties[1]))
+            self._children.append(
+                PlotFrame(inertial_frame, zero_point, body.frame, body.masscenter,
+                          **properties[0]))
+        self._children.append(
+            PlotPoint(inertial_frame, zero_point, body.masscenter, **properties[1]))
         self._expressions_self = ()
 
     def _get_expressions_to_evaluate_self(self):
@@ -652,7 +674,8 @@ class PlotBody(PlotBase):
         return self._artists_self  # Children are handled in PlotBase.update
 
     def attach_circle(self, center, radius, normal, **kwargs):
-        """Attaches a circle to a point to represent the body.
+        """
+        Attaches a circle to a point to represent the body.
 
         Parameters
         ----------
@@ -709,7 +732,8 @@ class PlotBody(PlotBase):
         return self.plot_masscenter.annot_coords
 
     def _get_style_properties(self, style):
-        """Gets the properties of the vectors belonging to a certain style.
+        """
+        Gets the properties of the vectors belonging to a certain style.
 
         Parameters
         ----------
@@ -723,7 +747,8 @@ class PlotBody(PlotBase):
             return properties
         elif style == 'default':
             properties[0] = {'style': 'default'}
-            properties[1] = {'color': 'k', 'marker': r'$\bigoplus$', 'markersize': 8, 'markeredgewidth': .5,
+            properties[1] = {'color': 'k', 'marker': r'$\bigoplus$', 'markersize': 8,
+                             'markeredgewidth': .5,
                              'zorder': 10}
             return properties
         else:

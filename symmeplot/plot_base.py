@@ -19,7 +19,8 @@ class PlotBase(ABC):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     origin : Point
-        The origin of the object with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the object with respect to the `zero_point`. Default is
+        `zero_point`.
     children : list of PlotBase objects
         Child objects in the plot hierarchy.
     artists : list of matplotlib artists
@@ -38,11 +39,13 @@ class PlotBase(ABC):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     origin : Point or Vector, optional
-        The origin of the object with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the object with respect to the `zero_point`. Default is
+        `zero_point`.
     name : str, optional
         Name of the plot object. Default is the name of the object being plotted.
 
     """
+
     def __init__(self, inertial_frame, zero_point, origin=None, name=None):
         self._children = []
         self._artists_self = tuple()
@@ -55,8 +58,9 @@ class PlotBase(ABC):
 
     def __repr__(self):
         """Representation showing some basic information of the instance."""
-        return (f"{self.__class__.__name__}(inertia_frame={self.inertial_frame}, zero_point={self.zero_point}, "
-                f"origin={self.origin}, name={self.name})")
+        return (
+            f"{self.__class__.__name__}(inertia_frame={self.inertial_frame}, "
+            f"zero_point={self.zero_point}, origin={self.origin}, name={self.name})")
 
     def __str__(self):
         return self.name
@@ -166,7 +170,9 @@ class PlotBase(ABC):
         return lst.evalf(*args, **kwargs)
 
     def evalf(self, *args, **kwargs):
-        """Evaluates the expressions describing the object, using the `evalf` function from sympy.
+        """
+        Evaluates the expressions describing the object, using the `evalf` function from
+        sympy.
 
         Parameters
         ----------
@@ -183,8 +189,9 @@ class PlotBase(ABC):
         return self.values
 
     def plot(self, ax=None):
-        """Adds the object artists to the matplotlib `Axes`. Note that the object should be evaluated before plotting
-        with for example the `evalf` method.
+        """
+        Adds the object artists to the matplotlib `Axes`. Note that the object should be
+        evaluated before plotting with for example the `evalf` method.
 
         Parameters
         ----------

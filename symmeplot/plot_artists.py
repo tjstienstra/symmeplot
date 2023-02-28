@@ -26,7 +26,8 @@ class ArtistBase(ABC):
 
 
 class Line3D(_Line3D, ArtistBase):
-    def __init__(self, x: Sequence[float], y: Sequence[float], z: Sequence[float], *args, **kwargs):
+    def __init__(self, x: Sequence[float], y: Sequence[float], z: Sequence[float],
+                 *args, **kwargs):
         super().__init__(np.array(x, dtype=np.float64),
                          np.array(y, dtype=np.float64),
                          np.array(z, dtype=np.float64), *args, **kwargs)
@@ -54,7 +55,8 @@ class Vector3D(FancyArrowPatch, ArtistBase):
 
     def do_3d_projection(self, renderer=None):
         # https://github.com/matplotlib/matplotlib/issues/21688
-        xs, ys, zs = proj_transform(*[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M)
+        xs, ys, zs = proj_transform(
+            *[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M)
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         return min(zs)
 
@@ -74,7 +76,8 @@ class Circle3D(PathPatch3D, ArtistBase):
     Inpired by: https://stackoverflow.com/a/18228967/20185124
     """
 
-    def __init__(self, center: Sequence[float], radius: float, normal: Sequence[float] = (0, 0, 1), **kwargs):
+    def __init__(self, center: Sequence[float], radius: float,
+                 normal: Sequence[float] = (0, 0, 1), **kwargs):
         path_2d = self._get_2d_path(np.float64(radius))
         super().__init__(path_2d, **{'zs': 0} | kwargs)
         self._segment3d = self._get_segment3d(
@@ -90,7 +93,8 @@ class Circle3D(PathPatch3D, ArtistBase):
         return trans.transform_path(path)  # Apply the transform
 
     @staticmethod
-    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64], normal: npt.NDArray[np.float64]):
+    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64],
+                       normal: npt.NDArray[np.float64]):
         normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
         M = Circle3D._rotation_matrix(normal)  # Get the rotation matrix
@@ -117,7 +121,8 @@ class Circle3D(PathPatch3D, ArtistBase):
         M = np.eye(3) + skew + (skew @ skew) * (1 / (1 + normal[2]))
         return M
 
-    def update_data(self, center: Sequence[float], radius: float, normal: Sequence[float]):
+    def update_data(self, center: Sequence[float], radius: float,
+                    normal: Sequence[float]):
         self._segment3d = self._get_segment3d(self._get_2d_path(np.float64(radius)),
                                               np.array(center, dtype=np.float64),
                                               np.array(normal, dtype=np.float64))

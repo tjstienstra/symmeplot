@@ -46,7 +46,8 @@ class SymMePlotter(PlotBase):
     origin : Point
         The absolute origin with respect to which all objects will be positioned.
     **inertial_frame_properties : dict, optional
-        Keyword arguments are parsed to :class:`~.PlotFrame` representing the inertial reference frame.
+        Keyword arguments are parsed to :class:`~.PlotFrame` representing the inertial
+        reference frame.
 
     Examples
     --------
@@ -79,7 +80,9 @@ class SymMePlotter(PlotBase):
         super().__init__(inertial_frame, origin, origin)
         self._ax = ax
         self.add_frame(inertial_frame, **inertial_frame_properties)
-        self.annot = self._ax.text2D(0, 0, '', bbox=dict(boxstyle='round4', fc='linen', ec='k', lw=1), transform=None)
+        self.annot = self._ax.text2D(0, 0, '',
+                                     bbox=dict(boxstyle='round4', fc='linen', ec='k',
+                                               lw=1), transform=None)
         self.annot.set_visible(False)
         self.annot_location = 'mouse'
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self._hover)
@@ -87,7 +90,8 @@ class SymMePlotter(PlotBase):
 
     @staticmethod
     def _system_not_lambdified_error(*args):
-        raise ValueError("System has not been lambdified. Use 'SymMePlotter.lambdify_system' to lambdify the system.")
+        raise ValueError("System has not been lambdified. Use "
+                         "'SymMePlotter.lambdify_system' to lambdify the system.")
 
     def _get_expressions_to_evaluate_self(self):
         # Children are handled in PlotBase.get_expressions_to_evaluate_self
@@ -124,8 +128,8 @@ class SymMePlotter(PlotBase):
     def get_plot_object(self, sympy_object):
         """
         Return the `plot_object` based on a sympy object.
-        For example `ReferenceFrame('N')` will give the `PlotFrame` of that reference frame if it is added.
-        If the object has not been added, it will return `None`.
+        For example `ReferenceFrame('N')` will give the `PlotFrame` of that reference
+        frame if it is added. If the object has not been added, it will return `None`.
 
         Parameters
         ----------
@@ -174,12 +178,13 @@ class SymMePlotter(PlotBase):
         Parameters
         ----------
         point : Point or Vector
-            The point or vector that should be plotted with respect to the `zero_point`. If a vector is provided, the
-            `origin` will be at the tip of the vector with respect to the `zero_point`. If not specified, the default is
-            the `zero_point`.
+            The point or vector that should be plotted with respect to the `zero_point`.
+            If a vector is provided, the `origin` will be at the tip of the vector with
+            respect to the `zero_point`. If not specified, the default is the
+            `zero_point`.
         **kwargs : dict, optional
-            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted
-            point red.
+            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+            `color='r'` will make the plotted point red.
 
         Returns
         -------
@@ -187,7 +192,8 @@ class SymMePlotter(PlotBase):
             The added plot object.
 
         """
-        self._children.append(PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs))
+        self._children.append(
+            PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs))
         return self._children[-1]
 
     def add_line(self, points, name=None, **kwargs):
@@ -197,13 +203,14 @@ class SymMePlotter(PlotBase):
         Parameters
         ----------
         points : list of Point or Vector
-            The points or vectors through which the line should be plotted with respect to the `zero_point`. If a vector
-            is provided, the `origin` will be at the tip of the vector with respect to the `zero_point`.
+            The points or vectors through which the line should be plotted with respect
+            to the `zero_point`. If a vector is provided, the `origin` will be at the
+            tip of the vector with respect to the `zero_point`.
         name : str, optional
             The name of the line. Default is `None`.
         **kwargs : dict, optional
-            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted
-            point red.
+            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+            `color='r'` will make the plotted point red.
 
         Returns
         -------
@@ -211,7 +218,8 @@ class SymMePlotter(PlotBase):
             The added plot object.
 
         """
-        self._children.append(PlotLine(self.inertial_frame, self.zero_point, points, name, **kwargs))
+        self._children.append(
+            PlotLine(self.inertial_frame, self.zero_point, points, name, **kwargs))
         return self._children[-1]
 
     def add_vector(self, vector, origin=None, name=None, style='default', **kwargs):
@@ -223,19 +231,20 @@ class SymMePlotter(PlotBase):
         vector : Vector
             The vector that should be plotted with respect to the `zero_point`.
         origin : Point or Vector, optional
-            The origin of the vector with respect to the `zero_point`. If a :class:`sympy.physics.vector.vector.Vector`
-            is provided the `origin` is at the tip of the vector with respect to the `zero_point`. Default is
+            The origin of the vector with respect to the `zero_point`. If a
+            :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at
+            the tip of the vector with respect to the `zero_point`. Default is
             `zero_point`.
         name : str
             Name of the plot object. Default is the vector as string.
         style : str, optional
-            Reference to what style should be used for plotting the vector. The default style is `'default'`.
-            Available styles:
-            - None: Default of the Line3D
-            - 'default': Normal black arrow
+            Reference to what style should be used for plotting the vector. The default
+            style is `'default'`. Available styles:
+            - None: Default of the Line3D.
+            - 'default': Normal black arrow.
         **kwargs : dict, optional
-            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so `color='r'` will make the plotted
-            arrow red.
+            Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
+            `color='r'` will make the plotted arrow red.
 
         Returns
         -------
@@ -243,8 +252,10 @@ class SymMePlotter(PlotBase):
             The added plot object.
 
         """
-        self._children.append(PlotVector(self.inertial_frame, self.zero_point, vector, origin=origin, name=name,
-                                         style=style, **kwargs))
+        self._children.append(
+            PlotVector(self.inertial_frame, self.zero_point, vector, origin=origin,
+                       name=name,
+                       style=style, **kwargs))
         return self._children[-1]
 
     def add_frame(self, frame, origin=None, style='default', scale=0.1, **kwargs):
@@ -256,19 +267,21 @@ class SymMePlotter(PlotBase):
         frame : ReferenceFrame
             The reference frame that should be plotted.
         origin : Point or Vector, optional
-            The origin of the frame with respect to the `zero_point`. If a :class:`sympy.physics.vector.vector.Vector`
-            is provided the `origin` is at the tip of the vector with respect to the `zero_point`. Default is
+            The origin of the frame with respect to the `zero_point`. If a
+            :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at
+            the tip of the vector with respect to the `zero_point`. Default is
             `zero_point`.
         style : str, optional
-            Reference to what style should be used for plotting the frame. The default style is `'default'`.
-            Available styles:
+            Reference to what style should be used for plotting the frame. The default
+            style is `'default'`. Available styles:
             - None: No properties of the vectors will be set
             - 'default': Nice default frame with as color 'rgb' for xyz
         scale : float, optional
             Length of the vectors of the reference frame.
         **kwargs : dict, optional
-            Kwargs that are parsed to :class:`~.PlotVector`s, which possibly parses them to
-            :class:`matplotlib.patches.FancyArrow`, so `color='r'` will make all vectors of the reference frame red.
+            Kwargs that are parsed to :class:`~.PlotVector`s, which possibly parses them
+            to :class:`matplotlib.patches.FancyArrow`, so `color='r'` will make all
+            vectors of the reference frame red.
 
         Returns
         -------
@@ -276,11 +289,14 @@ class SymMePlotter(PlotBase):
             The added plot object.
 
         """
-        self._children.append(PlotFrame(self.inertial_frame, self.zero_point, frame, origin=origin, style=style,
-                                        scale=scale, **kwargs))
+        self._children.append(
+            PlotFrame(self.inertial_frame, self.zero_point, frame, origin=origin,
+                      style=style,
+                      scale=scale, **kwargs))
         return self._children[-1]
 
-    def add_body(self, body, style='default', plot_frame_properties=None, plot_point_properties=None, **kwargs):
+    def add_body(self, body, style='default', plot_frame_properties=None,
+                 plot_point_properties=None, **kwargs):
         """
         Add a sympy body to the plotter.
 
@@ -289,14 +305,17 @@ class SymMePlotter(PlotBase):
         body : RigidBody or Particle
             The body that should be plotted.
         style : str, optional
-            Reference to what style should be used for plotting the body. The default style is `'default'`.
-            Available styles:
-            - None: No properties of the vectors will be set
-            - 'default': Uses a special point for the center of mass and a frame with as color 'rgb' for xyz
+            Reference to what style should be used for plotting the body. The default
+            style is `'default'`. Available styles:
+            - None: No properties of the vectors will be set.
+            - 'default': Uses a special point for the center of mass and a frame with as
+            color 'rgb' for xyz.
         plot_frame_properties : dict, optional
-            Dictionary of keyword arguments that should be parsed to the :class:`~.PlotFrame`.
+            Dictionary of keyword arguments that should be parsed to the
+            :class:`~.PlotFrame`.
         plot_point_properties : dict, optional
-            Dictionary of keyword arguments that should be parsed to the :class:`~.PlotPoint` representing the center of
+            Dictionary of keyword arguments that should be parsed to the
+            :class:`~.PlotPoint` representing the center of
             mass.
         **kwargs : dict, optional
             Kwargs that are parsed to both internally used plot objects.
@@ -307,9 +326,10 @@ class SymMePlotter(PlotBase):
             The added plot object.
 
         """
-        self._children.append(PlotBody(self.inertial_frame, self.zero_point, body, style=style,
-                                       plot_frame_properties=plot_frame_properties,
-                                       plot_point_properties=plot_point_properties, **kwargs))
+        self._children.append(
+            PlotBody(self.inertial_frame, self.zero_point, body, style=style,
+                     plot_frame_properties=plot_frame_properties,
+                     plot_point_properties=plot_point_properties, **kwargs))
         return self._children[-1]
 
     def plot(self, prettify=True, ax_scale=1.5):
@@ -321,8 +341,9 @@ class SymMePlotter(PlotBase):
         prettify : bool, optional
             If True prettify the axes. Default is True.
         ax_scale : float, optional
-            Makes the axes bigger in the figure. This function is part of prettifying the figure and only works nicely
-            if it is the only subplot. Disabled if set to 0. Default is 1.5
+            Makes the axes bigger in the figure. This function is part of prettifying
+            the figure and only works nicely if it is the only subplot. Disabled if set
+            to 0. Default is 1.5
 
         Returns
         -------
@@ -339,7 +360,8 @@ class SymMePlotter(PlotBase):
                 axis.set_ticklabels([])
                 axis.set_ticks_position('none')
             if ax_scale:
-                self._ax.set_position([-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
+                self._ax.set_position(
+                    [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
             self.auto_zoom()
             self._ax.set_aspect('equal', adjustable='box')
         return artists
@@ -421,8 +443,8 @@ class SymMePlotter(PlotBase):
     def lambdify_system(self, args, modules=None, printer=None, use_imps=True,
                         dummify=False, cse=True):
         """
-        Lambdifies the system for faster evaluation using `evaluate_system`. The workings are the same as for the
-        lambdify function in sympy.
+        Lambdifies the system for faster evaluation using `evaluate_system`.
+        The workings are the same as for the lambdify function in sympy.
         """
         self._lambdified_system = lambdify(
             args, self.get_expressions_to_evaluate(), modules=modules,
