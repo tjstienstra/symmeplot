@@ -18,6 +18,9 @@ classifiers = [
 "Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
+[tool.ruff]
+show-source = true
+
 [tool.pytest.ini_options]
 testpaths = [
     "symmeplot/tests",

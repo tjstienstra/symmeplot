@@ -4,3 +4,5 @@ sphinx-rtd-theme
 jupyter-sphinx
 sphinx-autoapi
 pytest
+ruff
+pre-commit
