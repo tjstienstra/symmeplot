@@ -1,0 +1,6 @@
+-r requirements.txt
+sphinx
+sphinx-rtd-theme
+jupyter-sphinx
+sphinx-autoapi
+pytest
