@@ -20,14 +20,15 @@ classifiers = [
 
 [tool.ruff]
 target-version = "py38"
-select = ['B', 'C', 'D', 'E', 'F', 'I', 'N', 'W']
-ignore = ['D100', 'D105', 'D107', 'D203', 'D213']
+select = ['A', 'B', 'C', 'D', 'E', 'F', 'I', 'N', 'W']
+ignore = ['A003', 'D100', 'D105', 'D107', 'D203', 'D213']
 show-source = true
 
 [tool.ruff.per-file-ignores]
+"doc/conf.py" = ["A001"]  # Ignore copyright shadowing
+"*/__init__.py" = ["D104"]
 "symmeplot/tests/*" = ["D", "N806"]
 "symmeplot/plot_artists.py" = ["D102"]
-"*/__init__.py" = ["D104"]
 
 [tool.pytest.ini_options]
 testpaths = [
