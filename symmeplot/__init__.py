@@ -1,6 +1,6 @@
 __all__ = [
     "SymMePlotter",
-    "PlotPoint", "PlotLine", "PlotVector", "PlotFrame", "PlotBody"
+    "PlotPoint", "PlotLine", "PlotVector", "PlotFrame", "PlotBody",
 ]
 
 from symmeplot.plot_objects import PlotBody, PlotFrame, PlotLine, PlotPoint, PlotVector

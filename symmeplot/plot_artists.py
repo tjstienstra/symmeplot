@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
-import numpy.typing as npt
-from matplotlib import Path
 from matplotlib.patches import Circle, FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
 from mpl_toolkits.mplot3d.art3d import PathPatch3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
+
+if TYPE_CHECKING:
+    import numpy.typing as npt
+    from matplotlib import Path
 
 __all__ = ["Line3D", "Vector3D", "Circle3D"]
 
@@ -110,8 +112,8 @@ class Circle3D(PathPatch3D, ArtistBase):
         return trans.transform_path(path)  # Apply the transform
 
     @staticmethod
-    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64],
-                       normal: npt.NDArray[np.float64]):
+    def _get_segment3d(path_2d: "Path", center: "npt.NDArray[np.float64]",
+                       normal: "npt.NDArray[np.float64]"):
         normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
         rot_mat = Circle3D._rotation_matrix(normal)  # Get the rotation matrix

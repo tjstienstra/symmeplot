@@ -88,9 +88,8 @@ class PlotBase(ABC):
 
     @zero_point.setter
     def zero_point(self, new_zero_point):
-        if hasattr(self, "_zero_point"):
-            if new_zero_point != self._zero_point:
-                raise NotImplementedError("'zero_point' cannot be changed")
+        if hasattr(self, "_zero_point") and new_zero_point != self._zero_point:
+            raise NotImplementedError("'zero_point' cannot be changed")
         if not isinstance(new_zero_point, Point):
             raise TypeError("'zero_point' should be a valid Point object.")
         else:
@@ -147,8 +146,8 @@ class PlotBase(ABC):
 
     def get_expressions_to_evaluate(self):
         """Return a tuple of the necessary expressions for plotting."""
-        return (self._get_expressions_to_evaluate_self(),) + tuple(
-            child.get_expressions_to_evaluate() for child in self._children)
+        return (self._get_expressions_to_evaluate_self(), *tuple(
+            child.get_expressions_to_evaluate() for child in self._children))
 
     @staticmethod
     def _evalf_list(lst, *args, **kwargs):
@@ -223,7 +222,4 @@ class PlotBase(ABC):
 
     def contains(self, event):
         """Boolean whether one of the artists contains the event."""
-        for artist in self.artists:
-            if artist.contains(event)[0]:
-                return True
-        return False
+        return any(artist.contains(event)[0] for artist in self.artists)
