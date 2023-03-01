@@ -1,0 +1,8 @@
+-r requirements.txt
+sphinx
+sphinx-rtd-theme
+jupyter-sphinx
+autodocsumm
+pytest
+ruff
+pre-commit

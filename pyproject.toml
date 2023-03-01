@@ -18,6 +18,19 @@ classifiers = [
 "Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
+[tool.ruff]
+target-version = "py37"
+select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
+          "T20", "UP"]
+ignore = ["A003", "D100", "D105", "D107", "D203", "D213"]
+show-source = true
+
+[tool.ruff.per-file-ignores]
+"doc/conf.py" = ["A001"]  # Ignore copyright shadowing
+"*/__init__.py" = ["D104"]
+"symmeplot/tests/*" = ["D", "N806", "S101"]
+"symmeplot/plot_artists.py" = ["D102"]
+
 [tool.pytest.ini_options]
 testpaths = [
     "symmeplot/tests",

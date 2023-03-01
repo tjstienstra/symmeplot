@@ -5,54 +5,60 @@ Plotter
 -------
 
 .. autoclass:: symmeplot.plotter.SymMePlotter
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 Plot Objects
 ------------
 
 .. autoclass:: symmeplot.plot_objects.PlotPoint
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 .. autoclass:: symmeplot.plot_objects.PlotLine
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 .. autoclass:: symmeplot.plot_objects.PlotVector
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 .. autoclass:: symmeplot.plot_objects.PlotFrame
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 .. autoclass:: symmeplot.plot_objects.PlotBody
-   :members:
    :show-inheritance:
+   :members:
+   :inherited-members:
 
 Plot Artists
 ------------
 
 .. autoclass:: symmeplot.plot_artists.Line3D
-   :members:
    :show-inheritance:
+   :members:
 
 .. autoclass:: symmeplot.plot_artists.Vector3D
-   :members:
    :show-inheritance:
+   :members:
 
 .. autoclass:: symmeplot.plot_artists.Circle3D
-   :members:
    :show-inheritance:
+   :members:
 
 Base Classes
 ------------
 
 .. autoclass:: symmeplot.plot_base.PlotBase
-   :members:
    :show-inheritance:
+   :members:
 
 .. autoclass:: symmeplot.plot_artists.ArtistBase
-   :members:
    :show-inheritance:
+   :members:
