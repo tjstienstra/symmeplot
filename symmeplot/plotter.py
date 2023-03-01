@@ -1,7 +1,4 @@
-from typing import Tuple, Type
-
 import numpy as np
-from mpl_toolkits.mplot3d.axes3d import Axes3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 from sympy import lambdify
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
@@ -76,17 +73,17 @@ class SymMePlotter(PlotBase):
         return []  # Children are handled in PlotBase.update
 
     @property
-    def axes(self) -> Axes3D:
+    def axes(self):
         """Axes used by the plotter."""
         return self._ax
 
     @property
-    def plot_objects(self) -> Tuple[Type[PlotBase], ...]:
+    def plot_objects(self):
         """Plot objects."""
         return self.children
 
     @property
-    def annot_location(self) -> str:
+    def annot_location(self):
         """String describing where the annotation should be displayed.
 
         Explanation

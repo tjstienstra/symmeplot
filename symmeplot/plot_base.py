@@ -1,13 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Tuple, Type
 
 from matplotlib.pyplot import gca
 from sympy import MatrixBase
 from sympy.physics.vector import Point, ReferenceFrame, Vector
-
-from symmeplot.plot_artists import ArtistBase
 
 __all__ = ["PlotBase"]
 
@@ -49,7 +46,7 @@ class PlotBase(ABC):
         return self.name
 
     @property
-    def name(self) -> str:
+    def name(self):
         """Name of the plot object. Default is the name of the object being plotted."""
         return self._name
 
@@ -58,18 +55,18 @@ class PlotBase(ABC):
         self._name = str(name)
 
     @property
-    def children(self) -> Tuple[Type[PlotBase, ...]]:
+    def children(self):
         """Child objects in the plot hierarchy."""
         return tuple(self._children)
 
     @property
-    def artists(self) -> Tuple[Type[ArtistBase, ...]]:
+    def artists(self):
         """Artists corresponding to the object and its children."""
         return self._artists_self + tuple(
             artist for child in self._children for artist in child.artists)
 
     @property
-    def inertial_frame(self) -> ReferenceFrame:
+    def inertial_frame(self):
         """The reference frame with respect to which the object is oriented."""
         return self._inertial_frame
 
@@ -85,7 +82,7 @@ class PlotBase(ABC):
             self._inertial_frame = new_inertial_frame
 
     @property
-    def zero_point(self) -> Point:
+    def zero_point(self):
         """The absolute origin with respect to which the object is positioned."""
         return self._zero_point
 
@@ -102,7 +99,7 @@ class PlotBase(ABC):
             self._zero_point = new_zero_point
 
     @property
-    def origin(self) -> Point:
+    def origin(self):
         """The origin of the object with respect to the `zero_point`."""
         return self._origin
 
@@ -120,7 +117,7 @@ class PlotBase(ABC):
             raise TypeError("'origin' should be a valid Point object.")
 
     @property
-    def visible(self) -> bool:
+    def visible(self):
         """If the object is be visible in the plot."""
         return self._visible
 
@@ -133,7 +130,7 @@ class PlotBase(ABC):
         self._visible = bool(is_visible)
 
     @property
-    def values(self) -> list:
+    def values(self):
         """List of evaluated values for the object's variables."""
         return [self._values] + [child.values for child in self._children]
 

@@ -1,5 +1,3 @@
-from typing import Tuple, Union
-
 import numpy as np
 from sympy import latex, sympify
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
@@ -64,12 +62,12 @@ class PlotPoint(PlotBase):
             Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
 
     @property
-    def artist_point(self) -> Line3D:
+    def artist_point(self):
         """Corresponding artist for visualizing the point in matplotlib."""
         return self._artists_self[0]
 
     @property
-    def point_coord(self) -> np.ndarray:
+    def point_coord(self):
         """Coordinate values of the plotted point."""
         return self._values[0]
 
@@ -145,7 +143,7 @@ class PlotLine(PlotBase):
         self.points = points
 
     @property
-    def points(self) -> Tuple[Point]:
+    def points(self):
         """The points that spawn the line, plotted with respect to the `zero_point`."""
         return self._points
 
@@ -164,7 +162,7 @@ class PlotLine(PlotBase):
         self._values = ()
 
     @property
-    def artist_points(self) -> Line3D:
+    def artist_points(self):
         """Corresponding artist for visualizing the line in matplotlib."""
         return self._artists_self[0]
 
@@ -247,7 +245,7 @@ class PlotVector(PlotBase):
                      **self._get_style_properties(style) | kwargs),)
 
     @property
-    def vector(self) -> Vector:
+    def vector(self):
         """The sympy Vector, which is being plotted."""
         return self._vector
 
@@ -260,7 +258,7 @@ class PlotVector(PlotBase):
             self._values = []
 
     @property
-    def artist_arrow(self) -> Vector3D:
+    def artist_arrow(self):
         """Corresponding artist for visualizing the vector in matplotlib."""
         return self._artists_self[0]
 
@@ -367,7 +365,7 @@ class PlotFrame(PlotBase):
                 PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop))
 
     @property
-    def frame(self) -> ReferenceFrame:
+    def frame(self):
         """The sympy ReferenceFrame, which is being plotted."""
         return self._frame
 
@@ -380,7 +378,7 @@ class PlotFrame(PlotBase):
             self._values = []
 
     @property
-    def vectors(self) -> Tuple[PlotVector]:
+    def vectors(self):
         """The :class:`PlotVectors<~.PlotVector>` used to plot the reference frame."""
         return tuple(self._children)
 
@@ -391,17 +389,17 @@ class PlotFrame(PlotBase):
             [v.vector_coords for v in self.vectors])
 
     @property
-    def x(self) -> PlotVector:
+    def x(self):
         """:class:`~.PlotVector` used for the unit vector in the x direction."""
         return self.vectors[0]
 
     @property
-    def y(self) -> PlotVector:
+    def y(self):
         """:class:`~.PlotVector` used for the unit vector in the y direction."""
         return self.vectors[1]
 
     @property
-    def z(self) -> PlotVector:
+    def z(self):
         """:class:`~.PlotVector` used for the unit vector in the z direction."""
         return self.vectors[2]
 
@@ -506,7 +504,7 @@ class PlotBody(PlotBase):
         self._expressions_self = ()
 
     @property
-    def body(self) -> Union[RigidBody, Particle]:
+    def body(self):
         """The sympy body, which is being plotted."""
         return self._body
 
@@ -519,13 +517,13 @@ class PlotBody(PlotBase):
             self._values = []
 
     @property
-    def plot_frame(self) -> PlotFrame:
+    def plot_frame(self):
         """:class:`~.PlotFrame` used for plotting the reference frame of the body."""
         if len(self._children) == 2:
             return self._children[0]
 
     @property
-    def plot_masscenter(self) -> PlotPoint:
+    def plot_masscenter(self):
         """:class:`~.PlotPoint` used for plotting the center of mass of the body."""
         return self._children[1] if len(self._children) == 2 else self._children[2]
 
