@@ -50,16 +50,16 @@ class SymMePlotter(PlotBase):
     origin = PlotBase.zero_point
 
     def __init__(self, ax, inertial_frame, origin, **inertial_frame_properties):
-        if not hasattr(ax, 'get_zlim'):
-            raise TypeError('The axes should be a 3d axes')
+        if not hasattr(ax, "get_zlim"):
+            raise TypeError("The axes should be a 3d axes")
         super().__init__(inertial_frame, origin, origin)
         self._ax = ax
         self.add_frame(inertial_frame, **inertial_frame_properties)
         self.annot = self._ax.text2D(
-            0, 0, '', bbox={'boxstyle': 'round4', 'fc': 'linen', 'ec': 'k', 'lw': 1},
+            0, 0, "", bbox={"boxstyle": "round4", "fc": "linen", "ec": "k", "lw": 1},
             transform=None)
         self.annot.set_visible(False)
-        self.annot_location = 'mouse'
+        self.annot_location = "mouse"
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self._hover)
         self._lambdified_system = SymMePlotter._system_not_lambdified_error
 
@@ -101,7 +101,7 @@ class SymMePlotter(PlotBase):
 
     @annot_location.setter
     def annot_location(self, new_annot_location):
-        if new_annot_location == 'object' or new_annot_location == 'mouse':
+        if new_annot_location == "object" or new_annot_location == "mouse":
             self._annot_location = new_annot_location
         else:
             raise NotImplementedError(
@@ -162,7 +162,7 @@ class SymMePlotter(PlotBase):
             PlotLine(self.inertial_frame, self.zero_point, points, name, **kwargs))
         return self._children[-1]
 
-    def add_vector(self, vector, origin=None, name=None, style='default', **kwargs):
+    def add_vector(self, vector, origin=None, name=None, style="default", **kwargs):
         """Add a sympy Vector to the plotter.
 
         Parameters
@@ -197,7 +197,7 @@ class SymMePlotter(PlotBase):
                        style=style, **kwargs))
         return self._children[-1]
 
-    def add_frame(self, frame, origin=None, style='default', scale=0.1, **kwargs):
+    def add_frame(self, frame, origin=None, style="default", scale=0.1, **kwargs):
         """Add a sympy ReferenceFrame to the plotter.
 
         Parameters
@@ -233,7 +233,7 @@ class SymMePlotter(PlotBase):
                       scale=scale, **kwargs))
         return self._children[-1]
 
-    def add_body(self, body, style='default', plot_frame_properties=None,
+    def add_body(self, body, style="default", plot_frame_properties=None,
                  plot_point_properties=None, **kwargs):
         """Add a sympy body to the plotter.
 
@@ -315,8 +315,8 @@ class SymMePlotter(PlotBase):
                     return plot_object
         else:
             raise NotImplementedError(
-                f'Sympy object of type {type(sympy_object)} has not been '
-                f'implemented.')
+                f"Sympy object of type {type(sympy_object)} has not been "
+                f"implemented.")
 
     def lambdify_system(self, args, modules=None, printer=None, use_imps=True,
                         dummify=False, cse=True):
@@ -363,12 +363,12 @@ class SymMePlotter(PlotBase):
             self._ax.autoscale_view()
             for axis in (self._ax.xaxis, self._ax.yaxis, self._ax.zaxis):
                 axis.set_ticklabels([])
-                axis.set_ticks_position('none')
+                axis.set_ticks_position("none")
             if ax_scale:
                 self._ax.set_position(
                     [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
             self.auto_zoom()
-            self._ax.set_aspect('equal', adjustable='box')
+            self._ax.set_aspect("equal", adjustable="box")
         return artists
 
     def auto_zoom(self, scale=1.1):
@@ -394,13 +394,13 @@ class SymMePlotter(PlotBase):
 
     def _update_annot(self, plot_object, event):
         """Update the annotation to the given `plot_object`."""
-        self.annot.set_text(f'${plot_object}$')
-        if self.annot_location == 'object':
+        self.annot.set_text(f"${plot_object}$")
+        if self.annot_location == "object":
             x, y, _ = proj_transform(*plot_object.annot_coords,
                                      self._ax.get_proj())
             self.annot.set_position(self._ax.transData.transform((x, y)))
             # self.annot.set_position_3d(plot_object.annot_coords)
-        elif self.annot_location == 'mouse':
+        elif self.annot_location == "mouse":
             self.annot.set_position(self._ax.transData.transform(
                 (event.xdata, event.ydata)))
 

@@ -7,7 +7,7 @@ from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, 
 from symmeplot.plot_artists import Circle3D, Line3D, Vector3D
 from symmeplot.plot_base import PlotBase
 
-__all__ = ['PlotPoint', 'PlotLine', 'PlotVector', 'PlotFrame', 'PlotBody']
+__all__ = ["PlotPoint", "PlotLine", "PlotVector", "PlotFrame", "PlotBody"]
 
 
 class PlotPoint(PlotBase):
@@ -56,9 +56,9 @@ class PlotPoint(PlotBase):
     """
 
     point = PlotBase.origin  # Alias of origin
-    point.__doc__ = 'The Point, which is being plotted.'
+    point.__doc__ = "The Point, which is being plotted."
 
-    def __init__(self, inertial_frame, zero_point, point, style='default', **kwargs):
+    def __init__(self, inertial_frame, zero_point, point, style="default", **kwargs):
         super().__init__(inertial_frame, zero_point, point, point.name)
         self._artists_self = (
             Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
@@ -90,8 +90,8 @@ class PlotPoint(PlotBase):
         """Get the properties of the vector belonging to a certain style."""
         if style is None:
             return {}
-        elif style == 'default':
-            return {'marker': 'o'}
+        elif style == "default":
+            return {"marker": "o"}
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
 
@@ -235,7 +235,7 @@ class PlotVector(PlotBase):
     """
 
     def __init__(self, inertial_frame, zero_point, vector, origin=None, name=None,
-                 style='default', **kwargs):
+                 style="default", **kwargs):
         if name is None:
             name = str(latex(vector))
         super().__init__(inertial_frame, zero_point, origin, name)
@@ -293,14 +293,14 @@ class PlotVector(PlotBase):
         """Get the properties of the vector belonging to a certain style."""
         if style is None:
             return {}
-        elif style == 'default':
+        elif style == "default":
             return {
-                'color': 'k',
-                'mutation_scale': 10,
-                'arrowstyle': '-|>',
-                'shrinkA': 0,
-                'shrinkB': 0,
-                'picker': 20
+                "color": "k",
+                "mutation_scale": 10,
+                "arrowstyle": "-|>",
+                "shrinkA": 0,
+                "shrinkB": 0,
+                "picker": 20
             }
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
@@ -355,7 +355,7 @@ class PlotFrame(PlotBase):
 
     """
 
-    def __init__(self, inertial_frame, zero_point, frame, origin=None, style='default',
+    def __init__(self, inertial_frame, zero_point, frame, origin=None, style="default",
                  scale=0.1, **kwargs):
         super().__init__(inertial_frame, zero_point, origin, frame.name)
         self.frame = frame
@@ -417,12 +417,12 @@ class PlotFrame(PlotBase):
         properties = [{}, {}, {}]
         if style is None:
             return properties
-        elif style == 'default':
-            colors = 'rgb'
+        elif style == "default":
+            colors = "rgb"
             for color, prop in zip(colors, properties):
                 prop.update({
-                    'style': 'default',
-                    'color': color
+                    "style": "default",
+                    "color": color
                 })
             return properties
         else:
@@ -485,7 +485,7 @@ class PlotBody(PlotBase):
 
     """
 
-    def __init__(self, inertial_frame, zero_point, body, style='default',
+    def __init__(self, inertial_frame, zero_point, body, style="default",
                  plot_frame_properties=None,
                  plot_point_properties=None, **kwargs):
         super().__init__(inertial_frame, zero_point, body.masscenter, str(body))
@@ -497,7 +497,7 @@ class PlotBody(PlotBase):
             properties[1].update(plot_point_properties)
         for prop in properties:
             prop.update(kwargs)
-        if hasattr(body, 'frame'):
+        if hasattr(body, "frame"):
             self._children.append(
                 PlotFrame(inertial_frame, zero_point, body.frame, body.masscenter,
                           **properties[0]))
@@ -581,11 +581,11 @@ class PlotBody(PlotBase):
         properties = [{}, {}]
         if style is None:
             return properties
-        elif style == 'default':
-            properties[0] = {'style': 'default'}
-            properties[1] = {'color': 'k', 'marker': r'$\bigoplus$', 'markersize': 8,
-                             'markeredgewidth': .5,
-                             'zorder': 10}
+        elif style == "default":
+            properties[0] = {"style": "default"}
+            properties[1] = {"color": "k", "marker": r"$\bigoplus$", "markersize": 8,
+                             "markeredgewidth": .5,
+                             "zorder": 10}
             return properties
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")

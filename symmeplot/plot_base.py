@@ -9,7 +9,7 @@ from sympy.physics.vector import Point, ReferenceFrame, Vector
 
 from symmeplot.plot_artists import ArtistBase
 
-__all__ = ['PlotBase']
+__all__ = ["PlotBase"]
 
 
 class PlotBase(ABC):
@@ -77,7 +77,7 @@ class PlotBase(ABC):
     def inertial_frame(self, new_inertial_frame):
         if not isinstance(new_inertial_frame, ReferenceFrame):
             raise TypeError("'inertial_frame' should be a valid ReferenceFrame object.")
-        elif hasattr(self, '_inertial_frame'):
+        elif hasattr(self, "_inertial_frame"):
             raise NotImplementedError("'inertial_frame' cannot be changed.")
         else:
             for child in self._children:
@@ -91,7 +91,7 @@ class PlotBase(ABC):
 
     @zero_point.setter
     def zero_point(self, new_zero_point):
-        if hasattr(self, '_zero_point'):
+        if hasattr(self, "_zero_point"):
             if new_zero_point != self._zero_point:
                 raise NotImplementedError("'zero_point' cannot be changed")
         if not isinstance(new_zero_point, Point):
@@ -111,7 +111,7 @@ class PlotBase(ABC):
         if new_origin is None:
             new_origin = self.zero_point
         elif isinstance(new_origin, Vector):
-            new_origin = self.zero_point.locatenew('', new_origin)
+            new_origin = self.zero_point.locatenew("", new_origin)
         if isinstance(new_origin, Point):
             for child in self._children:
                 child.origin = new_origin
@@ -155,7 +155,7 @@ class PlotBase(ABC):
 
     @staticmethod
     def _evalf_list(lst, *args, **kwargs):
-        if not hasattr(lst, 'evalf'):
+        if not hasattr(lst, "evalf"):
             return [PlotBase._evalf_list(expr, *args, **kwargs) for expr in lst]
         if isinstance(lst, MatrixBase):
             return lst.evalf(*args, **kwargs)

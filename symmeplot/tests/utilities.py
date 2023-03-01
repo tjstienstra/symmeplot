@@ -5,13 +5,13 @@ from matplotlib.testing.decorators import image_comparison
 from sympy.utilities.iterables import iterable
 
 mpl3d_image_comparison = functools.partial(image_comparison, remove_text=True,
-                                           style='default')
+                                           style="default")
 
 
 def equalize_axis_limits(ax_ref, ax_to_equalize):
     ax_to_equalize.set_xlim(ax_ref.get_xlim())
     ax_to_equalize.set_ylim(ax_ref.get_ylim())
-    if hasattr(ax_ref, 'get_zlim'):
+    if hasattr(ax_ref, "get_zlim"):
         ax_to_equalize.set_zlim(ax_ref.get_zlim())
 
 
