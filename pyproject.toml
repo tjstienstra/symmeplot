@@ -19,7 +19,8 @@ classifiers = [
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [tool.ruff]
-select = ['C', 'D', 'E', 'F', 'I', 'N', 'W']
+target-version = "py38"
+select = ['B', 'C', 'D', 'E', 'F', 'I', 'N', 'W']
 ignore = ['D100', 'D105', 'D107', 'D203', 'D213']
 show-source = true
 
