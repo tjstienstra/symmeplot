@@ -19,11 +19,14 @@ classifiers = [
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [tool.ruff]
-select = ['E', 'F', 'I', 'W', 'N']
+select = ['D', 'E', 'F', 'I', 'W', 'N']
+ignore = ['D100', 'D105', 'D107', 'D203', 'D213']
 show-source = true
 
 [tool.ruff.per-file-ignores]
-"symmeplot/tests/*" = ["N806"]
+"symmeplot/tests/*" = ["D", "N806"]
+"symmeplot/plot_artists.py" = ["D102"]
+"*/__init__.py" = ["D104"]
 
 [tool.pytest.ini_options]
 testpaths = [
