@@ -1,9 +1,10 @@
-from sympy import lambdify
-from sympy.physics.mechanics import ReferenceFrame, Point, Vector, Particle, RigidBody
-from mpl_toolkits.mplot3d.proj3d import proj_transform
-from symmeplot.plot_objects import PlotPoint, PlotLine, PlotVector, PlotFrame, PlotBody
-from symmeplot.plot_base import PlotBase
 import numpy as np
+from mpl_toolkits.mplot3d.proj3d import proj_transform
+from sympy import lambdify
+from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
+
+from symmeplot.plot_base import PlotBase
+from symmeplot.plot_objects import PlotBody, PlotFrame, PlotLine, PlotPoint, PlotVector
 
 
 class SymMePlotter(PlotBase):

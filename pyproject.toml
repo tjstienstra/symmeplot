@@ -19,6 +19,7 @@ classifiers = [
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [tool.ruff]
+select = ['E', 'F', 'I']
 show-source = true
 
 [tool.pytest.ini_options]

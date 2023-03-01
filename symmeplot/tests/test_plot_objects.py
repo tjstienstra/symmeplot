@@ -1,11 +1,11 @@
 import pytest
-from sympy.physics.mechanics import ReferenceFrame, Point
-from sympy import symbols
-from symmeplot import PlotPoint, PlotVector, PlotFrame
-from symmeplot.tests.utilities import mpl3d_image_comparison
-from matplotlib.testing.decorators import check_figures_equal
 from matplotlib.pyplot import subplots
-from symmeplot.tests.utilities import equalize_axis_limits
+from matplotlib.testing.decorators import check_figures_equal
+from sympy import symbols
+from sympy.physics.mechanics import Point, ReferenceFrame
+
+from symmeplot import PlotFrame, PlotPoint, PlotVector
+from symmeplot.tests.utilities import equalize_axis_limits, mpl3d_image_comparison
 
 
 class TestPlotPoint:

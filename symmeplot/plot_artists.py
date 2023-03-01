@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
+from typing import Sequence
+
 import numpy as np
 import numpy.typing as npt
-from mpl_toolkits.mplot3d.proj3d import proj_transform
-from mpl_toolkits.mplot3d.art3d import PathPatch3D
-from matplotlib.patches import FancyArrowPatch, Circle
-from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
-from typing import Sequence
 from matplotlib import Path
+from matplotlib.patches import Circle, FancyArrowPatch
+from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
+from mpl_toolkits.mplot3d.art3d import PathPatch3D
+from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 __all__ = ['Line3D', 'Vector3D', 'Circle3D']
 

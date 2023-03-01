@@ -1,8 +1,9 @@
-from symmeplot.plot_base import PlotBase
-from symmeplot.plot_artists import Line3D, Vector3D, Circle3D
-from sympy import latex, sympify
-from sympy.physics.mechanics import ReferenceFrame, Vector, Point, Particle, RigidBody
 import numpy as np
+from sympy import latex, sympify
+from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
+
+from symmeplot.plot_artists import Circle3D, Line3D, Vector3D
+from symmeplot.plot_base import PlotBase
 
 __all__ = ['PlotPoint', 'PlotLine', 'PlotVector', 'PlotFrame', 'PlotBody']
 

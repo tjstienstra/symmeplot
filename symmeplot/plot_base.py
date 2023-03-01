@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from sympy import MatrixBase
-from sympy.physics.vector import Vector, ReferenceFrame, Point
+
 from matplotlib.pyplot import gca
+from sympy import MatrixBase
+from sympy.physics.vector import Point, ReferenceFrame, Vector
 
 __all__ = ['PlotBase']
 
