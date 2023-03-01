@@ -31,7 +31,7 @@ class PlotBase(ABC):
 
     def __init__(self, inertial_frame, zero_point, origin=None, name=None):
         self._children = []
-        self._artists_self = tuple()
+        self._artists_self = ()
         self.inertial_frame = inertial_frame
         self.zero_point = zero_point
         self.origin = origin

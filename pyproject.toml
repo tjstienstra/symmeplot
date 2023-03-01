@@ -19,7 +19,7 @@ classifiers = [
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [tool.ruff]
-select = ['D', 'E', 'F', 'I', 'W', 'N']
+select = ['C', 'D', 'E', 'F', 'I', 'N', 'W']
 ignore = ['D100', 'D105', 'D107', 'D203', 'D213']
 show-source = true
 
