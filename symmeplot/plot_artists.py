@@ -98,8 +98,8 @@ class Circle3D(PathPatch3D, ArtistBase):
                        normal: npt.NDArray[np.float64]):
         normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
-        M = Circle3D._rotation_matrix(normal)  # Get the rotation matrix
-        segment3d = np.array([np.dot(M, (x, y, 0)) for x, y in verts])
+        rot_mat = Circle3D._rotation_matrix(normal)  # Get the rotation matrix
+        segment3d = np.array([np.dot(rot_mat, (x, y, 0)) for x, y in verts])
         for i, offset in enumerate(center):
             segment3d[:, i] += offset
         return segment3d
@@ -119,8 +119,7 @@ class Circle3D(PathPatch3D, ArtistBase):
         skew = np.array([[0, -v[2], v[1]],
                          [v[2], 0, -v[0]],
                          [-v[1], v[0], 0]], dtype=np.float64)
-        M = np.eye(3) + skew + (skew @ skew) * (1 / (1 + normal[2]))
-        return M
+        return np.eye(3) + skew + (skew @ skew) * (1 / (1 + normal[2]))
 
     def update_data(self, center: Sequence[float], radius: float,
                     normal: Sequence[float]):

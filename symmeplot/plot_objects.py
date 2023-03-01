@@ -8,7 +8,7 @@ from symmeplot.plot_base import PlotBase
 __all__ = ['PlotPoint', 'PlotLine', 'PlotVector', 'PlotFrame', 'PlotBody']
 
 
-class PlotPoint(PlotBase):
+class PlotPoint( PlotBase ):
     """
     A class for plotting a Point in 3D using matplotlib.
 
