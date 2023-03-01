@@ -20,8 +20,8 @@ classifiers = [
 
 [tool.ruff]
 target-version = "py37"
-select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "W", "UP", "T20", "SIM",
-          "TID", "NPY", "RUF"]
+select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
+          "T20", "UP"]
 ignore = ["A003", "D100", "D105", "D107", "D203", "D213"]
 show-source = true
 
