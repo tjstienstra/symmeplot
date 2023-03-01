@@ -2,12 +2,12 @@
 This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
 
 ## Usage
-This can be done in the following steps:
-1. Create your system in sympy using the objects from `sympy.physics.mechanics`.
+Most of your programs are expected to follow this structure:
+1. Creation of the system in sympy using the objects from `sympy.physics.mechanics`.
 2. Create a figure with a 3D axes with `matplotlib`.
-3. Create an instance of `SymMePlotter` in which you define the inertial frame and absolute origin.
-4. Add your frames, vectors and points the plotter instance.
-5. Evaluate the system.
+3. Initiate `SymMePlotter` with the inertial frame and absolute origin.
+4. Add your frames, vectors and points to the plotter instance.
+5. Lambdify and evaluate the system.
 6. Plot the system.
 
 Below is a basic example of how this looks in practise:
@@ -55,4 +55,3 @@ ani = FuncAnimation(fig, update, frames=np.linspace(0.5, 0.5 + 2 * np.pi, 100),
                     blit=True)
 ani.save('animation.gif', fps=100)
 ```
-
