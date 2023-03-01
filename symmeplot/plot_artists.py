@@ -13,6 +13,8 @@ __all__ = ['Line3D', 'Vector3D', 'Circle3D']
 
 
 class ArtistBase(ABC):
+    """Base class for artists used in SymMePlotter."""
+
     @abstractmethod
     def update_data(self, *args):
         pass
@@ -27,6 +29,8 @@ class ArtistBase(ABC):
 
 
 class Line3D(_Line3D, ArtistBase):
+    """Artist to plot 3D lines."""
+
     def __init__(self, x: Sequence[float], y: Sequence[float], z: Sequence[float],
                  *args, **kwargs):
         super().__init__(np.array(x, dtype=np.float64),
@@ -47,7 +51,15 @@ class Line3D(_Line3D, ArtistBase):
 
 
 class Vector3D(FancyArrowPatch, ArtistBase):
-    # Source: https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c
+    """Artist to plot 3D vectors.
+
+    Notes
+    -----
+    This class is inspired by
+    https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c
+
+    """
+
     def __init__(self, origin: Sequence[float], vector: Sequence[float], *args,
                  **kwargs):
         super().__init__((0, 0), (0, 0), *args, **kwargs)
@@ -73,8 +85,12 @@ class Vector3D(FancyArrowPatch, ArtistBase):
 
 
 class Circle3D(PathPatch3D, ArtistBase):
-    """Patch to plot 3D circles
-    Inpired by: https://stackoverflow.com/a/18228967/20185124
+    """Artist to plot 3D circles.
+
+    Notes
+    -----
+    This class is inspired by https://stackoverflow.com/a/18228967/20185124
+
     """
 
     def __init__(self, center: Sequence[float], radius: float,
@@ -106,11 +122,12 @@ class Circle3D(PathPatch3D, ArtistBase):
 
     @staticmethod
     def _rotation_matrix(normal: np.array):
-        """
-        Calculates a rotation matrix given a vector d. The direction of d
-        corresponds to the rotation axis. The length of d corresponds to
-        the sin of the angle of rotation.
-        Based on: https://math.stackexchange.com/a/476311
+        """Calculate rotation matrix based a normal vector.
+
+        Notes
+        -----
+        Calculation is based on https://math.stackexchange.com/a/476311
+
         """
         v = np.cross((0, 0, 1), normal)
         sin_angle = np.linalg.norm(v)

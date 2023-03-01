@@ -1,37 +1,19 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
+from typing import Tuple, Type
 
 from matplotlib.pyplot import gca
 from sympy import MatrixBase
 from sympy.physics.vector import Point, ReferenceFrame, Vector
 
+from symmeplot.plot_artists import ArtistBase
+
 __all__ = ['PlotBase']
 
 
 class PlotBase(ABC):
-    """
-    Class with the basic attributes and methods for the plot objects.
-
-    Attributes
-    ----------
-    name : str
-        Name of the plot object. Default is the name of the object being plotted.
-    inertial_frame : ReferenceFrame
-        The reference frame with respect to which the object is oriented.
-    zero_point : Point
-        The absolute origin with respect to which the object is positioned.
-    origin : Point
-        The origin of the object with respect to the `zero_point`. Default is
-        `zero_point`.
-    children : list of PlotBase objects
-        Child objects in the plot hierarchy.
-    artists : list of matplotlib artists
-        Artists corresponding to the object and its children.
-    values : list
-        list of evaluated values for the object's variables.
-    annot_coords : numpy.array
-        Coordinate where the annotation text is displayed.
-    visible : bool
-        If the object is be visible in the plot.
+    """Class with the basic attributes and methods for the plot objects.
 
     Parameters
     ----------
@@ -67,16 +49,8 @@ class PlotBase(ABC):
         return self.name
 
     @property
-    def children(self):
-        return tuple(self._children)
-
-    @property
-    def artists(self):
-        return self._artists_self + tuple(
-            artist for child in self._children for artist in child.artists)
-
-    @property
-    def name(self):
+    def name(self) -> str:
+        """Name of the plot object. Default is the name of the object being plotted."""
         return self._name
 
     @name.setter
@@ -84,7 +58,19 @@ class PlotBase(ABC):
         self._name = str(name)
 
     @property
-    def inertial_frame(self):
+    def children(self) -> Tuple[Type[PlotBase, ...]]:
+        """Child objects in the plot hierarchy."""
+        return tuple(self._children)
+
+    @property
+    def artists(self) -> Tuple[Type[ArtistBase, ...]]:
+        """Artists corresponding to the object and its children."""
+        return self._artists_self + tuple(
+            artist for child in self._children for artist in child.artists)
+
+    @property
+    def inertial_frame(self) -> ReferenceFrame:
+        """The reference frame with respect to which the object is oriented."""
         return self._inertial_frame
 
     @inertial_frame.setter
@@ -99,13 +85,15 @@ class PlotBase(ABC):
             self._inertial_frame = new_inertial_frame
 
     @property
-    def zero_point(self):
+    def zero_point(self) -> Point:
+        """The absolute origin with respect to which the object is positioned."""
         return self._zero_point
 
     @zero_point.setter
     def zero_point(self, new_zero_point):
-        if hasattr(self, '_zero_point') and new_zero_point != self._zero_point:
-            raise NotImplementedError("'zero_point' cannot be changed")
+        if hasattr(self, '_zero_point'):
+            if new_zero_point != self._zero_point:
+                raise NotImplementedError("'zero_point' cannot be changed")
         if not isinstance(new_zero_point, Point):
             raise TypeError("'zero_point' should be a valid Point object.")
         else:
@@ -114,7 +102,8 @@ class PlotBase(ABC):
             self._zero_point = new_zero_point
 
     @property
-    def origin(self):
+    def origin(self) -> Point:
+        """The origin of the object with respect to the `zero_point`."""
         return self._origin
 
     @origin.setter
@@ -131,7 +120,8 @@ class PlotBase(ABC):
             raise TypeError("'origin' should be a valid Point object.")
 
     @property
-    def visible(self):
+    def visible(self) -> bool:
+        """If the object is be visible in the plot."""
         return self._visible
 
     @visible.setter
@@ -143,7 +133,8 @@ class PlotBase(ABC):
         self._visible = bool(is_visible)
 
     @property
-    def values(self):
+    def values(self) -> list:
+        """List of evaluated values for the object's variables."""
         return [self._values] + [child.values for child in self._children]
 
     @values.setter
@@ -154,11 +145,11 @@ class PlotBase(ABC):
 
     @abstractmethod
     def _get_expressions_to_evaluate_self(self):
-        """Returns a list of the necessary expressions for plotting."""
+        """Return a tuple of the necessary expressions for plotting."""
         pass
 
     def get_expressions_to_evaluate(self):
-        """Returns a list of the necessary expressions for plotting."""
+        """Return a tuple of the necessary expressions for plotting."""
         return (self._get_expressions_to_evaluate_self(),) + tuple(
             child.get_expressions_to_evaluate() for child in self._children)
 
@@ -171,9 +162,12 @@ class PlotBase(ABC):
         return lst.evalf(*args, **kwargs)
 
     def evalf(self, *args, **kwargs):
-        """
-        Evaluates the expressions describing the object, using the `evalf` function from
-        sympy.
+        """Evaluate the expressions describing the object.
+
+        Explanation
+        -----------
+        Evaluate the expressions describing the object. The function that is used in the
+        background for evaluating the expression is :func:`sympy.core.evalf`.
 
         Parameters
         ----------
@@ -190,9 +184,12 @@ class PlotBase(ABC):
         return self.values
 
     def plot(self, ax=None):
-        """
-        Adds the object artists to the matplotlib `Axes`. Note that the object should be
-        evaluated before plotting with for example the `evalf` method.
+        """Plot the associated plot objects.
+
+        Explanation
+        -----------
+        Add the objects artists to the matplotlib `Axes`. Note that the object should be
+        evaluated before plotting with for example the :meth:`PlotBase.evalf` method.
 
         Parameters
         ----------
@@ -215,7 +212,7 @@ class PlotBase(ABC):
         pass
 
     def update(self):
-        """Updates the artists parameters, based on a current values."""
+        """Update the artists parameters, based on a current values."""
         artists = self._update_self()
         for child in self._children:
             artists += child.update()
@@ -224,9 +221,11 @@ class PlotBase(ABC):
     @property
     @abstractmethod
     def annot_coords(self):
+        """Coordinate where the annotation text is displayed."""
         pass
 
     def contains(self, event):
+        """Boolean whether one of the artists contains the event."""
         for artist in self.artists:
             if artist.contains(event)[0]:
                 return True

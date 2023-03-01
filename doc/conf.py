@@ -25,10 +25,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx_rtd_theme',
+    'autodocsumm',
     'jupyter_sphinx',
 ]
 
@@ -40,6 +37,8 @@ intersphinx_mapping = {
     'matplotlib': ('https://matplotlib.org/stable/', None),
     'numpy': ('https://numpy.org/doc/stable/', None),
 }
+
+autodoc_default_options = {"autosummary": True}
 
 napoleon_numpy_docstring = True
 napoleon_custom_sections = [('Other Attributes', 'Attributes')]
@@ -61,6 +60,7 @@ napoleon_type_aliases = {
     'ReferenceFrame': 'sympy.physics.vector.frame.ReferenceFrame',
     'Particle': 'sympy.physics.mechanics.particle.Particle',
     'RigidBody': 'sympy.physics.mechanics.rigidbody.RigidBody',
+    'Axes3D': 'mpl_toolkits.mplot3d.axes3d.Axes3D',
 }
 
 # -- Options for HTML output -------------------------------------------------

@@ -2,7 +2,7 @@
 sphinx
 sphinx-rtd-theme
 jupyter-sphinx
-sphinx-autoapi
+autodocsumm
 pytest
 ruff
 pre-commit
