@@ -14,7 +14,7 @@ package_path = os.path.abspath("..")
 os.environ["PYTHONPATH"] = "".join((package_path, os.environ.get("PYTHONPATH", "")))
 
 project = "symmeplot"
-copyright = "2023, TJStienstra"
+copyright = "2023, TJStienstra"  # noqa: A001
 author = "TJStienstra"
 release = "0.0.1"
 

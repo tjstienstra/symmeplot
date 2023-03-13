@@ -1,6 +1,10 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
 [project]
 name = "symmeplot"
-version = "0.0.1"
+dynamic = ["version"]
 authors = [
   { name="Timo Stienstra", email="timostienstra00@gmail.com" },
 ]
@@ -9,8 +13,25 @@ readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "matplotlib >=3.6.3",
+    "sympy >=1.11.1",
+    "numpy >=1.23.3",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest >=7.2.0",
+    "ruff >=0.0.253",
+]
+doc = [
+    "sphinx >=6.1.3",
+    "sphinx-rtd-theme >=1.2.0",
+    "jupyter-sphinx >= 0.4.0",
+    "autodocsumm >=0.2.10",
 ]
 
 [project.urls]
@@ -26,7 +47,6 @@ ignore = ["A003", "D100", "D105", "D107", "D203", "D213"]
 show-source = true
 
 [tool.ruff.per-file-ignores]
-"doc/conf.py" = ["A001"]  # Ignore copyright shadowing
 "*/__init__.py" = ["D104"]
 "symmeplot/tests/*" = ["D", "N806", "S101"]
 "symmeplot/plot_artists.py" = ["D102"]
