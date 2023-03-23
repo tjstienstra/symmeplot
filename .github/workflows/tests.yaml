@@ -16,12 +16,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install flit
+        run: pipx install flit
       - name: Install dependencies
-        run: |
-          pipx install flit
-          flit install --extras all
+        run: flit install --deps all
       - name: make the sphinx docs
         run: |
-          pytest
+          python -m pytest
           make -C doc clean
           make -C doc html

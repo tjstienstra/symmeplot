@@ -12,10 +12,10 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: 3.11
+      - name: Install flit
+        run: pipx install flit
       - name: Install dependencies
-        run: |
-          pipx install flit
-          flit install --extras test
+        run: flit install --extras test
       - name: Lint with ruff
         run: |
-          ruff . --verbose
+          python -m ruff . --verbose
