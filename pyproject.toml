@@ -1,22 +1,43 @@
-[project]
+[tool.poetry]
 name = "symmeplot"
 version = "0.0.1"
-authors = [
-  { name="Timo Stienstra", email="timostienstra00@gmail.com" },
-]
 description = "SymPy Mechanics Plotter"
+authors = ["TJStienstra <timostienstra00@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.0.258"
+
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.2"
+
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "^6.1.3"
+sphinx-rtd-theme = "^1.2.0"
+jupyter-sphinx = "^0.4.0"
+autodocsumm = "^0.2.10"
 
 [project.urls]
 "Homepage" = "https://github.com/TJStienstra/symmeplot"
 "Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sympy = "^1.11.1"
+numpy = "^1.24.2"
+matplotlib = "^3.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 target-version = "py37"
