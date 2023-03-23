@@ -22,7 +22,7 @@ classifiers = [
 target-version = "py37"
 select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
           "T20", "UP"]
-ignore = ["A003", "D100", "D105", "D107", "D203", "D213"]
+ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213"]
 show-source = true
 
 [tool.ruff.per-file-ignores]

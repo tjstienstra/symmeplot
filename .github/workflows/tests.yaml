@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Lint with ruff
         run: |
-          ruff . --verbose
+          ruff .
 
   #-------------------------------------- tests ---------------------------------------#
 
