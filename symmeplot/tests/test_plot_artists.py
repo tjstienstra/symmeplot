@@ -19,7 +19,7 @@ class TestPoint3D:
     @mpl3d_image_comparison(["point3d_update.png"])
     def test_update(self):
         self.setup_basic()
-        self.p1.update_data(0.9, 0.3, 0.2)
+        self.p1.update_data([0.9], [0.3], [0.2])
 
 
 class TestVector3D:

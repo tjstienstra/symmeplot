@@ -72,5 +72,5 @@ jobs:
         run: poetry install --with doc
       - name: make the sphinx docs
         run: |
-          make -C doc clean
-          make -C doc html
+          poetry run make -C doc clean
+          poetry run make -C doc html
