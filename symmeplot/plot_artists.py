@@ -98,7 +98,7 @@ class Circle3D(PathPatch3D, ArtistBase):
     def __init__(self, center: Sequence[float], radius: float,
                  normal: Sequence[float] = (0, 0, 1), **kwargs):
         path_2d = self._get_2d_path(np.float64(radius))
-        super().__init__(path_2d, **{"zs": 0} | kwargs)
+        super().__init__(path_2d, **{"zs": 0, **kwargs})
         self._segment3d = self._get_segment3d(
             path_2d,
             np.array(center, dtype=np.float64),
