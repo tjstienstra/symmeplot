@@ -1,10 +1,19 @@
-from sympy.physics.mechanics import Point
+from sympy.physics.mechanics import Point, System
 
 from symmeplot.plotter import SymMePlotter
 
 
 class ExperimentalPlotter(SymMePlotter):
     """Experimental plotter class."""
+
+    @classmethod
+    def from_system(cls, ax, system):
+        """Create a plotter from a system."""
+        if not isinstance(system, System):
+            raise TypeError("System must be a System object.")
+        plotter = cls(ax, system.frame, system.origin)
+        plotter.add_system(system)
+        return plotter
 
     def add_system(self, system):
         """Add a system to the plotter."""
