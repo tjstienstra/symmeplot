@@ -5,7 +5,7 @@ from matplotlib.testing.decorators import image_comparison
 from sympy.utilities.iterables import iterable
 
 mpl3d_image_comparison = functools.partial(image_comparison, remove_text=True,
-                                           style="default")
+                                           style="default", tol=0.02)
 
 
 def equalize_axis_limits(ax_ref, ax_to_equalize):

@@ -59,7 +59,7 @@ class PlotPoint(PlotBase):
     def __init__(self, inertial_frame, zero_point, point, style="default", **kwargs):
         super().__init__(inertial_frame, zero_point, point, point.name)
         self._artists_self = (
-            Line3D([0], [0], [0], **self._get_style_properties(style) | kwargs),)
+            Line3D([0], [0], [0], **{**self._get_style_properties(style), **kwargs}),)
 
     @property
     def artist_point(self):
@@ -242,7 +242,7 @@ class PlotVector(PlotBase):
         self._properties = {}
         self._artists_self = (
             Vector3D((0, 0, 0), (0, 0, 0),
-                     **self._get_style_properties(style) | kwargs),)
+                     **{**self._get_style_properties(style), **kwargs}),)
 
     @property
     def vector(self):
