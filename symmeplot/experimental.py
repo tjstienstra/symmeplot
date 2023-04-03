@@ -20,13 +20,13 @@ class ExperimentalPlotter(SymMePlotter):
 
         def get_points(point, points=None):
             if points is None:
-                if point is not isinstance(point, Point):
+                if not isinstance(point, Point):
                     raise TypeError("Point must be a Point object.")
                 points = set()
             points.add(point)
-            for point in Point._pos_dict:
-                if point not in points:
-                    get_points(point, points)
+            for neighbour in point._pos_dict:
+                if neighbour not in points:
+                    get_points(neighbour, points)
             return points
 
         for body in system.bodies:
