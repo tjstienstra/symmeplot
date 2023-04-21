@@ -391,7 +391,7 @@ class SymMePlotter(PlotBase):
 
     def _update_annot(self, plot_object, event):
         """Update the annotation to the given `plot_object`."""
-        self.annot.set_text(f"${plot_object}$")
+        self.annot.set_text(str(plot_object))
         if self.annot_location == "object":
             x, y, _ = proj_transform(*plot_object.annot_coords,
                                      self._ax.get_proj())
