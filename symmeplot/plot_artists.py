@@ -142,7 +142,8 @@ class Circle3D(PathPatch3D, ArtistBase):
 
     def update_data(self, center: Sequence[float], radius: float,
                     normal: Sequence[float]):
-        self._segment3d = self._get_segment3d(self._get_2d_path(np.float64(radius)),
+        self._path2d = self._get_2d_path(np.float64(radius))
+        self._segment3d = self._get_segment3d(self._path2d,
                                               np.array(center, dtype=np.float64),
                                               np.array(normal, dtype=np.float64))
 
