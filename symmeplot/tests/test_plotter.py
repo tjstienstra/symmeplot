@@ -1,7 +1,7 @@
 from matplotlib.pyplot import subplots
 from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
 
-from symmeplot import SymMePlotter
+from symmeplot import PlotFrame, PlotPoint, PlotVector, SymMePlotter
 from symmeplot.tests.utilities import compare_values, mpl3d_image_comparison
 
 
@@ -28,3 +28,8 @@ def test_basic_example():
         vals = plotter.values
         plotter.evaluate_system(qi)
         compare_values(vals, plotter.values)
+    assert isinstance(plotter.get_plot_object(A0), PlotPoint)
+    assert plotter.get_plot_object("A_0") == plotter.get_plot_object(A0)
+    assert isinstance(plotter.get_plot_object(v), PlotVector)
+    assert isinstance(plotter.get_plot_object(A), PlotFrame)
+    assert isinstance(plotter.get_plot_object(0.5 * N.x), PlotVector)
