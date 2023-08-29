@@ -272,8 +272,8 @@ class SymMePlotter(PlotBase):
         Explanation
         -----------
         Return the `plot_object` based on a provided sympy object. For example
-        `ReferenceFrame('N')` will give the `PlotFrame` of that reference frame. If it
-        the `plot_object` has not been added it will return `None`.
+        `ReferenceFrame('N')` will give the `PlotFrame` of that reference frame. If the
+        `plot_object` has not been added it will return `None`.
 
         Parameters
         ----------
@@ -286,31 +286,28 @@ class SymMePlotter(PlotBase):
             Retrieved plot object.
 
         """
-        if isinstance(sympy_object, ReferenceFrame):
-            for plot_object in self.plot_objects:
-                if (isinstance(plot_object, PlotFrame) and
-                        sympy_object is plot_object.frame):
-                    return plot_object
-        elif isinstance(sympy_object, Point):
-            for plot_object in self.plot_objects:
-                if (isinstance(plot_object, PlotPoint) and
-                        sympy_object is plot_object.point):
-                    return plot_object
-        elif isinstance(sympy_object, (Particle, RigidBody)):
-            for plot_object in self.plot_objects:
-                if (isinstance(plot_object, PlotBody) and
-                        sympy_object is plot_object.body):
-                    return plot_object
-        elif isinstance(sympy_object, Vector):
-            for plot_object in self.plot_objects:
-                if (isinstance(plot_object, PlotVector) and
-                        sympy_object == plot_object.vector):
-                    return plot_object
-        elif isinstance(sympy_object, str):
-            for plot_object in self.plot_objects:
-                if sympy_object == str(plot_object):
-                    return plot_object
-        else:
+        mapping = [
+            (ReferenceFrame, lambda obj:
+                isinstance(obj, PlotFrame) and obj.frame is sympy_object),
+            (Point, lambda obj:
+                isinstance(obj, PlotPoint) and obj.point is sympy_object),
+            ((Particle, RigidBody), lambda obj:
+                isinstance(obj, PlotBody) and obj.body is sympy_object),
+            (Vector, lambda obj:
+                isinstance(obj, PlotVector) and obj.vector == sympy_object),
+            (str, lambda obj: str(obj) == sympy_object)
+        ]
+        known_type = False
+        for sympy_type, is_plot_object in mapping:
+            if isinstance(sympy_object, sympy_type):
+                known_type = True
+                queue = [self]
+                while queue:
+                    for child in queue.pop().children:
+                        if is_plot_object(child):
+                            return child
+                        queue.append(child)
+        if not known_type:
             raise NotImplementedError(
                 f"Sympy object of type {type(sympy_object)} has not been "
                 f"implemented.")
