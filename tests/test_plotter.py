@@ -1,8 +1,7 @@
 from matplotlib.pyplot import subplots
-from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
-
 from symmeplot import PlotFrame, PlotPoint, PlotVector, SymMePlotter
-from symmeplot.tests.utilities import compare_values, mpl3d_image_comparison
+from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
+from utilities import compare_values, mpl3d_image_comparison
 
 
 @mpl3d_image_comparison(["basic_example.png"])

@@ -1,11 +1,10 @@
 import pytest
 from matplotlib.pyplot import subplots
 from matplotlib.testing.decorators import check_figures_equal
+from symmeplot import PlotFrame, PlotPoint, PlotVector
 from sympy import symbols
 from sympy.physics.mechanics import Point, ReferenceFrame
-
-from symmeplot import PlotFrame, PlotPoint, PlotVector
-from symmeplot.tests.utilities import equalize_axis_limits, mpl3d_image_comparison
+from utilities import equalize_axis_limits, mpl3d_image_comparison
 
 
 class TestPlotPoint:
@@ -31,6 +30,7 @@ class TestPlotPoint:
         ax_ref = fig_ref.add_subplot(projection="3d")
         ax_ref.plot([0], [0], [0], color="k", marker="o")
         ax_test, P1_plot = self.create_basic_plot_point(fig_test)
+        P1_plot.update()
         equalize_axis_limits(ax_test, ax_ref)
 
     @check_figures_equal(extensions=["png"])

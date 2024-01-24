@@ -1,7 +1,6 @@
 from matplotlib.pyplot import subplots
-
 from symmeplot.plot_artists import Circle3D, Line3D, Vector3D
-from symmeplot.tests.utilities import mpl3d_image_comparison
+from utilities import mpl3d_image_comparison
 
 
 class TestPoint3D:
