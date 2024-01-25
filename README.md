@@ -5,7 +5,7 @@ This package plots objects from the `sympy.physics.mechanics` module in `matplot
 Most of your programs are expected to follow this structure:
 1. Creation of the system in sympy using the objects from `sympy.physics.mechanics`.
 2. Create a figure with a 3D axes with `matplotlib`.
-3. Initiate `SymMePlotter` with the inertial frame and absolute origin.
+3. Initiate a `Scene` with the inertial frame and absolute origin.
 4. Add your frames, vectors and points to the plotter instance.
 5. Lambdify and evaluate the system.
 6. Plot the system.
@@ -13,7 +13,7 @@ Most of your programs are expected to follow this structure:
 Below is a basic example of how this looks in practise:
 ```python
 from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
-from symmeplot import SymMePlotter
+from symmeplot.matplotlib import Scene3D
 import matplotlib.pyplot as plt
 
 # Create the system in sympy
@@ -24,31 +24,30 @@ A.orient_axis(N, N.z, q)
 N0 = Point('N_0')
 v = 0.2 * N.x + 0.2 * N.y + 0.7 * N.z
 A0 = N0.locatenew('A_0', v)
-# Create the matplotlib 3d axes
-fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-# Create the instance of the plotter specifying the inertial frame and origin
-plotter = SymMePlotter(ax, N, N0, scale=0.5)
+# Create the instance of the scene specifying the inertial frame and origin
+scene = Scene3D(N, N0, scale=0.5)
 # Add the objects to the system
-plotter.add_vector(v)
-plotter.add_frame(A, A0, ls='--')
-plotter.add_point(A0, color='g')
+scene.add_vector(v)
+scene.add_frame(A, A0, ls='--')
+scene.add_point(A0, color='g')
 # Evaluate the system.
-# This method is preferred if you like to evaluate the system once.
-plotter.evalf(subs={q: 0.5})
+scene.lambdify_system(q)
+scene.evaluate_system(0.5)
 # Plot the system
-plotter.plot()
-fig.show()
+scene.plot()
+plt.show()
 
 # You can also animate this system.
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
 # Setup the system for faster evaluation
-plotter.lambdify_system((q,))
+scene.lambdify_system((q,))
 
 def update(qi):
-    plotter.evaluate_system(qi)
-    return plotter.update()
+    scene.evaluate_system(qi)
+    scene.update()
+    return scene.artists
 
 
 ani = FuncAnimation(fig, update, frames=np.linspace(0.5, 0.5 + 2 * np.pi, 100),

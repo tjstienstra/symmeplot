@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "symmeplot"
-version = "0.0.1"
+version = "0.2.0"
 description = "SymPy Mechanics Plotter"
 authors = ["TJStienstra <timostienstra00@gmail.com>"]
 readme = "README.md"
@@ -21,13 +21,14 @@ ruff = "^0.1.14"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.4"
+pytest-mock = "^3.12.0"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.2.6"
-sphinx-rtd-theme = "^2.0.0"
 jupyter-sphinx = "^0.5.3"
 autodocsumm = "^0.2.12"
 ipykernel = "^6.29.0"
+furo = "^2023.9.10"
 
 [project.urls]
 "Homepage" = "https://github.com/TJStienstra/symmeplot"
@@ -50,6 +51,8 @@ show-source = true
 "*/__init__.py" = ["D104"]
 "tests/*" = ["D", "N806", "S101"]
 "src/symmeplot/plot_artists.py" = ["D102"]
+"src/symmeplot/utilities/sympy_patches.py" = ["RUF", "D", "UP"]
+"src/symmeplot/utilities/dummy_backend.py" = ["D"]
 
 [tool.pytest.ini_options]
 testpaths = [
