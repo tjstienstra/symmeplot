@@ -25,33 +25,26 @@ class SceneBase(ABC):
     origin : Point
         The absolute origin with respect to which all objects will be positioned.
     **inertial_frame_properties
-        Keyword arguments are parsed to :class:`~.PlotFrame` representing the inertial
+        Keyword arguments are parsed to the PlotFrame representing the inertial
         reference frame.
 
     """
 
-    _PlotPoint: type[PlotBase] = None
-    _PlotLine: type[PlotBase] = None
-    _PlotVector: type[PlotBase] = None
-    _PlotFrame: type[PlotBase] = None
-    _PlotBody: type[PlotBase] = None
+    _PlotPoint: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_point' has not been implemented in this backend.")
+    _PlotLine: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_line' has not been implemented in this backend.")
+    _PlotVector: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_vector' has not been implemented in this backend.")
+    _PlotFrame: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_frame' has not been implemented in this backend.")
+    _PlotBody: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_body' has not been implemented in this backend.")
 
     def __init__(
         self, inertial_frame: ReferenceFrame, zero_point: Point,
         **inertial_frame_properties
     ):
-        for plot_object in (
-            self._PlotPoint,
-            self._PlotLine,
-            self._PlotVector,
-            self._PlotFrame,
-            self._PlotBody,
-        ):
-            if plot_object is None:
-                raise TypeError(
-                    f"Can't instantiate abstract class {self.__class__.__name__} "
-                    f"without an implementation of '{plot_object.__name__}'"
-                )
         self._zero_point = zero_point
         self._inertial_frame = inertial_frame
         self._children = []
