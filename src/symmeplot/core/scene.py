@@ -219,9 +219,9 @@ class SceneBase(ABC):
 
         Explanation
         -----------
-        Return the `plot_object` based on a provided sympy object. For example
-        `ReferenceFrame('N')` will give the `PlotFrame` of that reference frame. If the
-        `plot_object` has not been added it will return `None`.
+        Return the ``plot_object`` based on a provided sympy object. For example
+        ``ReferenceFrame('N')`` will give the ``PlotFrame`` of that reference frame. If
+        the ``plot_object`` has not been added it will return ``None``.
 
         Parameters
         ----------
@@ -265,20 +265,20 @@ class SceneBase(ABC):
         return self.evaluate_system
 
     def evaluate_system(self, *args) -> None:
-        """Evaluate the system using the function created with `lambdify_system`."""
+        """Evaluate the system using the function created with ``lambdify_system``."""
         self.values = self._lambdified_system(*args)
 
     def set_visibility(
         self, sympy_object: Any | str, is_visible: bool, raise_error: bool = True
     ) -> None:
-        """Hide or show a `plot_object` based on a `sympy_object`.
+        """Hide or show a ``plot_object`` based on a ``sympy_object``.
 
         Parameters
         ----------
         sympy_object : Point or Vector or ReferenceFrame or Particle or RigidBody or str
             SymPy object to show or hide.
         is_visible : bool
-            If True show `plot_object`, otherwise hide plot_object.
+            If True show ``plot_object``, otherwise hide plot_object.
         raise_error : bool, optional
             If plot_object not found raise an error. Default is True.
 

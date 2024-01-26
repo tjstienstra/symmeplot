@@ -27,17 +27,18 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     point : Point or Vector
-        The point or vector that should be plotted with respect to the `zero_point`. If
-        a vector is provided, the `origin` will be at the tip of the vector with respect
-        to the `zero_point`. If not specified, the default is the `zero_point`.
+        The point or vector that should be plotted with respect to the ``zero_point``.
+        If a vector is provided, the ``origin`` will be at the tip of the vector with
+        respect to the ``zero_point``. If not specified, the default is the
+        ``zero_point``.
     style : str, optional
         Reference to what style should be used for plotting the point. The default style
-        is `'default'`. Available styles:
+        is ``'default'``. Available styles:
         - None: Default of the :class:`mpl_toolkits.mplot3d.art3d.Line3D`.
         - 'default': Normal point.
     **kwargs : dict, optional
         Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
-        `color='r'` will make the plotted point red.
+        ``color='r'`` will make the plotted point red.
 
     Examples
     --------
@@ -96,13 +97,13 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         The absolute origin with respect to which the object is positioned.
     points : list of Point or Vector
         The points or vectors through which the line should be plotted with respect to
-        the `zero_point`. If a vector is provided, the `origin` will be at the tip of
-        the vector with respect to the `zero_point`.
+        the ``zero_point``. If a vector is provided, the ``origin`` will be at the tip
+        of the vector with respect to the ``zero_point``.
     name : str, optional
-        The name of the line. Default is `None`.
+        The name of the line. Default is ``None``.
     **kwargs : dict, optional
         Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
-        `color='r'` will make the plotted point red.
+        ``color='r'`` will make the plotted point red.
 
     Examples
     --------
@@ -151,21 +152,21 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
     zero_point : Point
         The absolute origin with respect to which the object is positioned.
     vector : Vector
-        The vector that should be plotted with respect to the `zero_point`.
+        The vector that should be plotted with respect to the ``zero_point``.
     origin : Point or Vector, optional
-        The origin of the vector with respect to the `zero_point`. If a
-        :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
-        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the vector with respect to the ``zero_point``. If a
+        :class:`sympy.physics.vector.vector.Vector` is provided the ``origin`` is at the
+        tip of the vector with respect to the ``zero_point``. Default is ``zero_point``.
     name : str
         Name of the plot object. Default is the vector as string.
     style : str, optional
         Reference to what style should be used for plotting the vector. The default
-        style is `'default'`. Available styles:
+        style is ``'default'``. Available styles:
         - None: Default of the :class:`mpl_toolkits.mplot3d.art3d.Line3D`.
         - 'default': Normal black arrow.
     **kwargs : dict, optional
         Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
-        `color='r'` will make the plotted arrow red.
+        ``color='r'`` will make the plotted arrow red.
 
     Examples
     --------
@@ -232,20 +233,21 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
     frame : ReferenceFrame
         The reference frame that should be plotted.
     origin : Point or Vector, optional
-        The origin of the frame with respect to the `zero_point`. If a
+        The origin of the frame with respect to the ``zero_point``. If a
         :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
-        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        tip of the vector with respect to the ``zero_point``. Default is ``zero_point``.
     style : str, optional
         Reference to what style should be used for plotting the frame. The default style
-        is `'default'`. Available styles:
+        is ``'default'``. Available styles:
         - None: No properties of the vectors will be set.
         - 'default': Nice default frame with as color 'rgb' for xyz.
     scale : float, optional
         Length of the vectors of the reference frame.
     **kwargs : dict, optional
-        Kwargs that are parsed to :class:`~.PlotVector`s, which possibly parses them to
-        :class:`matplotlib.patches.FancyArrow`, so `color='r'` will make all vectors of
-        the reference frame red.
+        Kwargs that are parsed to
+        :class:`symmeplot.matplotlib.plot_objects.PlotVector`s, which possibly parses
+        them to :class:`matplotlib.patches.FancyArrow`, so ``color='r'`` will make all
+        vectors of the reference frame red.
 
     Examples
     --------
@@ -318,21 +320,22 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
     body : RigidBody or Particle
         The body that should be plotted.
     origin : Point or Vector, optional
-        The origin of the frame with respect to the `zero_point`. If a
-        :class:`sympy.physics.vector.vector.Vector` is provided the `origin` is at the
-        tip of the vector with respect to the `zero_point`. Default is `zero_point`.
+        The origin of the frame with respect to the ``zero_point``. If a
+        :class:`sympy.physics.vector.vector.Vector` is provided the ``origin`` is at the
+        tip of the vector with respect to the ``zero_point``. Default is ``zero_point``.
     style : str, optional
         Reference to what style should be used for plotting the body. The default style
-        is `'default'`. Available styles:
+        is ``'default'``. Available styles:
         - None: No properties of the vectors will be set.
         - 'default': Uses a special point for the center of mass and a frame with as
         color 'rgb' for xyz.
     plot_frame_properties : dict, optional
         Dictionary of keyword arguments that should be parsed to the
-        :class:`~.PlotFrame`.
+        :class:`symemplot.matplotlib.plot_objects.PlotFrame`.
     plot_point_properties : dict, optional
         Dictionary of keyword arguments that should be parsed to the
-        :class:`~.PlotPoint` representing the center of mass.
+        :class:`symemplot.matplotlib.plot_objects.PlotPoint` representing the center of
+        mass.
     **kwargs : dict, optional
         Kwargs that are parsed to both internally used plot objects.
 

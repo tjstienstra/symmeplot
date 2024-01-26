@@ -28,8 +28,8 @@ class MplPlotBase(PlotBase):
 
         Explanation
         -----------
-        Add the objects artists to the matplotlib `Axes`. Note that the object should be
-        evaluated before plotting with for example the :meth:`PlotBase.evalf` method.
+        Add the objects artists to the matplotlib axes. Note that the object should be
+        evaluated before plotting.
 
         Parameters
         ----------

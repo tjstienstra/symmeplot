@@ -20,14 +20,15 @@ class Scene3D(SceneBase):
 
     Parameters
     ----------
-    ax : mpl_toolkits.mplot3d.axes3d.Axes3D
-        Axes on which the sympy mechanics should be plotted.
     inertial_frame : ReferenceFrame
         The reference frame with respect to which all objects will be oriented.
     origin : Point
         The absolute origin with respect to which all objects will be positioned.
+    ax : mpl_toolkits.mplot3d.axes3d.Axes3D, optional
+        Axes on which the sympy mechanics should be plotted.
     **inertial_frame_properties : dict, optional
-        Keyword arguments are parsed to :class:`~.PlotFrame` representing the inertial
+        Keyword arguments are parsed to the
+        :class:`symmeplot.matplotlib.plot_objects.PlotFrame` representing the inertial
         reference frame.
 
     Examples
