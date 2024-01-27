@@ -56,6 +56,7 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
         plot_point = PlotPoint(N, O, P1, color="k")
         f = sm.lambdify((l1, l2, l3), plot_point.get_expressions_to_evaluate())
         plot_point.values = f(0, 0, 0)
+        plot_point.update()  # Updates the artist(s) to the new values
         plot_point.plot()  # Plot the point
         plot_point.values = f(0.2, 0.6, 0.3)
         plot_point.update()  # The point will now be on its new position
@@ -121,6 +122,7 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         line_plot = PlotLine(N, O, [O, P1, P2], color="k")
         f = sm.lambdify((l1, l2, l3), line_plot.get_expressions_to_evaluate())
         line_plot.values = f(0, 0, 0)
+        line_plot.update()  # Updates the artist(s) to the new values
         line_plot.plot()  # Plot the point
         line_plot.values = f(0.2, 0.6, 0.3)
         line_plot.update()  # The point will now be on its new position
@@ -182,6 +184,7 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
         v_plot = PlotVector(N, O, v, O_v, color="r", ls="--")
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         v_plot.values = sm.lambdify((), v_plot.get_expressions_to_evaluate())()
+        v_plot.update()  # Updates the artist(s) to the new values
         v_plot.plot(ax)
     """
 
@@ -265,6 +268,8 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         N_plot.values = sm.lambdify((), N_plot.get_expressions_to_evaluate())()
         A_plot.values = sm.lambdify((), A_plot.get_expressions_to_evaluate())()
+        N_plot.update()  # Updates the artist(s) to the new values
+        A_plot.update()  # Updates the artist(s) to the new values
         N_plot.plot(ax)
         A_plot.plot(ax)
     """
@@ -359,6 +364,8 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         ground_plot.values = sm.lambdify((), ground_plot.get_expressions_to_evaluate()
                                         )()
         body_plot.values = sm.lambdify((), body_plot.get_expressions_to_evaluate())()
+        ground_plot.update()  # Updates the artist(s) to the new values
+        body_plot.update()  # Updates the artist(s) to the new values
         ground_plot.plot(ax)
         body_plot.plot(ax)
     """

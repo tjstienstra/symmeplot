@@ -292,6 +292,7 @@ class SceneBase(ABC):
 
     def plot(self) -> None:
         """Plot all plot objects."""
+        self.update()
         for plot_object in self._children:
             plot_object.plot()
 

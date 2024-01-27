@@ -20,7 +20,6 @@ class MplPlotBase(PlotBase):
         The absolute origin with respect to which the object is positioned.
     name : str, optional
         Name of the plot object. Default is the name of the object being plotted.
-
     """
 
     def plot(self, ax=None):
@@ -35,11 +34,9 @@ class MplPlotBase(PlotBase):
         ----------
         ax : matplotlib.axes._subplots.Axes3DSubplot, optional
             Axes on which the artist should be added. The default is the active axes.
-
         """
         if ax is None:
             ax = gca()
-        self.update()
         for artist, _ in self._artists:
             ax.add_artist(artist)
         for child in self._children:
