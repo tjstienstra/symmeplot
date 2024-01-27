@@ -36,7 +36,6 @@ class TestPlotPoint:
         assert line.get_marker() == "o"
         np.testing.assert_almost_equal(line.get_data_3d(), [[0.2], [0.6], [0.3]])
 
-
     def test_update(self):
         plot_point = PlotPoint(self.rf, self.zp, self.p)
         f = sm.lambdify(self.s, plot_point.get_expressions_to_evaluate())
