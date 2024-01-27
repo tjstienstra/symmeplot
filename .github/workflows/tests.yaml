@@ -46,6 +46,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install --with test
+      - name: Install required packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install libegl1 python3-opengl
       - name: Run tests
         run: poetry run pytest
 
