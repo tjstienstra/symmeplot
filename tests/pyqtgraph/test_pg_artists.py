@@ -1,4 +1,5 @@
 import numpy as np
+from pyqtgraph.opengl import MeshData
 from symmeplot.pyqtgraph.artists import create_tube_mesh_data
 
 
@@ -6,6 +7,7 @@ class TestTubeMeshData:
     def test_straight_tube(self):
         mesh_data = create_tube_mesh_data((0, 1), (2, 2), (0, 0, 0), (0, 0, 1), 4)
         verts, faces = mesh_data._vertexes, mesh_data._faces
+        assert isinstance(mesh_data, MeshData)
         assert verts.shape == (8, 3)
         assert faces.shape == (8, 3)
         np.testing.assert_almost_equal(verts, np.array([
