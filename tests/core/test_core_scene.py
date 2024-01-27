@@ -15,7 +15,10 @@ try:
 except ImportError:
     pyqtgraph = None
 
-backends = [dummy, matplotlib, pyqtgraph]
+parametrize_backends = pytest.mark.parametrize(
+    "backend", [pytest.param(backend, marks=pytest.mark.skipif(
+        backend is None, reason="Backend not installed."))
+                for backend in (dummy, matplotlib, pyqtgraph)])
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
@@ -32,12 +35,11 @@ def mock_visualization():
             stack.enter_context(mgr)
         yield
 
-@pytest.mark.parametrize("backend", backends)
+@parametrize_backends
 class TestScene3D:
     @pytest.fixture(autouse=True)
-    def _define_system(self, backend):
-        if backend is None:
-            pytest.skip("Backend not installed.")
+    @pytest.mark.skipif("backend == None")
+    def _define_system(self):
         self.q = me.dynamicsymbols("q:3")
         self.rf = me.ReferenceFrame("rf")
         self.zp = me.Point("zp")
