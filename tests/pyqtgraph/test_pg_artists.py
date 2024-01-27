@@ -150,9 +150,9 @@ class TestVector3D:
         assert v2.head_width != 0.2
 
     @pytest.mark.parametrize("name, value", [
-        ("vector_radius", 0.1),
-        ("head_length", 0.2),
-        ("head_width", 0.3),
+        ("vector_radius", 0.1324),
+        ("head_length", 0.21345),
+        ("head_width", 0.314365),
         ("mesh_resolution", 10)]
     )
     def test_set_mesh_prop(self, name, value):
