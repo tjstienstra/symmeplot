@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: 3.11
       - name: Install dependencies
-        run: poetry install --with docs
+        run: poetry install --with docs --all-extras
       - name: make the sphinx docs
         run: |
           poetry run make -C docs clean
