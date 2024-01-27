@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Iterable
 
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
+from pyqtgraph.Qt import QtCore
 
 from symmeplot.core import SceneBase
 from symmeplot.pyqtgraph.plot_base import PgPlotBase
@@ -80,12 +81,42 @@ class Scene3D(SceneBase):
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
 
     @property
-    def view(self):
+    def view(self) -> gl.GLViewWidget:
         """The view in which the scene is plotted."""
         return self._view
 
-    def plot(self):
+    def plot(self) -> None:
         """Plot all plot objects."""
+        for plot_object in self._children:
+            plot_object.update()
+            plot_object.plot(self.view)
+        pg.exec()
+
+    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
+                interval: int = 30) -> None:
+        """Animate the scene.
+
+        Parameters
+        ----------
+        get_args : Callable
+            Function that returns the arguments for the ``evaluate_system`` method. The
+            function should takes the current frame as input.
+        frames : int or iterable
+            Number of frames or iterable with frames.
+        interval : int, optional
+            Time interval between frames in milliseconds. Default is 30.
+        """
+        if isinstance(frames, int):
+            frames = range(frames)
+        def update():
+            update.index += 1
+            self.evaluate_system(*get_args(frames[update.index % len(frames)]))
+            self.update()
+
+        update.index = 0
+        timer = QtCore.QTimer()
+        timer.timeout.connect(update)
+        timer.start(interval)
         for plot_object in self._children:
             plot_object.update()
             plot_object.plot(self.view)

@@ -1,5 +1,8 @@
+from typing import Any, Callable, Iterable
+
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 from symmeplot.core import SceneBase
@@ -192,3 +195,36 @@ class Scene3D(SceneBase):
         for plot_object in self._children:
             plot_object.set_visible(False)
         self._children = [self._children[0]]
+
+    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
+                interval: int = 30, **kwargs) -> FuncAnimation:
+        """Animate the scene.
+
+        Parameters
+        ----------
+        get_args : Callable
+            Function that returns the arguments for the ``evaluate_system`` method. The
+            function should takes the current frame as input.
+        frames : int or iterable
+            Number of frames or iterable with frames.
+        interval : int, optional
+            Time interval between frames in milliseconds. Default is 30.
+        **kwargs
+            Keyword arguments are parsed to the
+            :class:`matplotlib.animation.FuncAnimation`.
+
+        Returns
+        -------
+        matplotlib.animation.FuncAnimation
+            Animation object.
+
+        """
+        def update(frame):
+            self.evaluate_system(*get_args(frame))
+            self.update()
+            return self.artists
+
+        if isinstance(frames, int):
+            frames = range(frames)
+        return FuncAnimation(self.axes.figure, update, frames=frames, interval=interval,
+                             **{"blit": True, **kwargs})

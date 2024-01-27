@@ -300,3 +300,21 @@ class SceneBase(ABC):
         """Update the objects on the scene, based on the currect values."""
         for plot_object in self._children:
             plot_object.update()
+
+    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
+                interval: int = 30, **kwargs) -> None:
+        """Animate the scene.
+
+        Parameters
+        ----------
+        get_args : Callable
+            Function that returns the arguments for the ``evaluate_system`` method. The
+            function should takes the current frame as input.
+        frames : int or iterable
+            Number of frames or iterable with frames.
+        interval : int, optional
+            Time interval between frames in milliseconds. Default is 30.
+        **kwargs
+            Keyword arguments are parsed to the internally used animation function.
+        """
+        raise NotImplementedError("'animate' has not been implemented in this backend.")
