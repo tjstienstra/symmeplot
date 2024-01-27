@@ -15,6 +15,9 @@ python = "^3.9"
 sympy = "^1.12"
 numpy = "^1.26.0"
 matplotlib = "^3.8.2"
+pyqtgraph = "^0.13.3"
+pyqt6 = "^6.6.1"
+pyopengl = "^3.1.7"
 
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.1.14"
