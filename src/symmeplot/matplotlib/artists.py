@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Sequence
 
@@ -116,8 +118,8 @@ class Circle3D(PathPatch3D, MplArtistBase):
         return trans.transform_path(path)  # Apply the transform
 
     @staticmethod
-    def _get_segment3d(path_2d: "Path", center: "npt.NDArray[np.float64]",
-                       normal: "npt.NDArray[np.float64]"):
+    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64],
+                       normal: npt.NDArray[np.float64]):
         verts = path_2d.vertices  # Get the vertices in 2D
         rot_mat = dcm_to_align_vectors((0, 0, 1), normal)
         segment3d = np.array([np.dot(rot_mat, (x, y, 0)) for x, y in verts])

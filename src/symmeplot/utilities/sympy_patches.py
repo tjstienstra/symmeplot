@@ -3,6 +3,7 @@
 List of patches:
 - Patch for lambdify to allow for empty tuples, refer to #26119 in sympy.
 """
+from __future__ import annotations
 
 from sympy.utilities.iterables import iterable
 from sympy.utilities.lambdify import _EvaluatorPrinter

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Iterable
 
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
