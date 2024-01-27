@@ -1,7 +1,11 @@
 import numpy as np
-from pyqtgraph.opengl import MeshData
-from symmeplot.pyqtgraph.artists import create_tube_mesh_data
+import pytest
 
+try:
+    from pyqtgraph.opengl import MeshData
+    from symmeplot.pyqtgraph.artists import create_tube_mesh_data
+except ImportError:
+    pytest.skip("PyQtGraph not installed.")
 
 class TestTubeMeshData:
     def test_straight_tube(self):

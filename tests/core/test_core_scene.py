@@ -1,24 +1,43 @@
+import contextlib
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
-import symmeplot.matplotlib as matplotlib
-import symmeplot.pyqtgraph as pyqtgraph
 import symmeplot.utilities.dummy_backend as dummy
 import sympy.physics.mechanics as me
 
+try:
+    import symmeplot.matplotlib as matplotlib
+except ImportError:
+    matplotlib = None
+try:
+    import symmeplot.pyqtgraph as pyqtgraph
+except ImportError:
+    pyqtgraph = None
+
+backends = [dummy, matplotlib, pyqtgraph]
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
-    with (patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock())),
-          patch("pyqtgraph.exec"),
-          patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show")):
+    to_patch = []
+    if matplotlib is not None:
+        to_patch.append(
+            patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))
+        )
+    if pyqtgraph is not None:
+        to_patch.append(patch("pyqtgraph.exec"))
+        to_patch.append(patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show"))
+    with contextlib.ExitStack() as stack:
+        for mgr in to_patch:
+            stack.enter_context(mgr)
         yield
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib, pyqtgraph])
+@pytest.mark.parametrize("backend", backends)
 class TestScene3D:
     @pytest.fixture(autouse=True)
-    def _define_system(self):
+    def _define_system(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.q = me.dynamicsymbols("q:3")
         self.rf = me.ReferenceFrame("rf")
         self.zp = me.Point("zp")

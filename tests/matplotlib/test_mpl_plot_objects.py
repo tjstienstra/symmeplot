@@ -2,7 +2,17 @@ import numpy as np
 import pytest
 import sympy as sm
 import sympy.physics.mechanics as me
-from symmeplot.matplotlib import PlotBody, PlotFrame, PlotLine, PlotPoint, PlotVector
+
+try:
+    from symmeplot.matplotlib import (
+        PlotBody,
+        PlotFrame,
+        PlotLine,
+        PlotPoint,
+        PlotVector,
+    )
+except ImportError:
+    pytest.skip("Matplotlib not installed.")
 
 
 class TestPlotPoint:

@@ -1,17 +1,28 @@
 
 import numpy as np
 import pytest
-import symmeplot.matplotlib as matplotlib
-import symmeplot.pyqtgraph as pyqtgraph
 import symmeplot.utilities.dummy_backend as dummy
 import sympy as sm
 import sympy.physics.mechanics as me
 
+try:
+    import symmeplot.matplotlib as matplotlib
+except ImportError:
+    matplotlib = None
+try:
+    import symmeplot.pyqtgraph as pyqtgraph
+except ImportError:
+    pyqtgraph = None
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib, pyqtgraph])
+backends = [dummy, matplotlib, pyqtgraph]
+
+
+@pytest.mark.parametrize("backend", backends)
 class TestPlotPointMixin:
     @pytest.fixture(autouse=True)
     def _instantiate_plot_object(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.l = sm.symbols("l:3")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.P1 = self.O.locatenew(
@@ -34,10 +45,12 @@ class TestPlotPointMixin:
         np.testing.assert_equal(self.plot_object.point_coords, (4, 5, 6))
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
+@pytest.mark.parametrize("backend", backends)
 class TestPlotLineMixin:
     @pytest.fixture(autouse=True)
     def _instantiate_plot_object(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.l = sm.symbols("l:3")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.line = (self.O.locatenew("P1", self.l[0] * self.N.x),
@@ -65,10 +78,12 @@ class TestPlotLineMixin:
         np.testing.assert_equal(self.plot_object.line_coords, np.diag((4, 5, 6)))
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
+@pytest.mark.parametrize("backend", backends)
 class TestPlotVectorMixin:
     @pytest.fixture(autouse=True)
     def _instantiate_plot_object(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.l = sm.symbols("l:3")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.P = self.O.locatenew("P", self.N.x)
@@ -94,10 +109,12 @@ class TestPlotVectorMixin:
         np.testing.assert_equal(self.plot_object.vector_values, (4, 5, 6))
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
+@pytest.mark.parametrize("backend", backends)
 class TestPlotFrameMixin:
     @pytest.fixture(autouse=True)
-    def _define_system(self):
+    def _define_system(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.q = sm.symbols("q")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.A = me.ReferenceFrame("A")
@@ -141,10 +158,12 @@ class TestPlotFrameMixin:
                                  ).x.get_sympy_object_exprs() == ((0, 0, 0), (2, 0, 0))
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
+@pytest.mark.parametrize("backend", backends)
 class TestPlotBodyMixin:
     @pytest.fixture(autouse=True)
-    def _define_system(self):
+    def _define_system(self, backend):
+        if backend is None:
+            pytest.skip("Backend not installed.")
         self.q = sm.symbols("q")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.A = me.ReferenceFrame("A")

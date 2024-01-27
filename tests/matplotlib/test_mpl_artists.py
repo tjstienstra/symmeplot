@@ -1,5 +1,10 @@
 import numpy as np
-from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
+import pytest
+
+try:
+    from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
+except ImportError:
+    pytest.skip("Matplotlib not installed.")
 
 
 class TestLine3D:
