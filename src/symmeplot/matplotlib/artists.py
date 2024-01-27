@@ -8,6 +8,7 @@ from mpl_toolkits.mplot3d.art3d import PathPatch3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 from symmeplot.core import ArtistBase
+from symmeplot.utilities import dcm_to_align_vectors
 
 if TYPE_CHECKING:
     import numpy.typing as npt
@@ -117,30 +118,12 @@ class Circle3D(PathPatch3D, MplArtistBase):
     @staticmethod
     def _get_segment3d(path_2d: "Path", center: "npt.NDArray[np.float64]",
                        normal: "npt.NDArray[np.float64]"):
-        normal /= np.linalg.norm(normal)
         verts = path_2d.vertices  # Get the vertices in 2D
-        rot_mat = Circle3D._rotation_matrix(normal)  # Get the rotation matrix
+        rot_mat = dcm_to_align_vectors((0, 0, 1), normal)
         segment3d = np.array([np.dot(rot_mat, (x, y, 0)) for x, y in verts])
         for i, offset in enumerate(center):
             segment3d[:, i] += offset
         return segment3d
-
-    @staticmethod
-    def _rotation_matrix(normal: np.array):
-        """Calculate rotation matrix based a normal vector.
-
-        Notes
-        -----
-        Calculation is based on https://math.stackexchange.com/a/476311
-        """
-        v = np.cross((0, 0, 1), normal)
-        sin_angle = np.linalg.norm(v)
-        if sin_angle == 0:
-            return np.identity(3)
-        skew = np.array([[0, -v[2], v[1]],
-                         [v[2], 0, -v[0]],
-                         [-v[1], v[0], 0]], dtype=np.float64)
-        return np.eye(3) + skew + (skew @ skew) * (1 / (1 + normal[2]))
 
     def update_data(self, center: Sequence[float], radius: float,
                     normal: Sequence[float]):
