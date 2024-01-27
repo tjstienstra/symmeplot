@@ -59,7 +59,6 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
         plot_point.plot()  # Plot the point
         plot_point.values = f(0.2, 0.6, 0.3)
         plot_point.update()  # The point will now be on its new position
-
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -103,7 +102,7 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         The name of the line. Default is ``None``.
     **kwargs : dict, optional
         Kwargs that are parsed to :class:`mpl_toolkits.mplot3d.art3d.Line3D`, so
-        ``color='r'`` will make the plotted point red.
+        ``color='r'`` will make the plotted line red.
 
     Examples
     --------
@@ -125,7 +124,6 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         line_plot.plot()  # Plot the point
         line_plot.values = f(0.2, 0.6, 0.3)
         line_plot.update()  # The point will now be on its new position
-
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -185,7 +183,6 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         v_plot.values = sm.lambdify((), v_plot.get_expressions_to_evaluate())()
         v_plot.plot(ax)
-
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -270,7 +267,6 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
         A_plot.values = sm.lambdify((), A_plot.get_expressions_to_evaluate())()
         N_plot.plot(ax)
         A_plot.plot(ax)
-
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -365,7 +361,6 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         body_plot.values = sm.lambdify((), body_plot.get_expressions_to_evaluate())()
         ground_plot.plot(ax)
         body_plot.plot(ax)
-
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -413,7 +408,6 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         -------
         :class:`symmeplot.matplotlib.plot_artists.Circle3D`
             Circle artist.
-
         """
         if isinstance(center, Point):
             center = center.pos_from(self.zero_point)
