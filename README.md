@@ -1,6 +1,12 @@
 # SymMePlot
 This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
 
+To install `symmeplot` with the `matplotlib` visualization run:
+
+```bash
+pip install git+https://github.com/TJStienstra/symmeplot.git matplotlib
+```
+
 ## Usage
 Most of your programs are expected to follow this structure:
 1. Creation of the system in sympy using the objects from `sympy.physics.mechanics`.
