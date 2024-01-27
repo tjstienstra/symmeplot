@@ -7,7 +7,7 @@ try:
     import matplotlib.pyplot as plt
     from symmeplot.matplotlib import PlotFrame, Scene3D
 except ImportError:
-    pytest.skip("Matplotlib not installed.")
+    pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
 @pytest.fixture(scope="module", autouse=True)

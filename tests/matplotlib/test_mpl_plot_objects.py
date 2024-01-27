@@ -12,7 +12,7 @@ try:
         PlotVector,
     )
 except ImportError:
-    pytest.skip("Matplotlib not installed.")
+    pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
 class TestPlotPoint:
