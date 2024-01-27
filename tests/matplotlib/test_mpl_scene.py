@@ -9,7 +9,11 @@ from symmeplot.matplotlib import (
 )
 
 
-@patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))
+@pytest.fixture(scope="module", autouse=True)
+def mock_visualization():
+    with (patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))):
+        yield
+
 class TestScene3D:
     @pytest.fixture(autouse=True)
     def _define_system(self):
@@ -26,7 +30,7 @@ class TestScene3D:
             "rb", self.p2, self.f, 1, (self.f.x.outer(self.f.x), self.p2))
         self.pt = me.Particle("pt", self.p3, 1)
 
-    def test_scene_init(self, mock_subplots):
+    def test_scene_init(self):
         scene = Scene3D(self.rf, self.zp)
         assert scene.inertial_frame == self.rf
         assert scene.zero_point == self.zp
@@ -34,7 +38,7 @@ class TestScene3D:
         assert isinstance(scene.plot_objects[0], PlotFrame)
         assert hasattr(scene.axes, "get_zlim")
 
-    def test_scene_init_with_ax(self, mock_subplots):
+    def test_scene_init_with_ax(self):
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         scene = Scene3D(self.rf, self.zp, ax=ax)
         assert scene.axes == ax

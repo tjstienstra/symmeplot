@@ -3,12 +3,19 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 import symmeplot.matplotlib as matplotlib
+import symmeplot.pyqtgraph as pyqtgraph
 import symmeplot.utilities.dummy_backend as dummy
 import sympy.physics.mechanics as me
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
-@patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))
+@pytest.fixture(scope="module", autouse=True)
+def mock_visualization():
+    with (patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock())),
+          patch("pyqtgraph.exec"),
+          patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show")):
+        yield
+
+@pytest.mark.parametrize("backend", [dummy, matplotlib, pyqtgraph])
 class TestScene3D:
     @pytest.fixture(autouse=True)
     def _define_system(self):
@@ -44,7 +51,7 @@ class TestScene3D:
         self.p3_coords = (0.4, 0.1, 1)
         scene.plot()
 
-    def test_scene_init(self, mock_subplots, backend):
+    def test_scene_init(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         assert scene.inertial_frame == self.rf
         assert scene.zero_point == self.zp
@@ -53,7 +60,7 @@ class TestScene3D:
         assert len(scene.artists) == 3
         self._evaluate1(scene)
 
-    def test_add_point(self, mock_subplots, backend):
+    def test_add_point(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_point(self.p1)
         assert len(scene.plot_objects) == 2
@@ -64,7 +71,7 @@ class TestScene3D:
         self._evaluate1(scene)
         np.testing.assert_almost_equal(plot_point.point_coords, self.p1_coords)
 
-    def test_add_line(self, mock_subplots, backend):
+    def test_add_line(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_line(self.line)
         assert len(scene.plot_objects) == 2
@@ -77,7 +84,7 @@ class TestScene3D:
             plot_line.line_coords,
             np.array([self.p1_coords, self.p2_coords, self.p3_coords]).T)
 
-    def test_add_vector(self, mock_subplots, backend):
+    def test_add_vector(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_vector(self.p2.pos_from(self.p1), self.p1)
         assert len(scene.plot_objects) == 2
@@ -89,7 +96,7 @@ class TestScene3D:
         np.testing.assert_almost_equal(plot_vector.origin_coords, self.p1_coords)
         np.testing.assert_almost_equal(plot_vector.vector_values, (-0.3, 0, 0))
 
-    def test_add_frame(self, mock_subplots, backend):
+    def test_add_frame(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_frame(self.f, self.p2)
         assert len(scene.plot_objects) == 2
@@ -104,7 +111,7 @@ class TestScene3D:
         np.testing.assert_almost_equal(plot_frame.y.vector_values, (-0.1, 0, 0))
         np.testing.assert_almost_equal(plot_frame.z.vector_values, (0, 0, 0.1))
 
-    def test_add_rigid_body(self, mock_subplots, backend):
+    def test_add_rigid_body(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_body(self.rb)
         assert len(scene.plot_objects) == 2
@@ -119,7 +126,7 @@ class TestScene3D:
         np.testing.assert_almost_equal(
             plot_body.plot_masscenter.point_coords, self.p2_coords)
 
-    def test_add_particle(self, mock_subplots, backend):
+    def test_add_particle(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
         scene.add_body(self.pt)
         assert len(scene.plot_objects) == 2
@@ -133,7 +140,7 @@ class TestScene3D:
         np.testing.assert_almost_equal(
             plot_body.plot_masscenter.point_coords, self.p3_coords)
 
-    def test_get_plot_object(self, mock_subplots, backend, _filled_scene):
+    def test_get_plot_object(self, backend, _filled_scene):
         # Get inertial frame by sympy object
         rf_obj = self.scene.get_plot_object(self.rf)
         assert isinstance(rf_obj, backend.PlotFrame)

@@ -2,12 +2,13 @@
 import numpy as np
 import pytest
 import symmeplot.matplotlib as matplotlib
+import symmeplot.pyqtgraph as pyqtgraph
 import symmeplot.utilities.dummy_backend as dummy
 import sympy as sm
 import sympy.physics.mechanics as me
 
 
-@pytest.mark.parametrize("backend", [dummy, matplotlib])
+@pytest.mark.parametrize("backend", [dummy, matplotlib, pyqtgraph])
 class TestPlotPointMixin:
     @pytest.fixture(autouse=True)
     def _instantiate_plot_object(self, backend):
