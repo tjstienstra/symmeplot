@@ -12,45 +12,33 @@ Most of your programs are expected to follow this structure:
 
 Below is a basic example of how this looks in practise:
 ```python
-from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
+import numpy as np
 from symmeplot.matplotlib import Scene3D
-import matplotlib.pyplot as plt
+from sympy.physics.mechanics import Point, ReferenceFrame, dynamicsymbols
 
 # Create the system in sympy
-N = ReferenceFrame('N')
-A = ReferenceFrame('A')
-q = dynamicsymbols('q')
+N = ReferenceFrame("N")
+A = ReferenceFrame("A")
+q = dynamicsymbols("q")
 A.orient_axis(N, N.z, q)
-N0 = Point('N_0')
+N0 = Point("N_0")
 v = 0.2 * N.x + 0.2 * N.y + 0.7 * N.z
-A0 = N0.locatenew('A_0', v)
+A0 = N0.locatenew("A_0", v)
 # Create the instance of the scene specifying the inertial frame and origin
 scene = Scene3D(N, N0, scale=0.5)
 # Add the objects to the system
 scene.add_vector(v)
-scene.add_frame(A, A0, ls='--')
-scene.add_point(A0, color='g')
+scene.add_frame(A, A0, ls="--")
+scene.add_point(A0, color="g")
 # Evaluate the system.
 scene.lambdify_system(q)
 scene.evaluate_system(0.5)
 # Plot the system
 scene.plot()
-plt.show()
 
 # You can also animate this system.
-import numpy as np
-from matplotlib.animation import FuncAnimation
-
-# Setup the system for faster evaluation
-scene.lambdify_system((q,))
-
-def update(qi):
-    scene.evaluate_system(qi)
-    scene.update()
-    return scene.artists
-
-
-ani = FuncAnimation(fig, update, frames=np.linspace(0.5, 0.5 + 2 * np.pi, 100),
-                    blit=True)
-ani.save('animation.gif', fps=100)
+ani = scene.animate(lambda q: (q,), frames=np.linspace(0, 2 * np.pi, 60))
+ani.save("animation.gif", fps=30)
 ```
+
+![](docs/animation.gif)
