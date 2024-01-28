@@ -73,6 +73,11 @@ class SceneBase(ABC):
         return tuple(self._children)
 
     @property
+    def _children(self) -> tuple[PlotBase, ...]:
+        """Plot objects."""
+        return tuple(self._children)
+
+    @property
     def artists(self) -> tuple[ArtistBase, ...]:
         """Artists used to plot the object."""
         return tuple(a for plot_obj in self._children for a in plot_obj.artists)
