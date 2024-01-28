@@ -135,6 +135,17 @@ class PgArtistBase(ArtistBase):
         for gl_item in self.gl_items:
             view.addItem(gl_item)
 
+    @property
+    def visible(self) -> bool:
+        """If the artist is visible."""
+        return all(gl_item.visible() for gl_item in self.gl_items)
+
+    @visible.setter
+    def visible(self, is_visible: bool):
+        """Set the visibility of the artist."""
+        for gl_item in self.gl_items:
+            gl_item.setVisible(is_visible)
+
 
 class Point3D(PgArtistBase):
     """Artist to plot 3D lines."""

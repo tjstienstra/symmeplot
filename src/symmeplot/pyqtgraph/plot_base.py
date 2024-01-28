@@ -30,3 +30,16 @@ class PgPlotBase(PlotBase):
             artist.plot(view)
         for child in self._children:
             child.plot(view)
+
+    @property
+    def visible(self) -> bool:
+        """If the object is be visible in the plot."""
+        return self._visible
+
+    @visible.setter
+    def visible(self, is_visible: bool):
+        for artist, _ in self._artists:
+            artist.visible = is_visible
+        for child in self._children:
+            child.visible = bool(is_visible)
+        self._visible = bool(is_visible)

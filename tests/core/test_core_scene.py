@@ -64,6 +64,25 @@ class TestScene3D:
         self.scene.add_body(self.rb)
         self.scene.add_body(self.pt)
 
+    @staticmethod
+    def _check_artists_visibility(backend, artists, is_visible):
+        if backend is dummy:
+            for artist in artists:
+                assert artist.visible == is_visible
+        elif backend is matplotlib:
+            for artist in artists:
+                assert artist.get_visible() == is_visible
+        elif backend is pyqtgraph:
+            for artist in artists:
+                assert artist.visible == is_visible
+        else:
+            raise ValueError("Unknown backend.")
+
+    @staticmethod
+    def _check_plot_object_visibility(backend, plot_object, is_visible):
+        assert plot_object.visible == is_visible
+        TestScene3D._check_artists_visibility(backend, plot_object.artists, is_visible)
+
     def _evaluate1(self, scene):
         scene.lambdify_system(self.q)
         scene.evaluate_system(np.pi / 2, 0.7, 0.3)
@@ -187,3 +206,18 @@ class TestScene3D:
         p3_obj = self.scene.get_plot_object(self.p3)
         assert isinstance(p3_obj, backend.PlotPoint)
         assert p3_obj.point is self.p3
+
+    def test_set_visibility(self, backend, _filled_scene):
+        obj = self.scene.get_plot_object("my_vector")
+        self._check_plot_object_visibility(backend, obj, True)
+        self.scene.set_visibility("my_vector", False)
+        self._check_plot_object_visibility(backend, obj, False)
+        self.scene.set_visibility("my_vector", True)
+        self._check_plot_object_visibility(backend, obj, True)
+
+        obj = self.scene.get_plot_object(self.rb.masscenter)
+        self._check_plot_object_visibility(backend, obj, True)
+        self.scene.set_visibility(self.rb, False)
+        self._check_plot_object_visibility(backend, obj, False)
+        self.scene.set_visibility(self.rb, True)
+        self._check_plot_object_visibility(backend, obj, True)

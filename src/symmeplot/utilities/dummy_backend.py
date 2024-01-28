@@ -16,6 +16,7 @@ class DummyArtist(ArtistBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.update_args = None
+        self.visible = True
 
     def update_data(self, *args):
         self.update_args = args
@@ -25,6 +26,18 @@ class _PlotBase(PlotBase):
         self.update()
         for child in self._children:
             child.plot()
+
+    @property
+    def visible(self):
+        return self._visible
+
+    @visible.setter
+    def visible(self, is_visible):
+        for artist, _ in self._artists:
+            artist.visible = bool(is_visible)
+        for child in self._children:
+            child.visible = bool(is_visible)
+        self._visible = bool(is_visible)
 
 class PlotPoint(PlotPointMixin, _PlotBase):
     def __init__(self, *args, **kwargs):

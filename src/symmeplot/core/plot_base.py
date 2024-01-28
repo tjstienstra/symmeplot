@@ -86,17 +86,15 @@ class PlotBase(ABC):
         self._name = str(name)
 
     @property
+    @abstractmethod
     def visible(self) -> bool:
-        """If the object is be visible in the plot."""
-        return self._visible
+        """If the object is be visible in the plot.
 
-    @visible.setter
-    def visible(self, is_visible: bool):
-        for artist, _ in self._artists:
-            artist.set_visible(is_visible)
-        for child in self._children:
-            child.visible = bool(is_visible)
-        self._visible = bool(is_visible)
+        Notes
+        -----
+        Subclasses should also implement the setter of this property.
+        """
+        return self._visible
 
     @property
     def children(self) -> tuple[PlotBase, ...]:

@@ -43,6 +43,19 @@ class MplPlotBase(PlotBase):
             child.plot(ax)
 
     @property
+    def visible(self) -> bool:
+        """If the object is be visible in the plot."""
+        return self._visible
+
+    @visible.setter
+    def visible(self, is_visible: bool):
+        for artist, _ in self._artists:
+            artist.set_visible(is_visible)
+        for child in self._children:
+            child.visible = bool(is_visible)
+        self._visible = bool(is_visible)
+
+    @property
     @abstractmethod
     def annot_coords(self):
         """Coordinate where the annotation text is displayed."""
