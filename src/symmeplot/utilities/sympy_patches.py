@@ -12,12 +12,11 @@ from sympy.utilities.lambdify import _EvaluatorPrinter
 def _recursive_to_string(doprint, arg):
     """Functions in lambdify accept both SymPy types and non-SymPy types such as python
     lists and tuples. This method ensures that we only call the doprint method of the
-    printer with SymPy types (so that the printer safely can use SymPy-methods).
-    """
+    printer with SymPy types (so that the printer safely can use SymPy-methods)."""
     from sympy.core.basic import Basic
-    from sympy.matrices.common import MatrixOperations
+    from sympy.matrices.matrixbase import MatrixBase
 
-    if isinstance(arg, (Basic, MatrixOperations)):
+    if isinstance(arg, (Basic, MatrixBase)):
         return doprint(arg)
     elif iterable(arg):
         if isinstance(arg, list):
@@ -35,8 +34,7 @@ def _recursive_to_string(doprint, arg):
         return doprint(arg)
 
 def doprint(self, funcname, args, expr, *, cses=()):
-    """Returns the function definition code as a string.
-    """
+    """Returns the function definition code as a string."""
     from sympy.core.symbol import Dummy
 
     funcbody = []
