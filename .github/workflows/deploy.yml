@@ -1,9 +1,8 @@
 # Based of: https://github.com/eeholmes/readthedoc-test
 on:
-  workflow_run:
-    workflows: [tests]
-    types: [completed]
-    branches: [main]
+  push:
+    branches:
+      - main
 
 jobs:
 
