@@ -30,7 +30,7 @@ def mock_visualization():
         )
     if pyqtgraph is not None:
         to_patch.append(patch("pyqtgraph.exec"))
-        to_patch.append(patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show"))
+        to_patch.append(patch("pyqtgraph.opengl.GLViewWidget.show"))
     with contextlib.ExitStack() as stack:
         for mgr in to_patch:
             stack.enter_context(mgr)
