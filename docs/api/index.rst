@@ -8,6 +8,7 @@ subpackages for each backend. The backends are:
     :maxdepth: 2
 
     matplotlib/index
+    pyqtgraph/index
 
 Each of these backends is derived from the `symmeplot.core` package:
 
