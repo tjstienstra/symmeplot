@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import Any, Callable, Iterable
+from collections.abc import Iterable
+from typing import Any, Callable
 
 from sympy import lambdify
 from sympy.physics.mechanics import Point, ReferenceFrame, Vector
