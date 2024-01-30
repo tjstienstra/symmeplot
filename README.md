@@ -1,4 +1,6 @@
 # SymMePlot
+[![Tests](https://github.com/TJStienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/TJStienstra/symmeplot/actions?workflow=Tests)
+
 SymMePlot is a visualization tool specifically designed for mechanical systems that are
 created using the mechanics module in [SymPy], `sympy.physics.mechanics`.
 
