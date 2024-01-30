@@ -15,7 +15,7 @@ representations based on the parametrization of the symbols involved in the syst
 To install `symmeplot` with the `matplotlib` visualization run:
 
 ```bash
-pip install git+https://github.com/TJStienstra/symmeplot.git matplotlib
+pip install symmeplot matplotlib
 ```
 
 ## Usage
