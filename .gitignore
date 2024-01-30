@@ -2,3 +2,4 @@ tests/result_images
 result_images
 docs/_build
 docs/jupyter_execute
+dist

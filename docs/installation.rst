@@ -4,10 +4,9 @@ Installation
 Installation Users
 ------------------
 
-SymMePlot is not yet available on PyPI. Therefore, you’ll need to install the
-development version from GitHub using: ::
+SymMePlot is available on PyPI. You can install it using: ::
 
-    pip install git+https://github.com/TJStienstra/symmeplot.git
+    pip install symmeplot
 
 To use the `matplotlib`_ backend, you’ll need to install `matplotlib`_ as well: ::
 

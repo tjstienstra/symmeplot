@@ -1,4 +1,5 @@
 # SymMePlot
+[![PyPI](https://img.shields.io/pypi/v/symmeplot.svg)](https://pypi.org/project/symmeplot/)
 [![Tests](https://github.com/TJStienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/TJStienstra/symmeplot/actions?workflow=Tests)
 
 SymMePlot is a visualization tool specifically designed for mechanical systems that are
@@ -15,7 +16,7 @@ representations based on the parametrization of the symbols involved in the syst
 To install `symmeplot` with the `matplotlib` visualization run:
 
 ```bash
-pip install git+https://github.com/TJStienstra/symmeplot.git matplotlib
+pip install symmeplot matplotlib
 ```
 
 ## Usage
