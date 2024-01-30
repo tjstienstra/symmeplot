@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "symmeplot"
-version = "0.0.1"
+version = "0.2.0"
 description = "SymPy Mechanics Plotter"
 authors = ["TJStienstra <timostienstra00@gmail.com>"]
 readme = "README.md"
@@ -9,32 +9,40 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sympy = "^1.12"
+numpy = "^1.26.0"
+
+matplotlib = {version = "^3.8.2", optional = true}
+pyqtgraph = {version = "^0.13.3", optional = true}
+pyqt6 = {version = "^6.6.1", optional = true}
+pyopengl = {version = "^3.1.7", optional = true}
+
+[tool.poetry.extras]
+mpl_backend = ["matplotlib"]
+pg_backend = ["pyqtgraph", "pyqt6", "pyopengl"]
+
 [tool.poetry.group.lint.dependencies]
-ruff = "^0.0.258"
-
-
+ruff = "^0.1.14"
+pre-commit = "^3.6.0"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.2.2"
+pytest = "^7.4.4"
+pytest-mock = "^3.12.0"
 
-
-[tool.poetry.group.doc.dependencies]
-sphinx = "^6.1.3"
-sphinx-rtd-theme = "^1.2.0"
-jupyter-sphinx = "^0.4.0"
-autodocsumm = "^0.2.10"
-ipykernel = "^6.22.0"
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.2.6"
+jupyter-sphinx = "^0.5.3"
+autodocsumm = "^0.2.12"
+ipykernel = "^6.29.0"
+furo = "^2023.9.10"
 
 [project.urls]
 "Homepage" = "https://github.com/TJStienstra/symmeplot"
 "Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
-
-[tool.poetry.dependencies]
-python = "^3.8"
-sympy = "^1.11.1"
-numpy = "^1.24.2"
-matplotlib = "^3.7.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -44,16 +52,18 @@ build-backend = "poetry.core.masonry.api"
 target-version = "py37"
 select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
           "T20", "UP"]
-ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213"]
+ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213", "RUF200"]
 show-source = true
 
 [tool.ruff.per-file-ignores]
-"doc/conf.py" = ["A001"]  # Ignore copyright shadowing
+"docs/conf.py" = ["A001"]  # Ignore copyright shadowing
 "*/__init__.py" = ["D104"]
-"symmeplot/tests/*" = ["D", "N806", "S101"]
-"symmeplot/plot_artists.py" = ["D102"]
+"tests/*" = ["D", "N806", "S101"]
+"src/symmeplot/plot_artists.py" = ["D102"]
+"src/symmeplot/utilities/sympy_patches.py" = ["RUF", "D", "UP"]
+"src/symmeplot/utilities/dummy_backend.py" = ["D"]
 
 [tool.pytest.ini_options]
 testpaths = [
-    "symmeplot/tests",
+    "tests",
 ]

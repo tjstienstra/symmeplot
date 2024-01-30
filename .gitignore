@@ -1,5 +1,4 @@
-symmeplot/tests/result_images
-doc/_build
-doc/jupyter_execute
-result_images/
-symmeplot.egg_info/
+tests/result_images
+result_images
+docs/_build
+docs/jupyter_execute

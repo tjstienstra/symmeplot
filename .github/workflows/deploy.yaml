@@ -1,10 +1,9 @@
 # Based of: https://github.com/eeholmes/readthedoc-test
 on:
-  push:
-    workflow_run:
-      workflows: [tests]
-      types: [completed]
-      branches: [master]
+  workflow_run:
+    workflows: [tests]
+    types: [completed]
+    branches: [main]
 
 jobs:
 
@@ -17,20 +16,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install poetry
-        run: pipx install poetry==1.4.0
+        run: pipx install poetry==1.7.1
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: 3.12
       - name: Install dependencies
-        run: poetry install --with doc
+        run: poetry install --with docs --all-extras
       - name: make the sphinx docs
         run: |
-          poetry run make -C doc clean
-          poetry run make -C doc html
+          poetry run make -C docs clean
+          poetry run make -C docs html
       - name: Init new repo in dist folder and commit generated files
         run: |
-          cd doc/_build/html/
+          cd docs/_build/html/
           git init
           touch .nojekyll
           git add -A
@@ -43,4 +42,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          directory: ./doc/_build/html
+          directory: ./docs/_build/html

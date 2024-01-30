@@ -1,0 +1,27 @@
+name: TestPyPI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test_pypi:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry==1.7.1
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+    - run: >-
+        poetry version patch &&
+        version=$(poetry version | awk '{print $2}') &&
+        poetry version $version.dev.$(date +%s)
+    - run: poetry build
+    - uses: pypa/gh-action-pypi-publish@v1.8.11
+      with:
+        user: __token__
+        password: ${{ secrets.TEST_PYPI_TOKEN }}
+        repository-url: https://test.pypi.org/legacy/
