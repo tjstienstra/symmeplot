@@ -1,5 +1,14 @@
 # SymMePlot
-This package plots objects from the `sympy.physics.mechanics` module in `matplotlib`.
+SymMePlot is a visualization tool specifically designed for mechanical systems that are
+created using the mechanics module in [SymPy], `sympy.physics.mechanics`.
+
+The `sympy.physics.mechanics` module allows users to define mechanical systems in a
+symbolic manner to derive their analytic equations of motion. During this process, users
+can construct various objects such as reference frames, points, bodies, and more.
+
+SymMePlot enhances this process by providing a way to visualize these constructed
+objects. It integrates with visualization backends like [Matplotlib], and creates visual
+representations based on the parametrization of the symbols involved in the system.
 
 To install `symmeplot` with the `matplotlib` visualization run:
 
@@ -48,3 +57,6 @@ ani.save("animation.gif", fps=30)
 ```
 
 ![](docs/animation.gif)
+
+[Matplotlib]: https://matplotlib.org/
+[SymPy]: https://www.sympy.org
