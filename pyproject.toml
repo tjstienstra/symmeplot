@@ -42,7 +42,7 @@ furo = "^2023.9.10"
 [project.urls]
 "Homepage" = "https://github.com/TJStienstra/symmeplot"
 "Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
-"Documentation" = "https://symmeplot.readthedocs.io"
+"Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [build-system]
 requires = ["poetry-core"]
