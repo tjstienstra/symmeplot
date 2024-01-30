@@ -1,6 +1,6 @@
 # SymMePlot
 [![PyPI](https://img.shields.io/pypi/v/symmeplot.svg)](https://pypi.org/project/symmeplot/)
-[![Tests](https://github.com/TJStienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/TJStienstra/symmeplot/actions?workflow=Tests)
+[![Tests](https://github.com/tjstienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/tjstienstra/symmeplot/actions?workflow=Tests)
 
 SymMePlot is a visualization tool designed for mechanical systems created using the
 mechanics module in [SymPy], `sympy.physics.mechanics`.

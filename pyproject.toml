@@ -2,7 +2,7 @@
 name = "symmeplot"
 version = "0.2.0"
 description = "SymPy Mechanics Plotter"
-authors = ["TJStienstra <timostienstra00@gmail.com>"]
+authors = ["tjstienstra <timostienstra00@gmail.com>"]
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -40,8 +40,8 @@ ipykernel = "^6.29.0"
 furo = "^2023.9.10"
 
 [project.urls]
-"Homepage" = "https://github.com/TJStienstra/symmeplot"
-"Bug Tracker" = "https://github.com/TJStienstra/symmeplot/issues"
+"Homepage" = "https://github.com/tjstienstra/symmeplot"
+"Bug Tracker" = "https://github.com/tjstienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
 [build-system]
