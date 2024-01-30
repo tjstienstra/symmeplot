@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 import sympy as sm
 import sympy.physics.mechanics as me
+from symmeplot.utilities.testing import ON_CI
 
 try:
     from symmeplot.matplotlib import (
@@ -11,7 +12,9 @@ try:
         PlotPoint,
         PlotVector,
     )
-except ImportError:
+except ImportError as e:
+    if ON_CI:
+        raise e
     pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 

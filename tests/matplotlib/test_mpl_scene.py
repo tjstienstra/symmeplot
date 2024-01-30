@@ -2,11 +2,14 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 import sympy.physics.mechanics as me
+from symmeplot.utilities.testing import ON_CI
 
 try:
     import matplotlib.pyplot as plt
     from symmeplot.matplotlib import PlotFrame, Scene3D
-except ImportError:
+except ImportError as e:
+    if ON_CI:
+        raise e
     pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 

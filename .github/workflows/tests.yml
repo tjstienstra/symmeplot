@@ -38,6 +38,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install pyqtgraph dependencies
+        # https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html#github-actions
+        uses: tlambert03/setup-qt-libs@v1
+      - name: Setup headless display
+        uses: pyvista/setup-headless-display-action@v2
       - name: Install poetry
         run: pipx install poetry==1.7.1
       - name: Set up Python
@@ -62,6 +67,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install pyqtgraph dependencies
+        # https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html#github-actions
+        uses: tlambert03/setup-qt-libs@v1
+      - name: Setup headless display
+        uses: pyvista/setup-headless-display-action@v2
       - name: Install poetry
         run: pipx install poetry==1.7.1
       - name: Set up Python
