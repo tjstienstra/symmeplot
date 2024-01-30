@@ -40,9 +40,8 @@ class Scene3D(SceneBase):
 
     Examples
     --------
-    .. jupyter-execute::
+    .. code::
 
-        import matplotlib.pyplot as plt
         import sympy.physics.mechanics as me
         from symmeplot.pyqtgraph import Scene3D
 
@@ -54,7 +53,7 @@ class Scene3D(SceneBase):
         A0 = N0.locatenew("A_0", v)
         scene = Scene3D(N, N0, scale=0.5)
         scene.add_vector(v, name="v")
-        scene.add_frame(A, A0, ls="--")
+        scene.add_frame(A, A0, as_mesh=True)
         scene.lambdify_system(())
         scene.evaluate_system()
         scene.plot()

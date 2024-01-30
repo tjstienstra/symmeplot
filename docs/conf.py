@@ -39,7 +39,8 @@ intersphinx_mapping = {
 autodoc_default_options = {"autosummary": True}
 
 napoleon_numpy_docstring = True
-napoleon_custom_sections = [("Other Attributes", "Attributes")]
+napoleon_custom_sections = [("Other Attributes", "Attributes"),
+                            ("Explanation", "notes_style")]
 napoleon_preprocess_types = True
 napoleon_type_aliases = {
     "Point": "sympy.physics.vector.point.Point",
