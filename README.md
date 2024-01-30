@@ -2,11 +2,11 @@
 [![PyPI](https://img.shields.io/pypi/v/symmeplot.svg)](https://pypi.org/project/symmeplot/)
 [![Tests](https://github.com/TJStienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/TJStienstra/symmeplot/actions?workflow=Tests)
 
-SymMePlot is a visualization tool specifically designed for mechanical systems that are
-created using the mechanics module in [SymPy], `sympy.physics.mechanics`.
+SymMePlot is a visualization tool designed for mechanical systems created using the
+mechanics module in [SymPy], `sympy.physics.mechanics`.
 
-The `sympy.physics.mechanics` module allows users to define mechanical systems in a
-symbolic manner to derive their analytic equations of motion. During this process, users
+The `sympy.physics.mechanics` module allows users to define mechanical systems
+symbolically to derive their analytic equations of motion. During this process, users
 can construct various objects such as reference frames, points, bodies, and more.
 
 SymMePlot enhances this process by providing a way to visualize these constructed
