@@ -4,9 +4,10 @@ from symmeplot.utilities.testing import ON_CI
 
 try:
     from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
-except ImportError:
-    if not ON_CI:
-        pytest.skip("Matplotlib not installed.", allow_module_level=True)
+except ImportError as e:
+    if ON_CI:
+        raise e
+    pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
 class TestLine3D:

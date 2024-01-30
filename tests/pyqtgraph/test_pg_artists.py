@@ -12,9 +12,10 @@ try:
         Vector3D,
         create_tube_mesh_data,
     )
-except ImportError:
-    if not ON_CI:
-        pytest.skip("PyQtGraph not installed.", allow_module_level=True)
+except ImportError as e:
+    if ON_CI:
+        raise e
+    pytest.skip("PyQtGraph not installed.", allow_module_level=True)
 
 class TestTubeMeshData:
     def test_straight_tube(self):

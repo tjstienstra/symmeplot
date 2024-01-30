@@ -7,9 +7,10 @@ from symmeplot.utilities.testing import ON_CI
 try:
     import matplotlib.pyplot as plt
     from symmeplot.matplotlib import PlotFrame, Scene3D
-except ImportError:
-    if not ON_CI:
-        pytest.skip("Matplotlib not installed.", allow_module_level=True)
+except ImportError as e:
+    if ON_CI:
+        raise e
+    pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
 @pytest.fixture(scope="module", autouse=True)
