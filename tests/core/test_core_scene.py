@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 import symmeplot.utilities.dummy_backend as dummy
 import sympy.physics.mechanics as me
+from symmeplot.utilities.testing import ON_CI
 
 try:
     import symmeplot.matplotlib as matplotlib
@@ -17,7 +18,7 @@ except ImportError:
 
 parametrize_backends = pytest.mark.parametrize(
     "backend", [pytest.param(backend, marks=pytest.mark.skipif(
-        backend is None, reason="Backend not installed."))
+        backend is None and not ON_CI, reason="Backend not installed."))
                 for backend in (dummy, matplotlib, pyqtgraph)])
 
 @pytest.fixture(scope="module", autouse=True)
@@ -38,7 +39,7 @@ def mock_visualization():
 @parametrize_backends
 class TestScene3D:
     @pytest.fixture(autouse=True)
-    @pytest.mark.skipif("backend == None")
+    @pytest.mark.skipif("backend == None and not ON_CI")
     def _define_system(self):
         self.q = me.dynamicsymbols("q:3")
         self.rf = me.ReferenceFrame("rf")

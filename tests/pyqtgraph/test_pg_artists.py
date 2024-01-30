@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import numpy as np
 import pytest
+from symmeplot.utilities.testing import ON_CI
 
 try:
     from pyqtgraph.opengl import GLLinePlotItem, GLMeshItem, MeshData
@@ -12,7 +13,8 @@ try:
         create_tube_mesh_data,
     )
 except ImportError:
-    pytest.skip("PyQtGraph not installed.", allow_module_level=True)
+    if not ON_CI:
+        pytest.skip("PyQtGraph not installed.", allow_module_level=True)
 
 class TestTubeMeshData:
     def test_straight_tube(self):

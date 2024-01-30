@@ -1,9 +1,9 @@
-
 import numpy as np
 import pytest
 import symmeplot.utilities.dummy_backend as dummy
 import sympy as sm
 import sympy.physics.mechanics as me
+from symmeplot.utilities.testing import ON_CI
 
 try:
     import symmeplot.matplotlib as matplotlib
@@ -16,7 +16,7 @@ except ImportError:
 
 parametrize_backends = pytest.mark.parametrize(
     "backend", [pytest.param(backend, marks=pytest.mark.skipif(
-        backend is None, reason="Backend not installed."))
+        backend is None and not ON_CI, reason="Backend not installed."))
                 for backend in (dummy, matplotlib, pyqtgraph)])
 
 
@@ -157,7 +157,7 @@ class TestPlotFrameMixin:
 class TestPlotBodyMixin:
     @pytest.fixture(autouse=True)
     def _define_system(self, backend):
-        if backend is None:
+        if backend is None and not ON_CI:
             pytest.skip("Backend not installed.")
         self.q = sm.symbols("q")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
