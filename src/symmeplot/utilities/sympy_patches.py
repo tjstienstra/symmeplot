@@ -14,9 +14,12 @@ def _recursive_to_string(doprint, arg):
     lists and tuples. This method ensures that we only call the doprint method of the
     printer with SymPy types (so that the printer safely can use SymPy-methods)."""
     from sympy.core.basic import Basic
-    from sympy.matrices.matrixbase import MatrixBase
+    try:
+        from sympy.matrices.matrixbase import MatrixBase as MatrixType
+    except ImportError:
+        from sympy.matrices.common import MatrixOperations as MatrixType
 
-    if isinstance(arg, (Basic, MatrixBase)):
+    if isinstance(arg, (Basic, MatrixType)):
         return doprint(arg)
     elif iterable(arg):
         if isinstance(arg, list):
