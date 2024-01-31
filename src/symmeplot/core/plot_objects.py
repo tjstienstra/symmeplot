@@ -43,6 +43,7 @@ class PlotPointMixin:
     Notes
     -----
     The subclass should create and add the artist in the constructor.
+
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -75,6 +76,7 @@ class PlotLineMixin:
     Notes
     -----
     The subclass should create and add the artist in the constructor.
+
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -104,6 +106,7 @@ class PlotLineMixin:
         Notes
         -----
         The form of the expression is ``((x0, x1, ...), (y0, y1, ...), (z0, z1, ...))``.
+
         """
         vs = []
         for point in self.line:
@@ -118,6 +121,7 @@ class PlotVectorMixin(OriginMixin):
     Notes
     -----
     The subclass should create and add the artist in the constructor.
+
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -160,6 +164,7 @@ class PlotFrameMixin(OriginMixin):
     -----
     The subclass should instantiate the PlotVector objects in the constructor.
     The children should be added in the following order: x, y, z.
+
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
@@ -206,6 +211,7 @@ class PlotBodyMixin:
     The subclass should instantiate the PlotFrame and PlotPoint objects in the
     constructor. If the body has a frame, then the PlotFrame should be the second child.
     The PlotPoint representing the center of mass should always be the first child.
+
     """
 
     def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,

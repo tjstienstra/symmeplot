@@ -93,6 +93,7 @@ class PlotBase(ABC):
         Notes
         -----
         Subclasses should also implement the setter of this property.
+
         """
         return self._visible
 
@@ -132,6 +133,7 @@ class PlotBase(ABC):
             The artist to be added.
         exprs : expression or tuple of expressions
             Args used to update the artist in the form of expressions.
+
         """
         if not isinstance(artist, ArtistBase):
             raise TypeError("'artist' should be a valid Artist object.")

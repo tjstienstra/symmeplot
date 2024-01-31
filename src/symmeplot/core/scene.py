@@ -324,5 +324,6 @@ class SceneBase(ABC):
             Time interval between frames in milliseconds. Default is 30.
         **kwargs
             Keyword arguments are parsed to the internally used animation function.
+
         """
         raise NotImplementedError("'animate' has not been implemented in this backend.")

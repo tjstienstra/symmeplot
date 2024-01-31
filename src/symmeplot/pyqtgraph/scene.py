@@ -105,6 +105,7 @@ class Scene3D(SceneBase):
             Number of frames or iterable with frames.
         interval : int, optional
             Time interval between frames in milliseconds. Default is 30.
+
         """
         if isinstance(frames, int):
             frames = range(frames)

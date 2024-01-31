@@ -128,6 +128,7 @@ class Scene3D(SceneBase):
         -------
         tuple of artists
             Returns the plotted artists
+
         """
         self.update()
         for plot_object in self._children:

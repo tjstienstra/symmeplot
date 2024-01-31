@@ -13,6 +13,7 @@ def dcm_to_align_vectors(v1: Sequence[float], v2: Sequence[float]
     Notes
     -----
     Calculation is based on https://math.stackexchange.com/a/476311
+
     """
     v1 = np.array(v1, dtype=np.float64) / np.linalg.norm(v1)
     v2 = np.array(v2, dtype=np.float64) / np.linalg.norm(v2)
