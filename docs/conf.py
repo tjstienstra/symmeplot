@@ -8,13 +8,15 @@
 import os
 import sys
 
+import symmeplot
+
 sys.path.insert(0, os.path.abspath("../src"))
 
 
 project = "symmeplot"
 copyright = "2024, Timo Stienstra"
 author = "Timo Stienstra"
-release = "0.2.0"
+release = symmeplot.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
