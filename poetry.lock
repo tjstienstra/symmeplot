@@ -2567,4 +2567,4 @@ pg-backend = ["pyopengl", "pyqt6", "pyqtgraph"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "d58ca16d1c882abb349b524682a73be2629fbe87b97e81eee2422c4176fbe30c"
+content-hash = "9988f8796a2d92962a43d5e7a4fac9e09dbf92e1620fa1bb8457c3caf3423978"
