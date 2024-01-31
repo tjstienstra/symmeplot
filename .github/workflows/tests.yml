@@ -50,7 +50,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: poetry install --with test --all-extras
+        run: |
+          poetry install --with test --all-extras
+          pip install pytest-xdist
       - name: Run tests
         run: poetry run pytest
 
