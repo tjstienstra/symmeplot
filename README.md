@@ -13,8 +13,8 @@ SymMePlot enhances this process by providing a way to visualize these constructe
 objects. It integrates with visualization backends like [Matplotlib], and creates visual
 representations based on the parametrization of the symbols involved in the system.
 
-To install `symmeplot` with the `matplotlib` visualization run:
-
+SymMePlot is available on both PyPI and Conda-Forge. To install the latest release
+including [Matplotlib] from PyPI, run: ::
 ```bash
 pip install symmeplot matplotlib
 ```
