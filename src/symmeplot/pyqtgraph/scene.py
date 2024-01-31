@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Iterable
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any, Callable
 
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
@@ -104,6 +105,7 @@ class Scene3D(SceneBase):
             Number of frames or iterable with frames.
         interval : int, optional
             Time interval between frames in milliseconds. Default is 30.
+
         """
         if isinstance(frames, int):
             frames = range(frames)

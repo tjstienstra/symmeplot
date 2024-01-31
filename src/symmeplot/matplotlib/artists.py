@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 from matplotlib.patches import Circle, FancyArrowPatch
@@ -63,6 +64,7 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
     -----
     This class is inspired by
     https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c
+
     """
 
     def __init__(self, origin: Sequence[float], vector: Sequence[float], *args,
@@ -99,6 +101,7 @@ class Circle3D(PathPatch3D, MplArtistBase):
     Notes
     -----
     This class is inspired by https://stackoverflow.com/a/18228967/20185124
+
     """
 
     def __init__(self, center: Sequence[float], radius: float,

@@ -13,9 +13,9 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 sympy = "^1.12"
-numpy = "^1.26.0"
+numpy = "^1.21.6"
 
-matplotlib = {version = "^3.8.2", optional = true}
+matplotlib = {version = "^3.7", optional = true}
 pyqtgraph = {version = "^0.13.3", optional = true}
 pyqt6 = {version = "^6.6.1", optional = true}
 pyopengl = {version = "^3.1.7", optional = true}
@@ -25,11 +25,11 @@ mpl_backend = ["matplotlib"]
 pg_backend = ["pyqtgraph", "pyqt6", "pyopengl"]
 
 [tool.poetry.group.lint.dependencies]
-ruff = "^0.1.14"
+ruff = "^0.1.15"
 pre-commit = "^3.6.0"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.4.4"
+pytest = "^8.0.0"
 pytest-mock = "^3.12.0"
 
 [tool.poetry.group.docs.dependencies]
@@ -37,7 +37,7 @@ sphinx = "^7.2.6"
 jupyter-sphinx = "^0.5.3"
 autodocsumm = "^0.2.12"
 ipykernel = "^6.29.0"
-furo = "^2023.9.10"
+furo = "^2024.1.29"
 
 [project.urls]
 "Homepage" = "https://github.com/tjstienstra/symmeplot"
@@ -49,7 +49,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-target-version = "py37"
+target-version = "py39"
 select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
           "T20", "UP"]
 ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213", "RUF200"]

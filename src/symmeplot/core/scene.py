@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import Any, Callable, Iterable
+from collections.abc import Iterable
+from typing import Any, Callable
 
 from sympy import lambdify
 from sympy.physics.mechanics import Point, ReferenceFrame, Vector
@@ -323,5 +324,6 @@ class SceneBase(ABC):
             Time interval between frames in milliseconds. Default is 30.
         **kwargs
             Keyword arguments are parsed to the internally used animation function.
+
         """
         raise NotImplementedError("'animate' has not been implemented in this backend.")

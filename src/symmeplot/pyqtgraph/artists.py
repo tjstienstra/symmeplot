@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Sequence
+from collections.abc import Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -53,6 +53,7 @@ def create_tube_mesh_data(
     setting the radius to zero.
 
     >>> create_tube_mesh_data((0, 1), (0.3, 0), (0, 0, 0), (0, 0, 1));
+
     """
     if len(lengths) != len(radii) or len(lengths) < 2:
         raise ValueError(
@@ -197,6 +198,7 @@ class Vector3D(PgArtistBase):
     mesh_resolution : int, optional
         The number of points in the circle if plotted as mesh, by default defined as
         classattribute.
+
     """
 
     vector_radius: float | None = None

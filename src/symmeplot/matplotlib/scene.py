@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Iterable
+from collections.abc import Iterable
+from typing import Any, Callable
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -127,6 +128,7 @@ class Scene3D(SceneBase):
         -------
         tuple of artists
             Returns the plotted artists
+
         """
         self.update()
         for plot_object in self._children:
