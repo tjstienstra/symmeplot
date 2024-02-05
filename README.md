@@ -13,8 +13,8 @@ SymMePlot enhances this process by providing a way to visualize these constructe
 objects. It integrates with visualization backends like [Matplotlib], and creates visual
 representations based on the parametrization of the symbols involved in the system.
 
-To install `symmeplot` with the `matplotlib` visualization run:
-
+SymMePlot is available on both PyPI and Conda-Forge. To install the latest release
+including [Matplotlib] from PyPI, run: ::
 ```bash
 pip install symmeplot matplotlib
 ```
@@ -22,11 +22,10 @@ pip install symmeplot matplotlib
 ## Usage
 Most of your programs are expected to follow this structure:
 1. Creation of the system in sympy using the objects from `sympy.physics.mechanics`.
-2. Create a figure with a 3D axes with `matplotlib`.
-3. Initiate a `Scene` with the inertial frame and absolute origin.
-4. Add your frames, vectors and points to the plotter instance.
-5. Lambdify and evaluate the system.
-6. Plot the system.
+2. Initiate a `Scene` with the inertial frame and absolute origin.
+3. Add your frames, vectors and points to the plotter instance.
+4. Lambdify and evaluate the system.
+5. Plot the system.
 
 Below is a basic example of how this looks in practise:
 ```python

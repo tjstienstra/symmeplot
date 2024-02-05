@@ -4,7 +4,8 @@ Installation
 Installation Users
 ------------------
 
-SymMePlot is available on PyPI. You can install it using: ::
+SymMePlot is available on both PyPI and Conda-Forge. To install the latest release from
+PyPI, run: ::
 
     pip install symmeplot
 
