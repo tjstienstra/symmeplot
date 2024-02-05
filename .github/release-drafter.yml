@@ -12,8 +12,6 @@ categories:
       - 'bug'
   - title: '🧰 Maintenance'
     label: 'chore'
-  - title: '📚 Documentation'
-    label: 'documentation'
   - title: '💥 Breaking Changes'
     label: 'breaking'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
