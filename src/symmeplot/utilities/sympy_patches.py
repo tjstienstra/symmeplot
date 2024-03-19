@@ -9,6 +9,17 @@ from sympy.utilities.iterables import iterable
 from sympy.utilities.lambdify import _EvaluatorPrinter
 
 
+def empty_tuple_fixed() -> bool:
+    """Test for empty tuple in lambdify."""
+    from sympy import lambdify, symbols
+    x = symbols("x")
+    try:
+        lambdify((x,), ())(0)
+    except SyntaxError:
+        return False
+    return True
+
+
 def _recursive_to_string(doprint, arg):
     """Functions in lambdify accept both SymPy types and non-SymPy types such as python
     lists and tuples. This method ensures that we only call the doprint method of the
@@ -89,4 +100,7 @@ def doprint(self, funcname, args, expr, *, cses=()):
 
     return "\n".join(funclines) + "\n"
 
-_EvaluatorPrinter.doprint = doprint
+if not empty_tuple_fixed():
+    _EvaluatorPrinter.doprint = doprint
+    if not empty_tuple_fixed():
+        raise ValueError("Patching failed.")
