@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: 3.12
       - name: Install dependencies
         run: poetry install --with lint
       - name: Lint with ruff
@@ -53,6 +53,33 @@ jobs:
         run: |
           poetry install --with test --all-extras
           pip install pytest-xdist
+      - name: Run tests
+        run: poetry run pytest
+
+  test_sympy_dev:
+    needs: code-quality
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install pyqtgraph dependencies
+        # https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html#github-actions
+        uses: tlambert03/setup-qt-libs@v1
+      - name: Setup headless display
+        uses: pyvista/setup-headless-display-action@v2
+      - name: Install poetry
+        run: pipx install poetry==1.7.1
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+      - name: Install dependencies
+        run: |
+          poetry install --with test --all-extras
+          pip install pytest-xdist
+          pip uninstall sympy
+          pip install git+https://github.com/sympy/sympy.git
       - name: Run tests
         run: poetry run pytest
 
