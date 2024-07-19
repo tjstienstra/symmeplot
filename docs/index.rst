@@ -61,6 +61,14 @@ Here is a simple example of how it looks in practice: ::
    :alt: animation
    :align: center
 
+To convert the plot to a 2D variant, at the following line before `scene.plot()`: ::
+
+   scene.convert_to_2d()
+
+.. image:: animation_2d.gif
+   :alt: animation
+   :align: center
+
 Contents
 ========
 
