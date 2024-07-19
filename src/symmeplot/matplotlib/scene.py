@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from dataclasses import dataclass
 from typing import Any, Callable
 
 import matplotlib.pyplot as plt
@@ -21,6 +20,7 @@ from symmeplot.matplotlib.plot_objects import (
 )
 
 __all__ = ["Scene3D"]
+
 
 class Scene3D(SceneBase):
     """Class for plotting sympy mechanics in matplotlib.
@@ -148,11 +148,11 @@ class Scene3D(SceneBase):
     def set_plot_as_2d(self, frame: ReferenceFrame | None = None) -> None:
         """Change the axis to an orhogonal projection making the view seemingly 2D.
 
-       Parameters
-       ----------
-       frame: ReferenceFrame, optional
-           Reference frame w.r.t. which the axis view is oriented aligning the users view
-           with the XY plane. The default is the inertial frame of the scene.
+        Parameters
+        ----------
+        frame : ReferenceFrame, optional
+            Reference frame w.r.t. which the axis view is oriented aligning the users
+            view with the XY plane. The default is the inertial frame of the scene.
 
         """
         projection_frame = ReferenceFrame("A")
@@ -179,7 +179,8 @@ class Scene3D(SceneBase):
             The Euler angles in the order of (elev, azim, roll).
 
         """
-        direction_matrix = np.array(projection_frame.dcm(normal_frame)).astype(np.float64)
+        direction_matrix = projection_frame.dcm(normal_frame)
+        direction_matrix = np.array(direction_matrix).astype(np.float64)
         azimuth = np.arctan2(direction_matrix[1, 0], direction_matrix[0, 0])
         elevation = np.arcsin(-direction_matrix[2, 0])
         roll = np.arctan2(direction_matrix[2, 1], direction_matrix[2, 2])
