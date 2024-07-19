@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import dataclass
 from typing import Any, Callable
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.proj3d import proj_transform
+from sympy.physics.vector import ReferenceFrame
 
 from symmeplot.core import SceneBase
 from symmeplot.matplotlib.plot_base import MplPlotBase
@@ -19,7 +21,6 @@ from symmeplot.matplotlib.plot_objects import (
 )
 
 __all__ = ["Scene3D"]
-
 
 class Scene3D(SceneBase):
     """Class for plotting sympy mechanics in matplotlib.
@@ -144,6 +145,50 @@ class Scene3D(SceneBase):
             self.auto_zoom()
             self.axes.set_aspect("equal", adjustable="box")
 
+    def set_plot_as_2d(self, frame: ReferenceFrame | None = None) -> None:
+        """Change the axis to an orhogonal projection making the view seemingly 2D.
+
+       Parameters
+       ----------
+       frame: ReferenceFrame, optional
+           Reference frame w.r.t. which the axis view is oriented aligning the users view
+           with the XY plane. The default is the inertial frame of the scene.
+
+        """
+        projection_frame = ReferenceFrame("A")
+        projection_frame.orient_axis(self.inertial_frame, self.inertial_frame.z, 0)
+        frame = frame or projection_frame
+        self.axes.set_proj_type("ortho")
+        self.axes.view_init(**self.get_euler_angels(self.inertial_frame, frame))
+
+    @staticmethod
+    def get_euler_angels(normal_frame: ReferenceFrame, projection_frame: ReferenceFrame,
+                         ) -> dict[str, float]:
+        """Get the Euler angles of the given frame.
+
+        Parameters
+        ----------
+        normal_frame : ReferenceFrame
+            Reference frame for which the Euler angles should be calculated.
+        projection_frame : ReferenceFrame
+            Reference frame for which the Euler angles should be calculated.
+
+        Returns
+        -------
+        tuple of float
+            The Euler angles in the order of (elev, azim, roll).
+
+        """
+        direction_matrix = np.array(projection_frame.dcm(normal_frame)).astype(np.float64)
+        azimuth = np.arctan2(direction_matrix[1, 0], direction_matrix[0, 0])
+        elevation = np.arcsin(-direction_matrix[2, 0])
+        roll = np.arctan2(direction_matrix[2, 1], direction_matrix[2, 2])
+        return {
+            "elev": np.rad2deg(elevation),
+            "azim": np.rad2deg(azimuth),
+            "roll": np.rad2deg(roll),
+        }
+
     def auto_zoom(self, scale=1.1):
         """Auto scale the axis."""
         _artists = self.artists
@@ -223,6 +268,7 @@ class Scene3D(SceneBase):
             Animation object.
 
         """
+
         def update(frame):
             self.evaluate_system(*get_args(frame))
             self.update()

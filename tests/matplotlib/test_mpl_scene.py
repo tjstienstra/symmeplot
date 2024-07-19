@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+import numpy as np
 import pytest
 import sympy.physics.mechanics as me
 from symmeplot.utilities.testing import ON_CI
@@ -15,8 +16,9 @@ except ImportError as e:
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
-    with (patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))):
+    with patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock())):
         yield
+
 
 class TestScene3D:
     @pytest.fixture(autouse=True)
@@ -46,3 +48,69 @@ class TestScene3D:
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         scene = Scene3D(self.rf, self.zp, ax=ax)
         assert scene.axes == ax
+
+    def test_scene_in_2d_no_arguments_plot_to_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        scene.set_plot_as_2d()
+
+        kwargs = dict(zip(["elev", "azim", "roll"], (0, 0, 0)))
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_2d_rf_given_as_arguments_plot_to_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        scene.set_plot_as_2d(self.rf)
+
+        kwargs = dict(zip(["elev", "azim", "roll"], (0, 0, 0)))
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_2d_rotate_view_90_degrees(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.x, np.pi / 2)
+
+        scene.set_plot_as_2d(A)
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": 0.0,
+            "roll": -90.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_2d_from_left_view(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.y, np.pi / 2)
+
+        scene.set_plot_as_2d(A)
+
+        kwargs = {
+            "elev": -90.0,
+            "azim": 0.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_2d_from_top_view(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
+
+        scene.set_plot_as_2d(A)
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": -90.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
