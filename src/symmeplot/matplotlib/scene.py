@@ -21,6 +21,8 @@ from symmeplot.matplotlib.plot_objects import (
 
 __all__ = ["Scene3D"]
 
+from symmeplot.utilities.utilities import calculate_euler_angels
+
 
 class Scene3D(SceneBase):
     """Class for plotting sympy mechanics in matplotlib.
@@ -71,8 +73,9 @@ class Scene3D(SceneBase):
                  ):
         if ax is None:
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-        if not hasattr(ax, "get_zlim"):
+        elif not hasattr(ax, "get_zlim"):
             raise TypeError("The axes should be a 3d axes")
+
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
         self._ax = ax
         self.annot = self._ax.text2D(
@@ -145,50 +148,21 @@ class Scene3D(SceneBase):
             self.auto_zoom()
             self.axes.set_aspect("equal", adjustable="box")
 
-    def set_plot_as_2d(self, frame: ReferenceFrame | None = None) -> None:
-        """Change the axis to an orhogonal projection making the view seemingly 2D.
+    def as_orthogonal_projection_plot(
+            self, frame: ReferenceFrame | None = None
+    ) -> None:
+        """Change the axis to an orthogonal projection making the view seemingly 2D.
 
         Parameters
         ----------
         frame : ReferenceFrame, optional
             Reference frame w.r.t. which the axis view is oriented aligning the users
-            view with the XY plane. The default is the inertial frame of the scene.
+            view with its YZ plane. The default is the inertial frame of the scene.
 
         """
-        projection_frame = ReferenceFrame("A")
-        projection_frame.orient_axis(self.inertial_frame, self.inertial_frame.z, 0)
-        frame = frame or projection_frame
+        frame = frame or self.inertial_frame
         self.axes.set_proj_type("ortho")
-        self.axes.view_init(**self.get_euler_angels(self.inertial_frame, frame))
-
-    @staticmethod
-    def get_euler_angels(normal_frame: ReferenceFrame, projection_frame: ReferenceFrame,
-                         ) -> dict[str, float]:
-        """Get the Euler angles of the given frame.
-
-        Parameters
-        ----------
-        normal_frame : ReferenceFrame
-            Reference frame for which the Euler angles should be calculated.
-        projection_frame : ReferenceFrame
-            Reference frame for which the Euler angles should be calculated.
-
-        Returns
-        -------
-        tuple of float
-            The Euler angles in the order of (elev, azim, roll).
-
-        """
-        direction_matrix = projection_frame.dcm(normal_frame)
-        direction_matrix = np.array(direction_matrix).astype(np.float64)
-        azimuth = np.arctan2(direction_matrix[1, 0], direction_matrix[0, 0])
-        elevation = np.arcsin(-direction_matrix[2, 0])
-        roll = np.arctan2(direction_matrix[2, 1], direction_matrix[2, 2])
-        return {
-            "elev": np.rad2deg(elevation),
-            "azim": np.rad2deg(azimuth),
-            "roll": np.rad2deg(roll),
-        }
+        self.axes.view_init(**calculate_euler_angels(self.inertial_frame, frame))
 
     def auto_zoom(self, scale=1.1):
         """Auto scale the axis."""

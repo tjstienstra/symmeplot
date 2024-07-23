@@ -63,7 +63,7 @@ Here is a simple example of how it looks in practice: ::
 
 To convert the plot to a 2D variant, at the following line before `scene.plot()`: ::
 
-   scene.convert_to_2d()
+   scene.as_orthogonal_projection_plot()
 
 .. image:: animation_2d.gif
    :alt: animation

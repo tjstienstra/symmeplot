@@ -49,64 +49,58 @@ class TestScene3D:
         scene = Scene3D(self.rf, self.zp, ax=ax)
         assert scene.axes == ax
 
-    def test_scene_in_2d_no_arguments_plot_to_rf(self):
+    def test_scene_in_orthogonal_proj_no_arguments_view_of_zy_plane_of_rf(self):
         axes_mock = MagicMock()
         scene = Scene3D(self.rf, self.zp, ax=axes_mock)
 
-        scene.set_plot_as_2d()
-
-        kwargs = dict(zip(["elev", "azim", "roll"], (0, 0, 0)))
-        axes_mock.view_init.assert_called_once_with(**kwargs)
-
-    def test_scene_in_2d_rf_given_as_arguments_plot_to_rf(self):
-        axes_mock = MagicMock()
-        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
-
-        scene.set_plot_as_2d(self.rf)
-
-        kwargs = dict(zip(["elev", "azim", "roll"], (0, 0, 0)))
-        axes_mock.view_init.assert_called_once_with(**kwargs)
-
-    def test_scene_in_2d_rotate_view_90_degrees(self):
-        axes_mock = MagicMock()
-        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
-
-        A = me.ReferenceFrame("A")
-        A.orient_axis(self.rf, self.rf.x, np.pi / 2)
-
-        scene.set_plot_as_2d(A)
+        scene.as_orthogonal_projection_plot()
 
         kwargs = {
             "elev": 0.0,
-            "azim": 0.0,
-            "roll": -90.0,
-        }
-        axes_mock.view_init.assert_called_once_with(**kwargs)
-
-    def test_scene_in_2d_from_left_view(self):
-        axes_mock = MagicMock()
-        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
-
-        A = me.ReferenceFrame("A")
-        A.orient_axis(self.rf, self.rf.y, np.pi / 2)
-
-        scene.set_plot_as_2d(A)
-
-        kwargs = {
-            "elev": -90.0,
             "azim": 0.0,
             "roll": 0.0,
         }
         axes_mock.view_init.assert_called_once_with(**kwargs)
 
-    def test_scene_in_2d_from_top_view(self):
+    def test_scene_in_orthogonal_proj_rf_as_arguments_view_of_zy_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        scene.as_orthogonal_projection_plot(self.rf)
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": 0.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_orthogonal_projection_view_of_xy_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
+        B = me.ReferenceFrame("B")
+        B.orient_axis(A, self.rf.y, -np.pi / 2)
+
+        scene.as_orthogonal_projection_plot(B)
+
+        kwargs = {
+            "elev": 90.0,
+            "azim": -90.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_orthogonal_projection_view_of_xz_plane_of_rf(self):
         axes_mock = MagicMock()
         scene = Scene3D(self.rf, self.zp, ax=axes_mock)
 
         A = me.ReferenceFrame("A")
         A.orient_axis(self.rf, self.rf.z, np.pi / 2)
 
-        scene.set_plot_as_2d(A)
+        scene.as_orthogonal_projection_plot(A)
 
         kwargs = {
             "elev": 0.0,
