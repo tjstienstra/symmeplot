@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+import numpy as np
 import pytest
 import sympy.physics.mechanics as me
 from symmeplot.utilities.testing import ON_CI
@@ -15,8 +16,9 @@ except ImportError as e:
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
-    with (patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))):
+    with patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock())):
         yield
+
 
 class TestScene3D:
     @pytest.fixture(autouse=True)
@@ -46,3 +48,63 @@ class TestScene3D:
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         scene = Scene3D(self.rf, self.zp, ax=ax)
         assert scene.axes == ax
+
+    def test_scene_in_orthogonal_proj_no_arguments_view_of_zy_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        scene.as_orthogonal_projection_plot()
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": 0.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_orthogonal_proj_rf_as_arguments_view_of_zy_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        scene.as_orthogonal_projection_plot(self.rf)
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": 0.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_orthogonal_projection_view_of_xy_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
+        B = me.ReferenceFrame("B")
+        B.orient_axis(A, self.rf.y, -np.pi / 2)
+
+        scene.as_orthogonal_projection_plot(B)
+
+        kwargs = {
+            "elev": 90.0,
+            "azim": -90.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)
+
+    def test_scene_in_orthogonal_projection_view_of_xz_plane_of_rf(self):
+        axes_mock = MagicMock()
+        scene = Scene3D(self.rf, self.zp, ax=axes_mock)
+
+        A = me.ReferenceFrame("A")
+        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
+
+        scene.as_orthogonal_projection_plot(A)
+
+        kwargs = {
+            "elev": 0.0,
+            "azim": -90.0,
+            "roll": 0.0,
+        }
+        axes_mock.view_init.assert_called_once_with(**kwargs)

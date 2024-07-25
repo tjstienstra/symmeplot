@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.proj3d import proj_transform
+from sympy.physics.vector import ReferenceFrame
 
 from symmeplot.core import SceneBase
 from symmeplot.matplotlib.plot_base import MplPlotBase
@@ -19,6 +20,8 @@ from symmeplot.matplotlib.plot_objects import (
 )
 
 __all__ = ["Scene3D"]
+
+from symmeplot.utilities.utilities import calculate_euler_angels
 
 
 class Scene3D(SceneBase):
@@ -70,8 +73,9 @@ class Scene3D(SceneBase):
                  ):
         if ax is None:
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-        if not hasattr(ax, "get_zlim"):
+        elif not hasattr(ax, "get_zlim"):
             raise TypeError("The axes should be a 3d axes")
+
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
         self._ax = ax
         self.annot = self._ax.text2D(
@@ -143,6 +147,22 @@ class Scene3D(SceneBase):
                     [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
             self.auto_zoom()
             self.axes.set_aspect("equal", adjustable="box")
+
+    def as_orthogonal_projection_plot(
+            self, frame: ReferenceFrame | None = None
+    ) -> None:
+        """Change the axis to an orthogonal projection making the view seemingly 2D.
+
+        Parameters
+        ----------
+        frame : ReferenceFrame, optional
+            Reference frame w.r.t. which the axis view is oriented aligning the users
+            view with its YZ plane. The default is the inertial frame of the scene.
+
+        """
+        frame = frame or self.inertial_frame
+        self.axes.set_proj_type("ortho")
+        self.axes.view_init(**calculate_euler_angels(self.inertial_frame, frame))
 
     def auto_zoom(self, scale=1.1):
         """Auto scale the axis."""
@@ -223,6 +243,7 @@ class Scene3D(SceneBase):
             Animation object.
 
         """
+
         def update(frame):
             self.evaluate_system(*get_args(frame))
             self.update()

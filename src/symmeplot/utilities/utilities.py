@@ -4,10 +4,12 @@ from collections.abc import Sequence
 
 import numpy as np
 import numpy.typing as npt
+from sympy.physics.vector import ReferenceFrame
 
 
-def dcm_to_align_vectors(v1: Sequence[float], v2: Sequence[float]
-                         ) -> npt.NDArray[np.float64]:
+def dcm_to_align_vectors(
+    v1: Sequence[float], v2: Sequence[float]
+) -> npt.NDArray[np.float64]:
     """Calculate rotation matrix to align v1 with v2.
 
     Notes
@@ -25,3 +27,36 @@ def dcm_to_align_vectors(v1: Sequence[float], v2: Sequence[float]
                      [v[2], 0, -v[0]],
                      [-v[1], v[0], 0]], dtype=np.float64)
     return np.eye(3) + skew + (skew @ skew) * (1 / (1 + c))
+
+
+def calculate_euler_angels(
+    normal_frame: ReferenceFrame,
+    projection_frame: ReferenceFrame,
+) -> dict[str, float]:
+    """Get the Euler angles of the given frame.
+
+    Parameters
+    ----------
+    normal_frame : ReferenceFrame
+        Reference frame for which the Euler angles should be calculated.
+    projection_frame : ReferenceFrame
+        Reference frame for which the Euler angles should be calculated.
+
+    Returns
+    -------
+    tuple of float
+        The Euler angles in the order of (elev, azim, roll).
+
+    """
+    direction_matrix = projection_frame.dcm(normal_frame)
+    direction_matrix = np.array(direction_matrix).astype(np.float64)
+
+    elevation = np.arcsin(-direction_matrix[2, 0])
+    azimuth = np.arctan2(direction_matrix[1, 0], direction_matrix[0, 0])
+    roll = np.arctan2(direction_matrix[2, 1], direction_matrix[2, 2])
+
+    return {
+        "elev": np.rad2deg(elevation),
+        "azim": np.rad2deg(azimuth),
+        "roll": np.rad2deg(roll),
+    }
