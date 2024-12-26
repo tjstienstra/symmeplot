@@ -1,12 +1,12 @@
 __all__ = [
     "ArtistBase",
-
-    "PlotBase",
-
     "OriginMixin",
-    "PlotPointMixin", "PlotLineMixin", "PlotVectorMixin", "PlotFrameMixin",
+    "PlotBase",
     "PlotBodyMixin",
-
+    "PlotFrameMixin",
+    "PlotLineMixin",
+    "PlotPointMixin",
+    "PlotVectorMixin",
     "SceneBase",
 ]
 

@@ -3,10 +3,12 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 import sympy.physics.mechanics as me
+
 from symmeplot.utilities.testing import ON_CI
 
 try:
     import matplotlib.pyplot as plt
+
     from symmeplot.matplotlib import PlotFrame, Scene3D
 except ImportError as e:
     if ON_CI:
@@ -33,7 +35,8 @@ class TestScene3D:
         self.p3 = self.p2.locatenew("p3", 0.5 * self.f.z)
         self.line = (self.p1, self.p2, self.p3)
         self.rb = me.RigidBody(
-            "rb", self.p2, self.f, 1, (self.f.x.outer(self.f.x), self.p2))
+            "rb", self.p2, self.f, 1, (self.f.x.outer(self.f.x), self.p2)
+        )
         self.pt = me.Particle("pt", self.p3, 1)
 
     def test_scene_init(self):

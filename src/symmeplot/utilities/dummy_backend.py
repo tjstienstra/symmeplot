@@ -21,6 +21,7 @@ class DummyArtist(ArtistBase):
     def update_data(self, *args):
         self.update_args = args
 
+
 class _PlotBase(PlotBase):
     def plot(self):
         self.update()
@@ -38,6 +39,7 @@ class _PlotBase(PlotBase):
         for child in self._children:
             child.visible = bool(is_visible)
         self._visible = bool(is_visible)
+
 
 class PlotPoint(PlotPointMixin, _PlotBase):
     def __init__(self, *args, **kwargs):
@@ -58,12 +60,14 @@ class PlotVector(PlotVectorMixin, _PlotBase):
 
 
 class PlotFrame(PlotFrameMixin, _PlotBase):
-    def __init__(self, inertial_frame, zero_point, frame, origin=None, name=None,
-                 scale=0.1):
+    def __init__(
+        self, inertial_frame, zero_point, frame, origin=None, name=None, scale=0.1
+    ):
         super().__init__(inertial_frame, zero_point, frame, origin, name, scale)
         for v in self.frame:
-            self._children.append(PlotVector(
-                self.inertial_frame, self.zero_point, scale * v, self.origin))
+            self._children.append(
+                PlotVector(self.inertial_frame, self.zero_point, scale * v, self.origin)
+            )
 
 
 class PlotBody(PlotBodyMixin, _PlotBase):
@@ -71,11 +75,13 @@ class PlotBody(PlotBodyMixin, _PlotBase):
         super().__init__(*args, **kwargs)
         # Particle.masscenter does not yet exist in SymPy 1.12
         mc = getattr(self.body, "masscenter", getattr(self.body, "point", None))
-        self._children.append(PlotPoint(
-            self.inertial_frame, self.zero_point, mc))
+        self._children.append(PlotPoint(self.inertial_frame, self.zero_point, mc))
         if hasattr(self.body, "frame"):
-            self._children.append(PlotFrame(
-                self.inertial_frame, self.zero_point, self.body.frame, origin=mc))
+            self._children.append(
+                PlotFrame(
+                    self.inertial_frame, self.zero_point, self.body.frame, origin=mc
+                )
+            )
 
 
 class Scene3D(SceneBase):

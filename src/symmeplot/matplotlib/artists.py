@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     import numpy.typing as npt
     from matplotlib import Path
 
-__all__ = ["Line3D", "Vector3D", "Circle3D"]
+__all__ = ["Circle3D", "Line3D", "Vector3D"]
 
 
 class MplArtistBase(ArtistBase):
@@ -35,18 +35,29 @@ class MplArtistBase(ArtistBase):
 class Line3D(_Line3D, MplArtistBase):
     """Artist to plot 3D lines."""
 
-    def __init__(self, x: Sequence[float], y: Sequence[float], z: Sequence[float],
-                 *args, **kwargs):
-        super().__init__(np.array(x, dtype=np.float64),
-                         np.array(y, dtype=np.float64),
-                         np.array(z, dtype=np.float64), *args, **kwargs)
+    def __init__(
+        self,
+        x: Sequence[float],
+        y: Sequence[float],
+        z: Sequence[float],
+        *args,
+        **kwargs,
+    ):
+        super().__init__(
+            np.array(x, dtype=np.float64),
+            np.array(y, dtype=np.float64),
+            np.array(z, dtype=np.float64),
+            *args,
+            **kwargs,
+        )
 
-    def update_data(self, x: Sequence[float], y: Sequence[float],
-                    z: Sequence[float]):
+    def update_data(self, x: Sequence[float], y: Sequence[float], z: Sequence[float]):
         """Update the data of the artist."""
-        self.set_data_3d(np.array(x, dtype=np.float64),
-                         np.array(y, dtype=np.float64),
-                         np.array(z, dtype=np.float64))
+        self.set_data_3d(
+            np.array(x, dtype=np.float64),
+            np.array(y, dtype=np.float64),
+            np.array(z, dtype=np.float64),
+        )
 
     def min(self) -> np.array:
         """Return the minimum values of the bounding box of the artist data."""
@@ -67,8 +78,9 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
 
     """
 
-    def __init__(self, origin: Sequence[float], vector: Sequence[float], *args,
-                 **kwargs):
+    def __init__(
+        self, origin: Sequence[float], vector: Sequence[float], *args, **kwargs
+    ):
         super().__init__((0, 0), (0, 0), *args, **kwargs)
         self._origin = np.array(origin, dtype=np.float64)
         self._vector = np.array(vector, dtype=np.float64)
@@ -77,7 +89,8 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
         """Project the artist to the 3D axes."""
         # https://github.com/matplotlib/matplotlib/issues/21688
         xs, ys, zs = proj_transform(
-            *[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M)
+            *[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M
+        )
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         return min(zs)
 
@@ -104,14 +117,20 @@ class Circle3D(PathPatch3D, MplArtistBase):
 
     """
 
-    def __init__(self, center: Sequence[float], radius: float,
-                 normal: Sequence[float] = (0, 0, 1), **kwargs):
+    def __init__(
+        self,
+        center: Sequence[float],
+        radius: float,
+        normal: Sequence[float] = (0, 0, 1),
+        **kwargs,
+    ):
         path_2d = self._get_2d_path(np.float64(radius))
         super().__init__(path_2d, **{"zs": 0, **kwargs})
         self._segment3d = self._get_segment3d(
             path_2d,
             np.array(center, dtype=np.float64),
-            np.array(normal, dtype=np.float64))
+            np.array(normal, dtype=np.float64),
+        )
 
     @staticmethod
     def _get_2d_path(radius: np.float64):
@@ -121,8 +140,9 @@ class Circle3D(PathPatch3D, MplArtistBase):
         return trans.transform_path(path)  # Apply the transform
 
     @staticmethod
-    def _get_segment3d(path_2d: Path, center: npt.NDArray[np.float64],
-                       normal: npt.NDArray[np.float64]):
+    def _get_segment3d(
+        path_2d: Path, center: npt.NDArray[np.float64], normal: npt.NDArray[np.float64]
+    ):
         verts = path_2d.vertices  # Get the vertices in 2D
         rot_mat = dcm_to_align_vectors((0, 0, 1), normal)
         segment3d = np.array([np.dot(rot_mat, (x, y, 0)) for x, y in verts])
@@ -130,13 +150,16 @@ class Circle3D(PathPatch3D, MplArtistBase):
             segment3d[:, i] += offset
         return segment3d
 
-    def update_data(self, center: Sequence[float], radius: float,
-                    normal: Sequence[float]):
+    def update_data(
+        self, center: Sequence[float], radius: float, normal: Sequence[float]
+    ):
         """Update the data of the artist."""
         self._path2d = self._get_2d_path(np.float64(radius))
-        self._segment3d = self._get_segment3d(self._path2d,
-                                              np.array(center, dtype=np.float64),
-                                              np.array(normal, dtype=np.float64))
+        self._segment3d = self._get_segment3d(
+            self._path2d,
+            np.array(center, dtype=np.float64),
+            np.array(normal, dtype=np.float64),
+        )
 
     def min(self) -> np.array:
         """Return the minimum values of the bounding box of the artist data."""

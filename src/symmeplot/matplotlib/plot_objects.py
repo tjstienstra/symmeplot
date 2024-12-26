@@ -16,7 +16,7 @@ from symmeplot.core import (
 from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
 from symmeplot.matplotlib.plot_base import MplPlotBase
 
-__all__ = ["PlotPoint", "PlotLine", "PlotVector", "PlotFrame", "PlotBody"]
+__all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotVector"]
 
 
 class PlotPoint(PlotPointMixin, MplPlotBase):
@@ -65,9 +65,15 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 point: Point, name: str | None = None, style: str = "default",
-                 **kwargs):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+        style: str = "default",
+        **kwargs,
+    ):
         super().__init__(inertial_frame, zero_point, point, name)
         self.add_artist(
             Line3D([0], [0], [0], **{**self._get_style_properties(style), **kwargs}),
@@ -132,8 +138,14 @@ class PlotLine(PlotLineMixin, MplPlotBase):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 line: Iterable[Point], name: str | None = None, **kwargs):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        line: Iterable[Point],
+        name: str | None = None,
+        **kwargs,
+    ):
         super().__init__(inertial_frame, zero_point, line, name)
         self.add_artist(
             Line3D([0], [0], [0], **kwargs),
@@ -193,14 +205,22 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 vector: Vector, origin: Point | Vector | None = None,
-                 name: str | None = None, style: str = "default", **kwargs):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        vector: Vector,
+        origin: Point | Vector | None = None,
+        name: str | None = None,
+        style: str = "default",
+        **kwargs,
+    ):
         super().__init__(inertial_frame, zero_point, vector, origin, name)
         self._properties = {}
         self.add_artist(
-            Vector3D([0, 0, 0], [0, 0, 0],
-                     **{**self._get_style_properties(style), **kwargs}),
+            Vector3D(
+                [0, 0, 0], [0, 0, 0], **{**self._get_style_properties(style), **kwargs}
+            ),
             self.get_sympy_object_exprs(),
         )
 
@@ -220,7 +240,7 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
                 "arrowstyle": "-|>",
                 "shrinkA": 0,
                 "shrinkB": 0,
-                "picker": 20
+                "picker": 20,
             }
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
@@ -280,23 +300,32 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 frame: ReferenceFrame, origin: Point | Vector | None = None,
-                 name: str | None = None, scale: float = 0.1, style: str = "default",
-                 **kwargs):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        frame: ReferenceFrame,
+        origin: Point | Vector | None = None,
+        name: str | None = None,
+        scale: float = 0.1,
+        style: str = "default",
+        **kwargs,
+    ):
         super().__init__(inertial_frame, zero_point, frame, origin, name, scale)
         properties = self._get_style_properties(style)
         for prop in properties:
             prop.update(kwargs)
         for vector, prop in zip(frame, properties):
             self._children.append(
-                PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop))
+                PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop)
+            )
 
     @property
     def annot_coords(self):
         """Coordinate where the annotation text is displayed."""
         return self.vectors[0].origin_coords + 0.3 * sum(
-            [v.vector_values for v in self.vectors])
+            [v.vector_values for v in self.vectors]
+        )
 
     def _get_style_properties(self, style):
         """Get the properties of the vectors belonging to a certain style."""
@@ -306,10 +335,7 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
         elif style == "default":
             colors = "rgb"
             for color, prop in zip(colors, properties):
-                prop.update({
-                    "style": "default",
-                    "color": color
-                })
+                prop.update({"style": "default", "color": color})
             return properties
         else:
             raise NotImplementedError(f"Style '{style}' is not implemented.")
@@ -377,10 +403,17 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 body: Particle | RigidBody, name: str | None = None,
-                 style: str = "default", plot_point_properties: dict | None = None,
-                 plot_frame_properties: dict | None = None, **kwargs):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        body: Particle | RigidBody,
+        name: str | None = None,
+        style: str = "default",
+        plot_point_properties: dict | None = None,
+        plot_frame_properties: dict | None = None,
+        **kwargs,
+    ):
         super().__init__(inertial_frame, zero_point, body, name)
         properties = self._get_style_properties(style)
         if plot_point_properties is not None:
@@ -392,11 +425,14 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         # Particle.masscenter does not yet exist in SymPy 1.12
         masscenter = getattr(body, "masscenter", getattr(body, "point", None))
         self._children.append(
-            PlotPoint(inertial_frame, zero_point, masscenter, **properties[0]))
+            PlotPoint(inertial_frame, zero_point, masscenter, **properties[0])
+        )
         if hasattr(body, "frame"):
             self._children.append(
-                PlotFrame(inertial_frame, zero_point, body.frame, masscenter,
-                          **properties[1]))
+                PlotFrame(
+                    inertial_frame, zero_point, body.frame, masscenter, **properties[1]
+                )
+            )
 
     @property
     def annot_coords(self):
@@ -445,9 +481,13 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         if style is None:
             return properties
         elif style == "default":
-            properties[0] = {"color": "k", "marker": r"$\bigoplus$", "markersize": 8,
-                             "markeredgewidth": .5,
-                             "zorder": 10}
+            properties[0] = {
+                "color": "k",
+                "marker": r"$\bigoplus$",
+                "markersize": 8,
+                "markeredgewidth": 0.5,
+                "zorder": 10,
+            }
             properties[1] = {"style": "default"}
             return properties
         else:

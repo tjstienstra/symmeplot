@@ -3,6 +3,7 @@
 List of patches:
 - Patch for lambdify to allow for empty tuples, refer to #26119 in sympy.
 """
+
 from __future__ import annotations
 
 from sympy.utilities.iterables import iterable
@@ -12,6 +13,7 @@ from sympy.utilities.lambdify import _EvaluatorPrinter
 def empty_tuple_fixed() -> bool:
     """Test for empty tuple in lambdify."""
     from sympy import lambdify, symbols
+
     x = symbols("x")
     try:
         lambdify((x,), ())(0)
@@ -23,8 +25,10 @@ def empty_tuple_fixed() -> bool:
 def _recursive_to_string(doprint, arg):
     """Functions in lambdify accept both SymPy types and non-SymPy types such as python
     lists and tuples. This method ensures that we only call the doprint method of the
-    printer with SymPy types (so that the printer safely can use SymPy-methods)."""
+    printer with SymPy types (so that the printer safely can use SymPy-methods).
+    """
     from sympy.core.basic import Basic
+
     try:
         from sympy.matrices.matrixbase import MatrixBase as MatrixType
     except ImportError:
@@ -41,11 +45,12 @@ def _recursive_to_string(doprint, arg):
                 return "()"  # special case for empty tuple
         else:
             raise NotImplementedError("unhandled type: %s, %s" % (type(arg), arg))
-        return left +", ".join(_recursive_to_string(doprint, e) for e in arg) + right
+        return left + ", ".join(_recursive_to_string(doprint, e) for e in arg) + right
     elif isinstance(arg, str):
         return arg
     else:
         return doprint(arg)
+
 
 def doprint(self, funcname, args, expr, *, cses=()):
     """Returns the function definition code as a string."""
@@ -99,6 +104,7 @@ def doprint(self, funcname, args, expr, *, cses=()):
     funclines.extend(["    " + line for line in funcbody])
 
     return "\n".join(funclines) + "\n"
+
 
 if not empty_tuple_fixed():
     _EvaluatorPrinter.doprint = doprint

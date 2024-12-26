@@ -20,10 +20,11 @@ dependencies as well: ::
 
 Installation Developers
 -----------------------
-SymMePlot uses `poetry`_ as package manager. To install SymMePlot after installing
+SymMePlot uses `uv`_ as package manager. To install SymMePlot after installing
 `poetry`_ and cloning the repository, run: ::
 
-    poetry install
+    uv venv
+    uv pip install -e .
 
 SymMePlot offers dependency groups to assist developers:
 
@@ -33,22 +34,26 @@ SymMePlot offers dependency groups to assist developers:
 
 To install optional dependencies from a specific group, run: ::
 
-    poetry install --with <group>
+    uv pip install -e .[<group>]
 
 The backends are optional dependencies. These can be installed using: ::
 
-    poetry install --extras mpl_backend
-    poetry install --extras pg_backend
+    uv pip install -e .[mpl_backend]
+    uv pip install -e .[pg_backend]
 
 To install everything at once, run: ::
 
-    poetry install --with lint,test,docs --all-extras
+    uv sync --all-extras
 
 To quickly check code for linting errors, it is recommended to set up ``pre-commit``
 hooks by executing: ::
 
     pre-commit install
 
-.. _poetry: https://python-poetry.org
+You can install ``pre-commit`` by running: ::
+
+    uv pip install pre-commit
+
+.. _uv: https://docs.astral.sh/uv/
 .. _matplotlib: https://matplotlib.org
 .. _pyqtgraph: https://www.pyqtgraph.org

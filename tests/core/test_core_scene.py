@@ -3,8 +3,9 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
-import symmeplot.utilities.dummy_backend as dummy
 import sympy.physics.mechanics as me
+
+import symmeplot.utilities.dummy_backend as dummy
 from symmeplot.utilities.testing import ON_CI
 
 try:
@@ -17,29 +18,43 @@ except ImportError:
     pyqtgraph = None
 
 parametrize_backends = pytest.mark.parametrize(
-    "backend", [pytest.param(backend, marks=pytest.mark.skipif(
-        backend is None and not ON_CI, reason="Backend not installed."))
-                for backend in (dummy, matplotlib, pyqtgraph)])
+    "backend",
+    [
+        pytest.param(
+            backend,
+            marks=pytest.mark.skipif(
+                backend is None and not ON_CI, reason="Backend not installed."
+            ),
+        )
+        for backend in (dummy, matplotlib, pyqtgraph)
+    ],
+)
+
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
-    to_patch = []
-    if matplotlib is not None:
-        to_patch.append(
-            patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))
-        )
-    if pyqtgraph is not None:
-        to_patch.append(patch("pyqtgraph.exec"))
-        to_patch.append(patch("pyqtgraph.opengl.GLViewWidget.show"))
     with contextlib.ExitStack() as stack:
-        for mgr in to_patch:
-            stack.enter_context(mgr)
+        if matplotlib is not None:
+            stack.enter_context(
+                patch(
+                    "matplotlib.pyplot.subplots",
+                    return_value=(MagicMock(), MagicMock()),
+                )
+            )
+        if pyqtgraph is not None:
+            stack.enter_context(patch("pyqtgraph.exec"))
+            try:
+                stack.enter_context(
+                    patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show")
+                )
+            except ModuleNotFoundError:
+                stack.enter_context(patch("pyqtgraph.opengl.GLViewWidget.show"))
         yield
+
 
 @parametrize_backends
 class TestScene3D:
     @pytest.fixture(autouse=True)
-    @pytest.mark.skipif("backend == None and not ON_CI")
     def _define_system(self):
         self.q = me.dynamicsymbols("q:3")
         self.rf = me.ReferenceFrame("rf")
@@ -51,7 +66,8 @@ class TestScene3D:
         self.p3 = self.p2.locatenew("p3", 0.1 * self.f.x + 0.5 * self.f.z)
         self.line = (self.p1, self.p2, self.p3)
         self.rb = me.RigidBody(
-            "rb", self.p2, self.f, 1, (self.f.x.outer(self.f.x), self.p2))
+            "rb", self.p2, self.f, 1, (self.f.x.outer(self.f.x), self.p2)
+        )
         self.pt = me.Particle("pt", self.p3, 1)
         self.p1_coords, self.p2_coords, self.p3_coords = None, None, None
 
@@ -123,7 +139,8 @@ class TestScene3D:
         self._evaluate1(scene)
         np.testing.assert_almost_equal(
             plot_line.line_coords,
-            np.array([self.p1_coords, self.p2_coords, self.p3_coords]).T)
+            np.array([self.p1_coords, self.p2_coords, self.p3_coords]).T,
+        )
 
     def test_add_vector(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
@@ -165,7 +182,8 @@ class TestScene3D:
         assert isinstance(plot_body.plot_frame, backend.PlotFrame)
         self._evaluate1(scene)
         np.testing.assert_almost_equal(
-            plot_body.plot_masscenter.point_coords, self.p2_coords)
+            plot_body.plot_masscenter.point_coords, self.p2_coords
+        )
 
     def test_add_particle(self, backend):
         scene = backend.Scene3D(self.rf, self.zp)
@@ -179,7 +197,8 @@ class TestScene3D:
         assert plot_body.plot_frame is None
         self._evaluate1(scene)
         np.testing.assert_almost_equal(
-            plot_body.plot_masscenter.point_coords, self.p3_coords)
+            plot_body.plot_masscenter.point_coords, self.p3_coords
+        )
 
     def test_get_plot_object(self, backend, _filled_scene):
         # Get inertial frame by sympy object
