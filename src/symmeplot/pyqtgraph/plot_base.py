@@ -1,3 +1,5 @@
+"""Plot base definition for pyqtgraph plotting backend."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -24,7 +26,7 @@ class PgPlotBase(PlotBase):
 
     """
 
-    def plot(self, view: gl.GLViewWidget):
+    def plot(self, view: gl.GLViewWidget) -> None:
         """Plot the associated plot objects."""
         for artist, _ in self._artists:
             artist.plot(view)
@@ -37,7 +39,7 @@ class PgPlotBase(PlotBase):
         return self._visible
 
     @visible.setter
-    def visible(self, is_visible: bool):
+    def visible(self, is_visible: bool) -> None:
         for artist, _ in self._artists:
             artist.visible = is_visible
         for child in self._children:

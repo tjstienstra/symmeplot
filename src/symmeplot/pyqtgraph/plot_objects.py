@@ -1,8 +1,8 @@
+"""PyQtGraph plot objects for plotting SymPy physics objects in 3D."""
+
 from __future__ import annotations
 
-from collections.abc import Iterable
-
-from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
+from typing import TYPE_CHECKING
 
 from symmeplot.core import (
     PlotBodyMixin,
@@ -13,6 +13,17 @@ from symmeplot.core import (
 )
 from symmeplot.pyqtgraph.artists import Line3D, Point3D, Vector3D
 from symmeplot.pyqtgraph.plot_base import PgPlotBase
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from sympy.physics.mechanics import (
+        Particle,
+        Point,
+        ReferenceFrame,
+        RigidBody,
+        Vector,
+    )
 
 __all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotVector"]
 
@@ -43,8 +54,8 @@ class PlotPoint(PlotPointMixin, PgPlotBase):
         zero_point: Point,
         point: Point,
         name: str | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, point, name)
         self.add_artist(
             Point3D(0, 0, 0, **kwargs),
@@ -79,8 +90,8 @@ class PlotLine(PlotLineMixin, PgPlotBase):
         zero_point: Point,
         line: Iterable[Point],
         name: str | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, line, name)
         self.add_artist(
             Line3D([0], [0], [0], **kwargs),
@@ -118,8 +129,8 @@ class PlotVector(PlotVectorMixin, PgPlotBase):
         vector: Vector,
         origin: Point | Vector | None = None,
         name: str | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, vector, origin, name)
         self.add_artist(
             Vector3D([0, 0, 0], [0, 0, 0], **kwargs),
@@ -165,9 +176,9 @@ class PlotFrame(PlotFrameMixin, PgPlotBase):
         origin: Point | Vector | None = None,
         name: str | None = None,
         scale: float = 0.1,
-        style: str = "default",
-        **kwargs,
-    ):
+        style: str | None = "default",
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, frame, origin, name, scale)
         properties = self._get_style_properties(style)
         for prop in properties:
@@ -177,18 +188,18 @@ class PlotFrame(PlotFrameMixin, PgPlotBase):
                 PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop)
             )
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> list[dict]:
         """Get the properties of the vectors belonging to a certain style."""
         properties = [{}, {}, {}]
         if style is None:
             return properties
-        elif style == "default":
+        if style == "default":
             colors = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1)]
             for color, prop in zip(colors, properties):
                 prop.update({"color": color})
             return properties
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)
 
 
 class PlotBody(PlotBodyMixin, PgPlotBase):
@@ -229,11 +240,11 @@ class PlotBody(PlotBodyMixin, PgPlotBase):
         zero_point: Point,
         body: Particle | RigidBody,
         name: str | None = None,
-        style: str = "default",
+        style: str | None = "default",
         plot_point_properties: dict | None = None,
         plot_frame_properties: dict | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, body, name)
         properties = self._get_style_properties(style)
         if plot_point_properties is not None:
@@ -254,14 +265,14 @@ class PlotBody(PlotBodyMixin, PgPlotBase):
                 )
             )
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> list[dict]:
         """Get the properties of the vectors belonging to a certain style."""
         properties = [{}, {}]
         if style is None:
             return properties
-        elif style == "default":
+        if style == "default":
             properties[0] = {}
             properties[1] = {"style": "default"}
             return properties
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)

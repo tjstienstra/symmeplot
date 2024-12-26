@@ -1,9 +1,11 @@
+"""Plot objects of the matplotlib backend."""
+
 from __future__ import annotations
 
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 import numpy as np
-from sympy import sympify
+from sympy import Expr, sympify
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
 
 from symmeplot.core import (
@@ -15,6 +17,9 @@ from symmeplot.core import (
 )
 from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
 from symmeplot.matplotlib.plot_base import MplPlotBase
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 __all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotVector"]
 
@@ -72,8 +77,8 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
         point: Point,
         name: str | None = None,
         style: str = "default",
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, point, name)
         self.add_artist(
             Line3D([0], [0], [0], **{**self._get_style_properties(style), **kwargs}),
@@ -81,18 +86,18 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
         )
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
         return self.point_coords
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> dict:
         """Get the properties of the vector belonging to a certain style."""
         if style is None:
             return {}
-        elif style == "default":
+        if style == "default":
             return {"marker": "o"}
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)
 
 
 class PlotLine(PlotLineMixin, MplPlotBase):
@@ -144,8 +149,8 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         zero_point: Point,
         line: Iterable[Point],
         name: str | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, line, name)
         self.add_artist(
             Line3D([0], [0], [0], **kwargs),
@@ -153,7 +158,7 @@ class PlotLine(PlotLineMixin, MplPlotBase):
         )
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
         return np.array(self.line_coords, dtype=np.float64).mean(axis=1)
 
@@ -213,8 +218,8 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
         origin: Point | Vector | None = None,
         name: str | None = None,
         style: str = "default",
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, vector, origin, name)
         self._properties = {}
         self.add_artist(
@@ -225,15 +230,15 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
         )
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
         return self.origin_coords + self.vector_values / 2
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> dict:
         """Get the properties of the vector belonging to a certain style."""
         if style is None:
             return {}
-        elif style == "default":
+        if style == "default":
             return {
                 "color": "k",
                 "mutation_scale": 10,
@@ -242,8 +247,8 @@ class PlotVector(PlotVectorMixin, MplPlotBase):
                 "shrinkB": 0,
                 "picker": 20,
             }
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)
 
 
 class PlotFrame(PlotFrameMixin, MplPlotBase):
@@ -309,8 +314,8 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
         name: str | None = None,
         scale: float = 0.1,
         style: str = "default",
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, frame, origin, name, scale)
         properties = self._get_style_properties(style)
         for prop in properties:
@@ -321,24 +326,24 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
             )
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
         return self.vectors[0].origin_coords + 0.3 * sum(
             [v.vector_values for v in self.vectors]
         )
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> list[dict]:
         """Get the properties of the vectors belonging to a certain style."""
         properties = [{}, {}, {}]
         if style is None:
             return properties
-        elif style == "default":
+        if style == "default":
             colors = "rgb"
             for color, prop in zip(colors, properties):
                 prop.update({"style": "default", "color": color})
             return properties
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)
 
 
 class PlotBody(PlotBodyMixin, MplPlotBase):
@@ -390,18 +395,18 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         body = me.RigidBody("body", A0, A, 1, (A.x.outer(A.x), A0))
         ground_plot = PlotBody(N, N0, ground)
         body_plot = PlotBody(N, N0, body)
-        body_plot.attach_circle(body.masscenter, 0.3, A.x + A.y + A.z,
-                                facecolor="none", edgecolor="k")
+        body_plot.attach_circle(
+            body.masscenter, 0.3, A.x + A.y + A.z, facecolor="none", edgecolor="k"
+        )
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-        ground_plot.values = sm.lambdify((), ground_plot.get_expressions_to_evaluate()
-                                        )()
+        ground_plot.values = sm.lambdify((), ground_plot.get_expressions_to_evaluate())()
         body_plot.values = sm.lambdify((), body_plot.get_expressions_to_evaluate())()
         ground_plot.update()  # Updates the artist(s) to the new values
         body_plot.update()  # Updates the artist(s) to the new values
         ground_plot.plot(ax)
         body_plot.plot(ax)
 
-    """
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -412,8 +417,8 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         style: str = "default",
         plot_point_properties: dict | None = None,
         plot_frame_properties: dict | None = None,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, body, name)
         properties = self._get_style_properties(style)
         if plot_point_properties is not None:
@@ -435,11 +440,13 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
             )
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
         return self.plot_masscenter.annot_coords
 
-    def attach_circle(self, center, radius, normal, **kwargs):
+    def attach_circle(
+        self, center: Point | Vector, radius: Expr, normal: Vector, **kwargs: object
+    ) -> Circle3D:
         """Attaches a circle to a point to represent the body.
 
         Parameters
@@ -465,22 +472,24 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
         if isinstance(center, Vector):
             center = tuple(center.to_matrix(self.inertial_frame)[:])
         else:
-            raise TypeError(f"'center' should be a {type(Point)}.")
+            msg = f"'center' should be a {type(Point)} or {type(Vector)}."
+            raise TypeError(msg)
         if isinstance(normal, Vector):
             normal = tuple(normal.to_matrix(self.inertial_frame)[:])
         else:
-            raise TypeError(f"'center' should be a {type(Vector)}.")
+            msg = f"'normal' should be a {type(Vector)}."
+            raise TypeError(msg)
         self.add_artist(
             Circle3D((0, 0, 0), 0, (0, 0, 1), **kwargs),
             (center, sympify(radius), normal),
         )
 
-    def _get_style_properties(self, style):
+    def _get_style_properties(self, style: str | None) -> list[dict]:
         """Get the properties of the vectors belonging to a certain style."""
         properties = [{}, {}]
         if style is None:
             return properties
-        elif style == "default":
+        if style == "default":
             properties[0] = {
                 "color": "k",
                 "marker": r"$\bigoplus$",
@@ -490,5 +499,5 @@ class PlotBody(PlotBodyMixin, MplPlotBase):
             }
             properties[1] = {"style": "default"}
             return properties
-        else:
-            raise NotImplementedError(f"Style '{style}' is not implemented.")
+        msg = f"Style '{style}' is not implemented."
+        raise NotImplementedError(msg)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from unittest.mock import patch
 
 import numpy as np
@@ -14,16 +16,16 @@ try:
         Vector3D,
         create_tube_mesh_data,
     )
-except ImportError as e:
+except ImportError:
     if ON_CI:
-        raise e
+        raise
     pytest.skip("PyQtGraph not installed.", allow_module_level=True)
 
 
 class TestTubeMeshData:
     def test_straight_tube(self):
         mesh_data = create_tube_mesh_data((0, 1), (2, 2), (0, 0, 0), (0, 0, 1), 4)
-        verts, faces = mesh_data._vertexes, mesh_data._faces
+        verts, faces = mesh_data._vertexes, mesh_data._faces  # noqa: SLF001
         assert isinstance(mesh_data, MeshData)
         assert verts.shape == (8, 3)
         assert faces.shape == (8, 3)
@@ -60,7 +62,7 @@ class TestTubeMeshData:
 
     def test_cone0(self):
         mesh_data = create_tube_mesh_data((0, 2), (0, 1), (0, 0, 0), (0, 0, 1), 4)
-        verts, faces = mesh_data._vertexes, mesh_data._faces
+        verts, faces = mesh_data._vertexes, mesh_data._faces  # noqa: SLF001
         assert verts.shape == (5, 3)
         assert faces.shape == (4, 3)
         np.testing.assert_almost_equal(
@@ -81,7 +83,7 @@ class TestTubeMeshData:
 
     def test_cone1(self):
         mesh_data = create_tube_mesh_data((0, 2), (1, 0), (0, 0, 0), (0, 0, 1), 4)
-        verts, faces = mesh_data._vertexes, mesh_data._faces
+        verts, faces = mesh_data._vertexes, mesh_data._faces  # noqa: SLF001
         assert verts.shape == (5, 3)
         assert faces.shape == (4, 3)
         np.testing.assert_almost_equal(
@@ -102,13 +104,13 @@ class TestTubeMeshData:
 
     def test_line(self):
         mesh_data = create_tube_mesh_data((0, 2), (0, 0), (0, 0, 0), (0, 0, 1), 4)
-        verts, faces = mesh_data._vertexes, mesh_data._faces
+        verts, faces = mesh_data._vertexes, mesh_data._faces  # noqa: SLF001
         assert verts.shape == (2, 3)
         assert faces.shape == (0, 3)
 
     def test_direction(self):
         mesh_data = create_tube_mesh_data((0, 2), (0, 0), (0, 0, 0), (1, 1, 1))
-        verts = mesh_data._vertexes
+        verts = mesh_data._vertexes  # noqa: SLF001
         np.testing.assert_almost_equal(verts[0], np.array([0.0, 0.0, 0.0]))
         np.testing.assert_almost_equal(
             verts[1], np.array([1.0, 1.0, 1.0]) / np.sqrt(3) * 2
@@ -116,7 +118,7 @@ class TestTubeMeshData:
 
     def test_position(self):
         mesh_data = create_tube_mesh_data((0, 4), (0, 0), (1, 2, 3), (0, 0, 1))
-        verts = mesh_data._vertexes
+        verts = mesh_data._vertexes  # noqa: SLF001
         np.testing.assert_almost_equal(
             verts, np.array([[1.0, 2.0, 3.0], [1.0, 2.0, 7.0]])
         )
@@ -126,7 +128,7 @@ class TestTubeMeshData:
         mesh_data = create_tube_mesh_data(
             (0, 0, 3, 3, 5), (0, 2, 2, 4, 0), (1, 2, 3), (1, 2, 1), 50
         )
-        verts, faces = mesh_data._vertexes, mesh_data._faces
+        verts, faces = mesh_data._vertexes, mesh_data._faces  # noqa: SLF001
         assert verts.shape == (152, 3)  # 1 + 50 + 50 + 50 + 1
         assert faces.shape == (300, 3)  # 50 + 2 * 50 + 2 * 50 + 50
         assert len(np.unique(verts.round(4), axis=0)) == 152
@@ -207,7 +209,7 @@ class TestVector3D:
         assert v2.head_width != 0.2
 
     @pytest.mark.parametrize(
-        "name, value",
+        ("name", "value"),
         [
             ("vector_radius", 0.1324),
             ("head_length", 0.21345),

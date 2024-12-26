@@ -1,16 +1,15 @@
+"""Definition of the scene for the matplotlib backend."""
+
 from __future__ import annotations
 
-from collections.abc import Iterable
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Callable
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.proj3d import proj_transform
-from sympy.physics.vector import ReferenceFrame
 
 from symmeplot.core import SceneBase
-from symmeplot.matplotlib.plot_base import MplPlotBase
 from symmeplot.matplotlib.plot_objects import (
     PlotBody,
     PlotFrame,
@@ -22,6 +21,15 @@ from symmeplot.matplotlib.plot_objects import (
 __all__ = ["Scene3D"]
 
 from symmeplot.utilities.utilities import calculate_euler_angels
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from matplotlib.backend_bases import MouseEvent
+    from sympy.physics.vector import Point, ReferenceFrame
+
+    from symmeplot.matplotlib.artists import MplArtistBase
+    from symmeplot.matplotlib.plot_base import MplPlotBase
 
 
 class Scene3D(SceneBase):
@@ -70,16 +78,21 @@ class Scene3D(SceneBase):
     _PlotBody: type[MplPlotBase] = PlotBody
 
     def __init__(
-        self, inertial_frame, zero_point, ax=None, **inertial_frame_properties
-    ):
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        ax: plt.Axes | None = None,
+        **inertial_frame_properties: object,
+    ) -> None:
         if ax is None:
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         elif not hasattr(ax, "get_zlim"):
-            raise TypeError("The axes should be a 3d axes")
+            msg = "The axes should be a 3d axes"
+            raise TypeError(msg)
 
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
         self._ax = ax
-        self.annot = self._ax.text2D(
+        self.annot: plt.Text = self._ax.text2D(
             0,
             0,
             "",
@@ -91,12 +104,12 @@ class Scene3D(SceneBase):
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self._hover)
 
     @property
-    def axes(self):
+    def axes(self) -> plt.Axes:
         """Axes used by the scene."""
         return self._ax
 
     @property
-    def annot_location(self):
+    def annot_location(self) -> str:
         """String describing where the annotation should be displayed.
 
         Explanation
@@ -108,21 +121,21 @@ class Scene3D(SceneBase):
         return self._annot_location
 
     @annot_location.setter
-    def annot_location(self, new_annot_location):
+    def annot_location(self, new_annot_location: str) -> None:
         if new_annot_location == "object":
             self._annot_location = new_annot_location
         else:
-            raise NotImplementedError(
-                f"Annotation location '{new_annot_location}' has not been "
-                f"implemented."
+            msg = (
+                f"Annotation location '{new_annot_location}' has not been implemented."
             )
+            raise NotImplementedError(msg)
 
     @property
-    def annot_coords(self):
+    def annot_coords(self) -> tuple[float, float]:
         """Coordinate where the annotation text is displayed."""
         return self.annot.get_position()
 
-    def plot(self, prettify=True, ax_scale=1.5):
+    def plot(self, prettify: bool = True, ax_scale: float = 1.5) -> None:
         """Plot all plot objects.
 
         Parameters
@@ -171,11 +184,11 @@ class Scene3D(SceneBase):
         self.axes.set_proj_type("ortho")
         self.axes.view_init(**calculate_euler_angels(self.inertial_frame, frame))
 
-    def auto_zoom(self, scale=1.1):
+    def auto_zoom(self, scale: float = 1.1) -> tuple[float, float] | None:
         """Auto scale the axis."""
         _artists = self.artists
         if not _artists:
-            return
+            return None
         _min = np.min([artist.min() for artist in _artists], axis=0)
         _max = np.max([artist.max() for artist in _artists], axis=0)
         size = scale * np.max(_max - _min)
@@ -185,25 +198,26 @@ class Scene3D(SceneBase):
         self.axes.set_zlim(_min[2] - extra[2], _max[2] + extra[2])
         return _min, _max
 
-    def _get_selected_object(self, event):
+    def _get_selected_object(self, event: MouseEvent) -> MplPlotBase | None:
         """Get the `plot_object` where the mouseevent is currently on."""
         for plot_object in self._children:
             if plot_object.contains(event):
                 return plot_object
+        return None
 
-    def _update_annot(self, plot_object, event):
+    def _update_annot(self, plot_object: MplPlotBase, event: MouseEvent) -> None:
         """Update the annotation to the given `plot_object`."""
         self.annot.set_text(str(plot_object))
         if self.annot_location == "object":
             x, y, _ = proj_transform(*plot_object.annot_coords, self._ax.get_proj())
             self.annot.set_position(self._ax.transData.transform((x, y)))
-            # self.annot.set_position_3d(plot_object.annot_coords)
+            # self.annot.set_position_3d(plot_object.annot_coords)  # noqa: ERA001
         elif self.annot_location == "mouse":
             self.annot.set_position(
                 self._ax.transData.transform((event.xdata, event.ydata))
             )
 
-    def _hover(self, event):
+    def _hover(self, event: MouseEvent) -> None:
         """Show an annotation if the mouse is hovering over a `plot_object`."""
         if event.inaxes == self._ax:
             plot_object = self._get_selected_object(event)
@@ -215,7 +229,7 @@ class Scene3D(SceneBase):
                 self.annot.set_visible(False)
                 self._ax.figure.canvas.draw_idle()
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear the axes.
 
         Explanation
@@ -224,15 +238,15 @@ class Scene3D(SceneBase):
         in the scene.
         """
         for plot_object in self._children:
-            plot_object.set_visible(False)
-        self._children = [self._children[0]]
+            plot_object.visible = False
+        self._children: list[MplPlotBase] = [self._children[0]]
 
     def animate(
         self,
-        get_args: Callable[[Any], tuple],
-        frames: Iterable[Any] | int,
+        get_args: Callable[[object], tuple],
+        frames: Iterable[object] | int,
         interval: int = 30,
-        **kwargs,
+        **kwargs: object,
     ) -> FuncAnimation:
         """Animate the scene.
 
@@ -256,7 +270,7 @@ class Scene3D(SceneBase):
 
         """
 
-        def update(frame):
+        def update(frame: object) -> tuple[MplArtistBase, ...]:
             self.evaluate_system(*get_args(frame))
             self.update()
             return self.artists

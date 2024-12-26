@@ -1,7 +1,8 @@
+"""Artists of the matplotlib backend."""
+
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -14,8 +15,9 @@ from symmeplot.core import ArtistBase
 from symmeplot.utilities import dcm_to_align_vectors
 
 if TYPE_CHECKING:
-    import numpy.typing as npt
-    from matplotlib import Path
+    from collections.abc import Sequence
+
+    from matplotlib.path import Path
 
 __all__ = ["Circle3D", "Line3D", "Vector3D"]
 
@@ -24,11 +26,11 @@ class MplArtistBase(ArtistBase):
     """Base class for artists used in matplotlib scene."""
 
     @abstractmethod
-    def min(self) -> np.array:
+    def min(self) -> np.ndarray[np.float64]:
         """Return the minimum values of the bounding box of the artist data."""
 
     @abstractmethod
-    def max(self) -> np.array:
+    def max(self) -> np.ndarray[np.float64]:
         """Return the maximum values of the bounding box of the artist data."""
 
 
@@ -40,30 +42,32 @@ class Line3D(_Line3D, MplArtistBase):
         x: Sequence[float],
         y: Sequence[float],
         z: Sequence[float],
-        *args,
-        **kwargs,
-    ):
+        *args: object,
+        **kwargs: object,
+    ) -> None:
         super().__init__(
-            np.array(x, dtype=np.float64),
-            np.array(y, dtype=np.float64),
-            np.array(z, dtype=np.float64),
+            np.asarray(x, dtype=np.float64),
+            np.asarray(y, dtype=np.float64),
+            np.asarray(z, dtype=np.float64),
             *args,
             **kwargs,
         )
 
-    def update_data(self, x: Sequence[float], y: Sequence[float], z: Sequence[float]):
+    def update_data(
+        self, x: Sequence[float], y: Sequence[float], z: Sequence[float]
+    ) -> None:
         """Update the data of the artist."""
         self.set_data_3d(
-            np.array(x, dtype=np.float64),
-            np.array(y, dtype=np.float64),
-            np.array(z, dtype=np.float64),
+            np.asarray(x, dtype=np.float64),
+            np.asarray(y, dtype=np.float64),
+            np.asarray(z, dtype=np.float64),
         )
 
-    def min(self) -> np.array:
+    def min(self) -> np.ndarray[np.float64]:
         """Return the minimum values of the bounding box of the artist data."""
         return np.array([axes.min() for axes in self.get_data_3d()])
 
-    def max(self) -> np.array:
+    def max(self) -> np.ndarray[np.float64]:
         """Return the maximum values of the bounding box of the artist data."""
         return np.array([axes.max() for axes in self.get_data_3d()])
 
@@ -79,13 +83,17 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
     """
 
     def __init__(
-        self, origin: Sequence[float], vector: Sequence[float], *args, **kwargs
-    ):
+        self,
+        origin: Sequence[float],
+        vector: Sequence[float],
+        *args: object,
+        **kwargs: object,
+    ) -> None:
         super().__init__((0, 0), (0, 0), *args, **kwargs)
         self._origin = np.array(origin, dtype=np.float64)
         self._vector = np.array(vector, dtype=np.float64)
 
-    def do_3d_projection(self, renderer=None):
+    def do_3d_projection(self, renderer: object = None) -> float:  # noqa: ARG002
         """Project the artist to the 3D axes."""
         # https://github.com/matplotlib/matplotlib/issues/21688
         xs, ys, zs = proj_transform(
@@ -94,16 +102,16 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         return min(zs)
 
-    def update_data(self, origin: Sequence[float], vector: Sequence[float]):
+    def update_data(self, origin: Sequence[float], vector: Sequence[float]) -> None:
         """Update the data of the artist."""
         self._origin = np.array(origin, dtype=np.float64)
         self._vector = np.array(vector, dtype=np.float64)
 
-    def min(self) -> np.array:
+    def min(self) -> np.ndarray[np.float64]:
         """Return the minimum values of the bounding box of the artist data."""
         return np.min([self._origin, self._origin + self._vector], axis=0)
 
-    def max(self) -> np.array:
+    def max(self) -> np.ndarray[np.float64]:
         """Return the maximum values of the bounding box of the artist data."""
         return np.max([self._origin, self._origin + self._vector], axis=0)
 
@@ -122,8 +130,8 @@ class Circle3D(PathPatch3D, MplArtistBase):
         center: Sequence[float],
         radius: float,
         normal: Sequence[float] = (0, 0, 1),
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         path_2d = self._get_2d_path(np.float64(radius))
         super().__init__(path_2d, **{"zs": 0, **kwargs})
         self._segment3d = self._get_segment3d(
@@ -133,7 +141,7 @@ class Circle3D(PathPatch3D, MplArtistBase):
         )
 
     @staticmethod
-    def _get_2d_path(radius: np.float64):
+    def _get_2d_path(radius: np.float64) -> Path:
         circle_2d = Circle((0, 0), radius)
         path = circle_2d.get_path()  # Get the path and the associated transform
         trans = circle_2d.get_patch_transform()
@@ -141,8 +149,8 @@ class Circle3D(PathPatch3D, MplArtistBase):
 
     @staticmethod
     def _get_segment3d(
-        path_2d: Path, center: npt.NDArray[np.float64], normal: npt.NDArray[np.float64]
-    ):
+        path_2d: Path, center: np.ndarray[np.float64], normal: np.ndarray[np.float64]
+    ) -> np.ndarray[np.float64]:
         verts = path_2d.vertices  # Get the vertices in 2D
         rot_mat = dcm_to_align_vectors((0, 0, 1), normal)
         segment3d = np.array([np.dot(rot_mat, (x, y, 0)) for x, y in verts])
@@ -152,7 +160,7 @@ class Circle3D(PathPatch3D, MplArtistBase):
 
     def update_data(
         self, center: Sequence[float], radius: float, normal: Sequence[float]
-    ):
+    ) -> None:
         """Update the data of the artist."""
         self._path2d = self._get_2d_path(np.float64(radius))
         self._segment3d = self._get_segment3d(
@@ -161,10 +169,10 @@ class Circle3D(PathPatch3D, MplArtistBase):
             np.array(normal, dtype=np.float64),
         )
 
-    def min(self) -> np.array:
+    def min(self) -> np.array[np.float64]:
         """Return the minimum values of the bounding box of the artist data."""
         return self._segment3d.min(axis=0)
 
-    def max(self) -> np.array:
+    def max(self) -> np.array[np.float64]:
         """Return the maximum values of the bounding box of the artist data."""
         return self._segment3d.max(axis=0)

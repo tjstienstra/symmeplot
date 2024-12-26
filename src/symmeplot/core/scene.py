@@ -1,18 +1,29 @@
+"""Base definition of a 3D scene in symmeplot."""
+
 from __future__ import annotations
 
 from abc import ABC
-from collections.abc import Iterable
-from typing import Any, Callable
+from typing import TYPE_CHECKING
 
 from sympy import lambdify
-from sympy.physics.mechanics import Point, ReferenceFrame, Vector
 
-from symmeplot.core.artists import ArtistBase
-from symmeplot.core.plot_base import PlotBase
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable
+
+    from sympy.physics.mechanics import (
+        Particle,
+        Point,
+        ReferenceFrame,
+        RigidBody,
+        Vector,
+    )
+
+    from symmeplot.core.artists import ArtistBase
+    from symmeplot.core.plot_base import PlotBase
 
 
 def _create_undefined_function(error: Exception, message: str) -> Callable[..., None]:
-    def undefined_function(*args, **kwargs):
+    def undefined_function(*_: object, **__: object) -> None:
         raise error(message)
 
     return undefined_function
@@ -53,11 +64,11 @@ class SceneBase(ABC):  # noqa: B024
         self,
         inertial_frame: ReferenceFrame,
         zero_point: Point,
-        **inertial_frame_properties,
-    ):
+        **inertial_frame_properties: object,
+    ) -> None:
         self._zero_point = zero_point
         self._inertial_frame = inertial_frame
-        self._children = []
+        self._children: list[PlotBase] = []
         self._lambdified_system = _create_undefined_function(
             ValueError,
             "System has not been lambdified. "
@@ -96,7 +107,7 @@ class SceneBase(ABC):  # noqa: B024
         return tuple(plot_obj.values for plot_obj in self._children)
 
     @values.setter
-    def values(self, values: tuple):
+    def values(self, values: tuple) -> None:
         for plot_obj, vals in zip(self._children, values):
             plot_obj.values = vals
 
@@ -104,7 +115,7 @@ class SceneBase(ABC):  # noqa: B024
         """Return a tuple of the necessary expressions for plotting."""
         return tuple(po.get_expressions_to_evaluate() for po in self._children)
 
-    def add_plot_object(self, plot_object: PlotBase):
+    def add_plot_object(self, plot_object: PlotBase) -> None:
         """Add a plot object to the scene.
 
         Parameters
@@ -115,7 +126,7 @@ class SceneBase(ABC):  # noqa: B024
         """
         self._children.append(plot_object)
 
-    def add_point(self, point: Point | Vector, **kwargs) -> type[PlotBase]:
+    def add_point(self, point: Point | Vector, **kwargs: object) -> PlotBase:
         """Add a sympy Vector to the scene.
 
         Parameters
@@ -136,8 +147,11 @@ class SceneBase(ABC):  # noqa: B024
         return obj
 
     def add_line(
-        self, points: Iterable[Point | Vector], name: str | None = None, **kwargs
-    ):
+        self,
+        points: Iterable[Point | Vector],
+        name: str | None = None,
+        **kwargs: object,
+    ) -> PlotBase:
         """Add a sympy Vector to the scene.
 
         Parameters
@@ -162,8 +176,8 @@ class SceneBase(ABC):  # noqa: B024
         return obj
 
     def add_vector(
-        self, vector: Vector, origin: Point | Vector | None = None, **kwargs
-    ):
+        self, vector: Vector, origin: Point | Vector | None = None, **kwargs: object
+    ) -> PlotBase:
         """Add a sympy Vector to the scene.
 
         Parameters
@@ -188,8 +202,11 @@ class SceneBase(ABC):  # noqa: B024
         return obj
 
     def add_frame(
-        self, frame: ReferenceFrame, origin: Point | Vector | None = None, **kwargs
-    ):
+        self,
+        frame: ReferenceFrame,
+        origin: Point | Vector | None = None,
+        **kwargs: object,
+    ) -> PlotBase:
         """Add a sympy ReferenceFrame to the scene.
 
         Parameters
@@ -213,7 +230,7 @@ class SceneBase(ABC):  # noqa: B024
         self.add_plot_object(obj)
         return obj
 
-    def add_body(self, body, **kwargs):
+    def add_body(self, body: Particle | RigidBody, **kwargs: object) -> PlotBase:
         """Add a sympy body to the scene.
 
         Parameters
@@ -233,7 +250,7 @@ class SceneBase(ABC):  # noqa: B024
         self.add_plot_object(obj)
         return obj
 
-    def get_plot_object(self, sympy_object: Any | str) -> PlotBase | None:
+    def get_plot_object(self, sympy_object: object | str) -> PlotBase | None:
         """Return the `plot_object` based on a sympy object.
 
         Explanation
@@ -244,7 +261,7 @@ class SceneBase(ABC):  # noqa: B024
 
         Parameters
         ----------
-        sympy_object : Any or str
+        sympy_object : object or str
             SymPy object to search for. If it is a string it will search for the name.
 
         Returns
@@ -255,13 +272,20 @@ class SceneBase(ABC):  # noqa: B024
         """
         queue = [self]
         while queue:
-            for po in queue.pop()._children:
+            for po in queue.pop().children:
                 if po.sympy_object is sympy_object or po.name == sympy_object:
                     return po
                 queue.append(po)
+        return None
 
     def lambdify_system(
-        self, args, modules=None, printer=None, use_imps=True, dummify=False, cse=True
+        self,
+        args,  # noqa: ANN001
+        modules=None,  # noqa: ANN001
+        printer=None,  # noqa: ANN001
+        use_imps=True,  # noqa: ANN001
+        dummify=False,  # noqa: ANN001
+        cse=True,  # noqa: ANN001
     ) -> Callable:
         """Lambdify the system.
 
@@ -283,12 +307,12 @@ class SceneBase(ABC):  # noqa: B024
         )
         return self.evaluate_system
 
-    def evaluate_system(self, *args) -> None:
+    def evaluate_system(self, *args: object) -> None:
         """Evaluate the system using the function created with ``lambdify_system``."""
         self.values = self._lambdified_system(*args)
 
     def set_visibility(
-        self, sympy_object: Any | str, is_visible: bool, raise_error: bool = True
+        self, sympy_object: object | str, is_visible: bool, raise_error: bool = True
     ) -> None:
         """Hide or show a ``plot_object`` based on a ``sympy_object``.
 
@@ -307,7 +331,8 @@ class SceneBase(ABC):  # noqa: B024
             plot_object.visible = is_visible
             return
         if raise_error:
-            raise ValueError(f"PlotObject corresponding to '{sympy_object}' not found.")
+            msg = f"PlotObject corresponding to '{sympy_object}' not found."
+            raise ValueError(msg)
 
     def plot(self) -> None:
         """Plot all plot objects."""
@@ -316,16 +341,16 @@ class SceneBase(ABC):  # noqa: B024
             plot_object.plot()
 
     def update(self) -> None:
-        """Update the objects on the scene, based on the currect values."""
+        """Update the objects on the scene, based on the current values."""
         for plot_object in self._children:
             plot_object.update()
 
     def animate(
         self,
-        get_args: Callable[[Any], tuple],
-        frames: Iterable[Any] | int,
+        get_args: Callable[[object], tuple],
+        frames: Iterable[object] | int,
         interval: int = 30,
-        **kwargs,
+        **kwargs: object,
     ) -> None:
         """Animate the scene.
 
@@ -342,4 +367,5 @@ class SceneBase(ABC):  # noqa: B024
             Keyword arguments are parsed to the internally used animation function.
 
         """
-        raise NotImplementedError("'animate' has not been implemented in this backend.")
+        msg = "'animate' has not been implemented in this backend."
+        raise NotImplementedError(msg)

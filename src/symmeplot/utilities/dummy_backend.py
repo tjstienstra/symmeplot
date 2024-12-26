@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from symmeplot.core import (
     ArtistBase,
     PlotBase,
@@ -11,29 +13,32 @@ from symmeplot.core import (
     SceneBase,
 )
 
+if TYPE_CHECKING:
+    from sympy.physics.vector import Point, ReferenceFrame, Vector
+
 
 class DummyArtist(ArtistBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         self.update_args = None
         self.visible = True
 
-    def update_data(self, *args):
+    def update_data(self, *args: object) -> None:
         self.update_args = args
 
 
 class _PlotBase(PlotBase):
-    def plot(self):
+    def plot(self) -> None:
         self.update()
         for child in self._children:
             child.plot()
 
     @property
-    def visible(self):
+    def visible(self) -> bool:
         return self._visible
 
     @visible.setter
-    def visible(self, is_visible):
+    def visible(self, is_visible: bool) -> None:
         for artist, _ in self._artists:
             artist.visible = bool(is_visible)
         for child in self._children:
@@ -42,27 +47,33 @@ class _PlotBase(PlotBase):
 
 
 class PlotPoint(PlotPointMixin, _PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         self.add_artist(DummyArtist(), self.get_sympy_object_exprs())
 
 
 class PlotLine(PlotLineMixin, _PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         self.add_artist(DummyArtist(), self.get_sympy_object_exprs())
 
 
 class PlotVector(PlotVectorMixin, _PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         self.add_artist(DummyArtist(), self.get_sympy_object_exprs())
 
 
 class PlotFrame(PlotFrameMixin, _PlotBase):
     def __init__(
-        self, inertial_frame, zero_point, frame, origin=None, name=None, scale=0.1
-    ):
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        frame: ReferenceFrame,
+        origin: Point | Vector | None = None,
+        name: str | None = None,
+        scale: float = 0.1,
+    ) -> None:
         super().__init__(inertial_frame, zero_point, frame, origin, name, scale)
         for v in self.frame:
             self._children.append(
@@ -71,7 +82,7 @@ class PlotFrame(PlotFrameMixin, _PlotBase):
 
 
 class PlotBody(PlotBodyMixin, _PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         # Particle.masscenter does not yet exist in SymPy 1.12
         mc = getattr(self.body, "masscenter", getattr(self.body, "point", None))

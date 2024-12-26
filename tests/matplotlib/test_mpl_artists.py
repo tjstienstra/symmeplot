@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
@@ -5,9 +7,9 @@ from symmeplot.utilities.testing import ON_CI
 
 try:
     from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
-except ImportError as e:
+except ImportError:
     if ON_CI:
-        raise e
+        raise
     pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
@@ -40,14 +42,14 @@ class TestVector3D:
         vector = Vector3D([0.4, 0.2, 0.1], [0.5, 0.6, 0.7], color=(1, 0, 0, 1))
         assert vector.get_edgecolor() == (1, 0, 0, 1)
         assert vector.get_facecolor() == (1, 0, 0, 1)
-        np.testing.assert_almost_equal(vector._origin, [0.4, 0.2, 0.1])
-        np.testing.assert_almost_equal(vector._vector, [0.5, 0.6, 0.7])
+        np.testing.assert_almost_equal(vector._origin, [0.4, 0.2, 0.1])  # noqa: SLF001
+        np.testing.assert_almost_equal(vector._vector, [0.5, 0.6, 0.7])  # noqa: SLF001
 
     def test_update_data(self):
         vector = Vector3D([0.4, 0.2, 0.1], [0.5, 0.6, 0.7])
         vector.update_data([0.1, 0.2, 0.3], [0.4, 0.5, 0.6])
-        np.testing.assert_almost_equal(vector._origin, [0.1, 0.2, 0.3])
-        np.testing.assert_almost_equal(vector._vector, [0.4, 0.5, 0.6])
+        np.testing.assert_almost_equal(vector._origin, [0.1, 0.2, 0.3])  # noqa: SLF001
+        np.testing.assert_almost_equal(vector._vector, [0.4, 0.5, 0.6])  # noqa: SLF001
 
     def test_min(self):
         vector = Vector3D([0.4, 0.2, 0.1], [0.5, -0.6, 0.7])

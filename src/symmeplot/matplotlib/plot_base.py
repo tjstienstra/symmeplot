@@ -1,10 +1,19 @@
+"""Definition of the base class for the matplotlib plot objects."""
+
 from __future__ import annotations
 
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
 from matplotlib.pyplot import gca
 
 from symmeplot.core import PlotBase
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from matplotlib.axes import Axes
+    from matplotlib.backend_bases import MouseEvent
 
 __all__ = ["MplPlotBase"]
 
@@ -23,7 +32,7 @@ class MplPlotBase(PlotBase):
 
     """
 
-    def plot(self, ax=None):
+    def plot(self, ax: Axes | None = None) -> None:
         """Plot the associated plot objects.
 
         Explanation
@@ -50,7 +59,7 @@ class MplPlotBase(PlotBase):
         return self._visible
 
     @visible.setter
-    def visible(self, is_visible: bool):
+    def visible(self, is_visible: bool) -> None:
         for artist, _ in self._artists:
             artist.set_visible(is_visible)
         for child in self._children:
@@ -59,10 +68,9 @@ class MplPlotBase(PlotBase):
 
     @property
     @abstractmethod
-    def annot_coords(self):
+    def annot_coords(self) -> Sequence[float]:
         """Coordinate where the annotation text is displayed."""
-        pass
 
-    def contains(self, event):
+    def contains(self, event: MouseEvent) -> bool:
         """Boolean whether one of the artists contains the event."""
         return any(artist.contains(event)[0] for artist in self.artists)
