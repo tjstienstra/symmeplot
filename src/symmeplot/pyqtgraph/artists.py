@@ -1,19 +1,22 @@
+"""Artists for the pyqtgraph backend."""
+
 from __future__ import annotations
 
-from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
-import numpy.typing as npt
 import pyqtgraph.opengl as gl
-from OpenGL.GL import *  # noqa
 
 from symmeplot.core import ArtistBase
 from symmeplot.utilities import dcm_to_align_vectors
 
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
 __all__ = ["Line3D", "PgArtistBase", "Point3D", "Vector3D"]
 
 
-def create_tube_mesh_data(
+def create_tube_mesh_data(  # noqa: C901
     lengths: Sequence[float],
     radii: Sequence[float],
     position: Sequence[float],
@@ -46,22 +49,21 @@ def create_tube_mesh_data(
     along the z-axis.
 
     >>> from symmeplot.pyqtgraph.artists import create_tube_mesh_data
-    >>> create_tube_mesh_data((0, 1), (0, 0.3), (0, 0, 0), (0, 0, 1));
+    >>> _ = create_tube_mesh_data((0, 1), (0, 0.3), (0, 0, 0), (0, 0, 1))
 
     One can also close both sides by setting the radii to zero.
 
-    >>> create_tube_mesh_data((0, 1, 1, 0), (0, 0, 0.3, 0.3), (0, 0, 0), (0, 0, 1));
+    >>> _ = create_tube_mesh_data((0, 1, 1, 0), (0, 0, 0.3, 0.3), (0, 0, 0), (0, 0, 1))
 
     You can also create a cone by simulateously changing the length in a segment and
     setting the radius to zero.
 
-    >>> create_tube_mesh_data((0, 1), (0.3, 0), (0, 0, 0), (0, 0, 1));
+    >>> _ = create_tube_mesh_data((0, 1), (0.3, 0), (0, 0, 0), (0, 0, 1))
 
     """
     if len(lengths) != len(radii) or len(lengths) < 2:
-        raise ValueError(
-            "Lengths and radii must have the same length and at least two elements."
-        )
+        msg = "Lengths and radii must have the same length and at least two elements."
+        raise ValueError(msg)
     rres = mesh_resolution
     n_nonzero_radii = np.count_nonzero(radii)
     n_zero_radii = len(radii) - n_nonzero_radii
@@ -87,7 +89,7 @@ def create_tube_mesh_data(
     for r1, r2 in zip(radii[:-1], radii[1:]):
         if r1 == 0 and r2 == 0:  # Infitenly thin tube
             continue
-        elif r1 == 0 or r2 == 0:  # Cone
+        if r1 == 0 or r2 == 0:  # Cone
             n_faces += rres
         else:  # Tube
             n_faces += 2 * rres
@@ -96,7 +98,7 @@ def create_tube_mesh_data(
     for r1, r2 in zip(radii[:-1], radii[1:]):
         if r1 == 0 and r2 == 0:
             continue
-        elif r1 == 0:
+        if r1 == 0:
             faces[fidx : fidx + rres, 0] = ridx
             faces[fidx : fidx + rres, 1] = np.arange(ridx + 1, ridx + rres + 1)
             faces[fidx : fidx + rres, 2] = np.roll(faces[fidx : fidx + rres, 1], -1)
@@ -123,13 +125,13 @@ def create_tube_mesh_data(
     verts = np.dot(verts, dcm_to_align_vectors((0, 0, 1), direction).T) + np.array(
         position, dtype=np.float64
     )
-    return gl.MeshData(vertexes=verts, faces=faces)
+    return gl.MeshData(vertexes=verts, faces=faces)  # ignore: codespell
 
 
 class PgArtistBase(ArtistBase):
     """Base class for artists used in pyqtgraph scene."""
 
-    def __init__(self, *gl_items: gl.GLGraphicsItem):
+    def __init__(self, *gl_items: gl.GLGraphicsItem) -> None:
         super().__init__()
         self._gl_items = gl_items
 
@@ -138,7 +140,7 @@ class PgArtistBase(ArtistBase):
         """The pyqtgraph item."""
         return self._gl_items
 
-    def plot(self, view: gl.GLViewWidget):
+    def plot(self, view: gl.GLViewWidget) -> None:
         """Add the artist to the view."""
         for gl_item in self.gl_items:
             view.addItem(gl_item)
@@ -149,7 +151,7 @@ class PgArtistBase(ArtistBase):
         return all(gl_item.visible() for gl_item in self.gl_items)
 
     @visible.setter
-    def visible(self, is_visible: bool):
+    def visible(self, is_visible: bool) -> None:
         """Set the visibility of the artist."""
         for gl_item in self.gl_items:
             gl_item.setVisible(is_visible)
@@ -158,14 +160,14 @@ class PgArtistBase(ArtistBase):
 class Point3D(PgArtistBase):
     """Artist to plot 3D lines."""
 
-    def __init__(self, x: float, y: float, z: float, **kwargs):
+    def __init__(self, x: float, y: float, z: float, **kwargs: object) -> None:
         super().__init__(
             gl.GLScatterPlotItem(
                 pos=np.array([x, y, z], dtype=np.float64).reshape(1, 3), **kwargs
             )
         )
 
-    def update_data(self, x: float, y: float, z: float):
+    def update_data(self, x: float, y: float, z: float) -> None:
         """Update the data of the artist."""
         self.gl_items[0].setData(
             pos=np.array([x, y, z], dtype=np.float64).reshape(1, 3)
@@ -176,13 +178,19 @@ class Line3D(PgArtistBase):
     """Artist to plot 3D lines."""
 
     def __init__(
-        self, x: Sequence[float], y: Sequence[float], z: Sequence[float], **kwargs
-    ):
+        self,
+        x: Sequence[float],
+        y: Sequence[float],
+        z: Sequence[float],
+        **kwargs: object,
+    ) -> None:
         super().__init__(
             gl.GLLinePlotItem(pos=np.array([x, y, z], dtype=np.float64).T, **kwargs)
         )
 
-    def update_data(self, x: Sequence[float], y: Sequence[float], z: Sequence[float]):
+    def update_data(
+        self, x: Sequence[float], y: Sequence[float], z: Sequence[float]
+    ) -> None:
         """Update the data of the artist."""
         self.gl_items[0].setData(pos=np.array([x, y, z], dtype=np.float64).T)
 
@@ -223,8 +231,8 @@ class Vector3D(PgArtistBase):
         origin: Sequence[float],
         vector: Sequence[float],
         as_mesh: bool = False,
-        **kwargs,
-    ):
+        **kwargs: object,
+    ) -> None:
         origin = np.array(origin, dtype=np.float64)
         vector = np.array(vector, dtype=np.float64)
         self._as_mesh = bool(as_mesh)
@@ -239,7 +247,7 @@ class Vector3D(PgArtistBase):
         else:
             super().__init__(self._create_vector_as_line(origin, vector, **kwargs))
 
-    def update_data(self, origin: Sequence[float], vector: Sequence[float]):
+    def update_data(self, origin: Sequence[float], vector: Sequence[float]) -> None:
         """Update the data of the artist."""
         origin = np.array(origin, dtype=np.float64)
         vector = np.array(vector, dtype=np.float64)
@@ -252,12 +260,15 @@ class Vector3D(PgArtistBase):
             self.gl_items[0].setData(pos=np.array([origin, origin + vector]))
 
     def _create_vector_as_line(
-        self, origin: npt.NDArray[np.float64], vector: npt.NDArray[np.float64], **kwargs
+        self,
+        origin: np.ndarray[np.float64],
+        vector: np.ndarray[np.float64],
+        **kwargs: object,
     ) -> gl.GLLinePlotItem:
         return gl.GLLinePlotItem(pos=np.array([origin, origin + vector]), **kwargs)
 
     def _compute_mesh_data(
-        self, origin: npt.NDArray[np.float64], vector: npt.NDArray[np.float64]
+        self, origin: np.ndarray[np.float64], vector: np.ndarray[np.float64]
     ) -> gl.MeshData:
         length = np.linalg.norm(vector)
         if not length:
@@ -278,6 +289,9 @@ class Vector3D(PgArtistBase):
         )
 
     def _create_vector_as_mesh(
-        self, origin: npt.NDArray[np.float64], vector: npt.NDArray[np.float64], **kwargs
-    ):
+        self,
+        origin: np.ndarray[np.float64],
+        vector: np.ndarray[np.float64],
+        **kwargs: object,
+    ) -> gl.GLMeshItem:
         return gl.GLMeshItem(meshdata=self._compute_mesh_data(origin, vector), **kwargs)

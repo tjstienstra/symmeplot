@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 import sympy as sm
@@ -13,9 +15,9 @@ try:
         PlotPoint,
         PlotVector,
     )
-except ImportError as e:
+except ImportError:
     if ON_CI:
-        raise e
+        raise
     pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
@@ -28,14 +30,15 @@ class TestPlotPoint:
             "point", sum(si * v for si, v in zip(self.s, self.rf))
         )
 
-    @pytest.fixture()
+    @pytest.fixture
     def _basic_plot_point(self):
         self.plot_point = PlotPoint(self.rf, self.zp, self.p)
         self.evalf = sm.lambdify(self.s, self.plot_point.get_expressions_to_evaluate())
         self.plot_point.values = self.evalf(0.2, 0.6, 0.3)
         self.plot_point.update()
 
-    def test_artist(self, _basic_plot_point):
+    @pytest.mark.usefixtures("_basic_plot_point")
+    def test_artist(self):
         assert len(self.plot_point.artists) == 1
         line = self.plot_point.artists[0]
         assert line.get_marker() == "o"
@@ -51,7 +54,8 @@ class TestPlotPoint:
             plot_point.point_coords, np.array([0.2, 0.6, 0.3])
         )
 
-    def test_annot_coords(self, _basic_plot_point):
+    @pytest.mark.usefixtures("_basic_plot_point")
+    def test_annot_coords(self):
         np.testing.assert_almost_equal(
             self.plot_point.annot_coords, np.array([0.2, 0.6, 0.3])
         )
@@ -67,14 +71,15 @@ class TestPlotLine:
         self.p3 = self.p2.locatenew("p3", 0.6 * self.rf.y)
         self.line = (self.p1, self.p2, self.p3)
 
-    @pytest.fixture()
+    @pytest.fixture
     def _basic_plot_line(self):
         self.plot_line = PlotLine(self.rf, self.zp, self.line)
         self.evalf = sm.lambdify(self.s, self.plot_line.get_expressions_to_evaluate())
         self.plot_line.values = self.evalf(0.1, 0.6, 0.2)
         self.plot_line.update()
 
-    def test_artist(self, _basic_plot_line):
+    @pytest.mark.usefixtures("_basic_plot_line")
+    def test_artist(self):
         assert len(self.plot_line.artists) == 1
         line = self.plot_line.artists[0]
         np.testing.assert_almost_equal(
@@ -93,7 +98,8 @@ class TestPlotLine:
             plot_line.line_coords, [[0.1, 0.7, 0.7], [0.6, 0.6, 1.2], [0.2, 0.5, 0.5]]
         )
 
-    def test_annot_coords(self, _basic_plot_line):
+    @pytest.mark.usefixtures("_basic_plot_line")
+    def test_annot_coords(self):
         np.testing.assert_almost_equal(self.plot_line.annot_coords, [0.5, 0.8, 0.4])
 
 
@@ -105,14 +111,15 @@ class TestPlotVector:
         self.o = self.zp.locatenew("origin", 0.3 * self.rf.x + 0.2 * self.rf.y)
         self.v = sum(si * v for si, v in zip(self.s, self.rf))
 
-    @pytest.fixture()
+    @pytest.fixture
     def _basic_plot_vector(self):
         self.plot_vector = PlotVector(self.rf, self.zp, self.v, self.o)
         self.evalf = sm.lambdify(self.s, self.plot_vector.get_expressions_to_evaluate())
         self.plot_vector.values = self.evalf(0.2, -0.6, 0.3)
         self.plot_vector.update()
 
-    def test_artist(self, _basic_plot_vector):
+    @pytest.mark.usefixtures("_basic_plot_vector")
+    def test_artist(self):
         assert len(self.plot_vector.artists) == 1
         line = self.plot_vector.artists[0]
         np.testing.assert_almost_equal(line.min(), [0.3, -0.4, 0])
@@ -128,7 +135,8 @@ class TestPlotVector:
         np.testing.assert_almost_equal(plot_vector.origin_coords, [0.3, 0.2, 0])
         np.testing.assert_almost_equal(plot_vector.vector_values, [0.2, -0.6, 0.3])
 
-    def test_annot_coords(self, _basic_plot_vector):
+    @pytest.mark.usefixtures("_basic_plot_vector")
+    def test_annot_coords(self):
         np.testing.assert_almost_equal(self.plot_vector.annot_coords, [0.4, -0.1, 0.15])
 
 
@@ -141,14 +149,15 @@ class TestPlotFrame:
         self.f.orient_axis(self.rf, self.q, self.rf.z)
         self.o = self.zp.locatenew("origin", 0.3 * self.rf.x + 0.2 * self.rf.y)
 
-    @pytest.fixture()
+    @pytest.fixture
     def _basic_plot_frame(self):
         self.plot_frame = PlotFrame(self.rf, self.zp, self.f, self.o, scale=1)
         self.evalf = sm.lambdify(self.q, self.plot_frame.get_expressions_to_evaluate())
         self.plot_frame.values = self.evalf(np.pi / 2)
         self.plot_frame.update()
 
-    def test_children(self, _basic_plot_frame):
+    @pytest.mark.usefixtures("_basic_plot_frame")
+    def test_children(self):
         assert len(self.plot_frame.children) == 3
         assert all(isinstance(child, PlotVector) for child in self.plot_frame.children)
         assert len(self.plot_frame.artists) == 3
@@ -165,7 +174,8 @@ class TestPlotFrame:
         np.testing.assert_almost_equal(plot_frame.y.vector_values, [-1, 0, 0])
         np.testing.assert_almost_equal(plot_frame.z.vector_values, [0, 0, 1])
 
-    def test_annot_coords(self, _basic_plot_frame):
+    @pytest.mark.usefixtures("_basic_plot_frame")
+    def test_annot_coords(self):
         np.testing.assert_almost_equal(self.plot_frame.annot_coords, [0, 0.5, 0.3])
 
 
@@ -180,7 +190,7 @@ class TestPlotBody:
         self.rb = me.RigidBody("body", mc, f, 1, (f.x.outer(f.x), mc))
         self.p = me.Particle("particle", mc, 1)
 
-    @pytest.fixture()
+    @pytest.fixture
     def _basic_plot_body(self):
         self.plot_body = PlotBody(self.rf, self.zp, self.rb)
         self.evalf = sm.lambdify(
@@ -215,5 +225,6 @@ class TestPlotBody:
         np.testing.assert_almost_equal(frame.y.vector_values, [-0.1, 0, 0])
         np.testing.assert_almost_equal(frame.z.vector_values, [0, 0, 0.1])
 
-    def test_annot_coords(self, _basic_plot_body):
+    @pytest.mark.usefixtures("_basic_plot_body")
+    def test_annot_coords(self):
         np.testing.assert_almost_equal(self.plot_body.annot_coords, [0.3, 0.2, 0.5])

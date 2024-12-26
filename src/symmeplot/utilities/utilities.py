@@ -1,10 +1,16 @@
+"""Utility functions for SymmePlot."""
+
 from __future__ import annotations
 
-from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 import numpy.typing as npt
-from sympy.physics.vector import ReferenceFrame
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from sympy.physics.vector import ReferenceFrame
 
 
 def dcm_to_align_vectors(

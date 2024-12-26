@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 import sympy as sm
@@ -7,11 +9,11 @@ import symmeplot.utilities.dummy_backend as dummy
 from symmeplot.utilities.testing import ON_CI
 
 try:
-    import symmeplot.matplotlib as matplotlib
+    from symmeplot import matplotlib
 except ImportError:
     matplotlib = None
 try:
-    import symmeplot.pyqtgraph as pyqtgraph
+    from symmeplot import pyqtgraph
 except ImportError:
     pyqtgraph = None
 
@@ -129,14 +131,15 @@ class TestPlotFrameMixin:
         self.A.orient_axis(self.N, self.q, self.N.z)
         self.P = self.O.locatenew("P", self.N.x)
 
-    @pytest.fixture()
+    @pytest.fixture
     def _instantiate_plot_object(self, backend):
         self.plot_object = backend.PlotFrame(
             self.N, self.O, self.A, origin=self.P, name="frame", scale=2.0
         )
         self.eval = sm.lambdify(self.q, self.plot_object.get_expressions_to_evaluate())
 
-    def test_basic_properties(self, _instantiate_plot_object):
+    @pytest.mark.usefixtures("_instantiate_plot_object")
+    def test_basic_properties(self):
         assert self.plot_object.inertial_frame == self.N
         assert self.plot_object.zero_point == self.O
         assert self.plot_object.frame == self.A
@@ -150,7 +153,8 @@ class TestPlotFrameMixin:
             self.plot_object.z,
         )
 
-    def test_expressions(self, _instantiate_plot_object):
+    @pytest.mark.usefixtures("_instantiate_plot_object")
+    def test_expressions(self):
         self.plot_object.values = self.eval(np.pi / 2)
         np.testing.assert_almost_equal(self.plot_object.x.origin_coords, (1, 0, 0))
         np.testing.assert_almost_equal(self.plot_object.x.vector_values, (0, 2, 0))
@@ -189,12 +193,13 @@ class TestPlotBodyMixin:
         )
         self.pt = me.Particle("pt", self.mc, 1.0)
 
-    @pytest.fixture()
+    @pytest.fixture
     def _instantiate_plot_object(self, backend):
         self.plot_object = backend.PlotBody(self.N, self.O, self.rb, name="body")
         self.eval = sm.lambdify(self.q, self.plot_object.get_expressions_to_evaluate())
 
-    def test_basic_properties(self, _instantiate_plot_object):
+    @pytest.mark.usefixtures("_instantiate_plot_object")
+    def test_basic_properties(self):
         assert self.plot_object.inertial_frame == self.N
         assert self.plot_object.zero_point == self.O
         assert self.plot_object.body == self.rb
@@ -206,7 +211,8 @@ class TestPlotBodyMixin:
             self.plot_object.plot_frame,
         )
 
-    def test_expressions(self, _instantiate_plot_object):
+    @pytest.mark.usefixtures("_instantiate_plot_object")
+    def test_expressions(self):
         self.plot_object.values = self.eval(np.pi / 2)
         np.testing.assert_almost_equal(
             self.plot_object.plot_masscenter.point_coords, (1, 0, 0)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from unittest.mock import MagicMock, patch
 
 import numpy as np
@@ -10,9 +12,9 @@ try:
     import matplotlib.pyplot as plt
 
     from symmeplot.matplotlib import PlotFrame, Scene3D
-except ImportError as e:
+except ImportError:
     if ON_CI:
-        raise e
+        raise
     pytest.skip("Matplotlib not installed.", allow_module_level=True)
 
 
@@ -82,12 +84,12 @@ class TestScene3D:
         axes_mock = MagicMock()
         scene = Scene3D(self.rf, self.zp, ax=axes_mock)
 
-        A = me.ReferenceFrame("A")
-        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
-        B = me.ReferenceFrame("B")
-        B.orient_axis(A, self.rf.y, -np.pi / 2)
+        f1 = me.ReferenceFrame("A")
+        f1.orient_axis(self.rf, self.rf.z, np.pi / 2)
+        f2 = me.ReferenceFrame("B")
+        f2.orient_axis(f1, self.rf.y, -np.pi / 2)
 
-        scene.as_orthogonal_projection_plot(B)
+        scene.as_orthogonal_projection_plot(f2)
 
         kwargs = {
             "elev": 90.0,
@@ -100,10 +102,10 @@ class TestScene3D:
         axes_mock = MagicMock()
         scene = Scene3D(self.rf, self.zp, ax=axes_mock)
 
-        A = me.ReferenceFrame("A")
-        A.orient_axis(self.rf, self.rf.z, np.pi / 2)
+        frame = me.ReferenceFrame("A")
+        frame.orient_axis(self.rf, self.rf.z, np.pi / 2)
 
-        scene.as_orthogonal_projection_plot(A)
+        scene.as_orthogonal_projection_plot(frame)
 
         kwargs = {
             "elev": 0.0,

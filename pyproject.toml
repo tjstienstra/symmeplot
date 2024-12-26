@@ -60,17 +60,39 @@ scripts.test = "pytest {args}"
 
 
 [tool.ruff.lint]
-select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
-          "T20", "UP"]
-ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213", "RUF200"]
+select = ["ALL"]
+ignore = [
+  "COM812",   # Conflicts with formatter
+  "D203",     # Conflicts D211 which enforces no blank line before class docstring
+  "DTZ005",   # Specify the timezone in datetime
+  "FBT",      # Booleans should be keyword arguments
+  "ISC001",   # Implicitly concatenated string literals on one line (conflicts with format)
+  "PLR09",    # Too many <...>
+  "PLR2004",  # Magic value used in comparison
+  "FIX",      # Line contains TODO/FIXME, consider resolving the issue
+  "TD003",    # Missing issue link on the line following this TODO
+]
+isort.required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
-"docs/conf.py" = ["A001"]  # Ignore copyright shadowing
+"docs/conf.py" = [
+  "A001",     # Ignore copyright shadowing
+  "INP001",   # Missing __init__.py
+]
 "*/__init__.py" = ["D104"]
-"tests/*" = ["D", "N806", "S101"]
-"src/symmeplot/plot_artists.py" = ["D102"]
-"src/symmeplot/utilities/sympy_patches.py" = ["RUF", "D", "UP"]
+"tests/*" = [
+  "ANN",      # Type hints
+  "D",        # Documentation
+  "S101",     # Assert statements
+]
+"src/symmeplot/utilities/sympy_patches.py" = ["ANN", "RUF", "D", "UP"]
 "src/symmeplot/utilities/dummy_backend.py" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.format]
+docstring-code-format = true  # Enable reformatting of code snippets in docstrings.
 
 [tool.pytest.ini_options]
 addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
@@ -82,3 +104,6 @@ log_cli_level = "INFO"
 testpaths = [
     "tests",
 ]
+
+[tool.codespell]
+ignore-regex = ["^.*ignore: codespell"]

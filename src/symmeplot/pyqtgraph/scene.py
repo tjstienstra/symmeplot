@@ -1,6 +1,7 @@
+"""PyQtGraph 3D scene definition."""
+
 from __future__ import annotations
 
-from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Callable
 
 import pyqtgraph as pg
@@ -8,7 +9,6 @@ import pyqtgraph.opengl as gl
 from pyqtgraph.Qt import QtCore
 
 from symmeplot.core import SceneBase
-from symmeplot.pyqtgraph.plot_base import PgPlotBase
 from symmeplot.pyqtgraph.plot_objects import (
     PlotBody,
     PlotFrame,
@@ -18,7 +18,11 @@ from symmeplot.pyqtgraph.plot_objects import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from sympy.physics.vector import Point, ReferenceFrame
+
+    from symmeplot.pyqtgraph.plot_base import PgPlotBase
 
 __all__ = ["Scene3D"]
 
@@ -72,16 +76,15 @@ class Scene3D(SceneBase):
         inertial_frame: ReferenceFrame,
         zero_point: Point,
         view: gl.GLViewWidget | None = None,
-        **inertial_frame_properties,
-    ):
+        **inertial_frame_properties: object,
+    ) -> None:
         if pg.QAPP is None:
             pg.mkQApp()
         if view is None:
             view = gl.GLViewWidget()
         if not isinstance(view, gl.GLViewWidget):
-            raise TypeError(
-                f"Expected a pyqtgraph.opengl.GLViewWidget, got {type(view)}."
-            )
+            msg = "The 'view' argument should be a pyqtgraph.opengl.GLViewWidget."
+            raise TypeError(msg)
         self._view = view
         view.show()
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
@@ -120,7 +123,7 @@ class Scene3D(SceneBase):
         if isinstance(frames, int):
             frames = range(frames)
 
-        def update():
+        def update() -> None:
             update.index += 1
             self.evaluate_system(*get_args(frames[update.index % len(frames)]))
             self.update()

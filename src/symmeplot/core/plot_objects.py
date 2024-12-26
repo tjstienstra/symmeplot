@@ -1,13 +1,17 @@
+"""Mixin classes to be used when creating plot objects."""
+
 from __future__ import annotations
 
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 import numpy as np
-import numpy.typing as npt
 from sympy import Expr, latex
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
 
-from symmeplot.core.plot_base import PlotBase
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from symmeplot.core.plot_base import PlotBase
 
 __all__ = [
     "OriginMixin",
@@ -28,9 +32,10 @@ class OriginMixin:
         return self._origin
 
     @origin.setter
-    def origin(self, new_origin: Point | Vector | None):
+    def origin(self, new_origin: Point | Vector | None) -> None:
         if hasattr(self, "_origin"):
-            raise AttributeError("The origin of a plot object cannot be changed.")
+            msg = "The origin of a plot object cannot be changed."
+            raise AttributeError(msg)
         if new_origin is None:
             new_origin = self.zero_point
         elif isinstance(new_origin, Vector):
@@ -40,7 +45,8 @@ class OriginMixin:
                 child.origin = new_origin
             self._origin = new_origin
         else:
-            raise TypeError("'origin' should be a valid Point object.")
+            msg = "'origin' should be a valid Point object."
+            raise TypeError(msg)
 
 
 class PlotPointMixin:
@@ -58,11 +64,12 @@ class PlotPointMixin:
         zero_point: Point,
         point: Point,
         name: str | None = None,
-    ):
+    ) -> None:
         if name is None:
             name = point.name
         if not isinstance(point, Point):
-            raise TypeError("'point' should be a valid Point object.")
+            msg = "'point' should be a sympy Point object."
+            raise TypeError(msg)
         super().__init__(inertial_frame, zero_point, point, name)
 
     @property
@@ -71,7 +78,7 @@ class PlotPointMixin:
         return self._sympy_object
 
     @property
-    def point_coords(self) -> npt.NDArray[np.float64]:
+    def point_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the plotted point."""
         return np.array(self._values[0]).reshape(3)
 
@@ -97,13 +104,14 @@ class PlotLineMixin:
         zero_point: Point,
         line: Iterable[Point],
         name: str | None = None,
-    ):
+    ) -> None:
         _points = []
         if isinstance(line, Point):
             line = (line,)
         for point in line:
             if not isinstance(point, Point):
-                raise TypeError("'line' should be a list of Point objects.")
+                msg = "'line' should be a list of Point objects."
+                raise TypeError(msg)
             _points.append(point)
         super().__init__(inertial_frame, zero_point, tuple(_points), name)
 
@@ -113,7 +121,7 @@ class PlotLineMixin:
         return self._sympy_object
 
     @property
-    def line_coords(self) -> npt.NDArray[np.float64]:
+    def line_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the plotted line."""
         return np.array(self._values[0]).reshape(3, -1)
 
@@ -125,10 +133,13 @@ class PlotLineMixin:
         The form of the expression is ``((x0, x1, ...), (y0, y1, ...), (z0, z1, ...))``.
 
         """
-        vs = []
-        for point in self.line:
-            vs.append(point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:])
-        arr = np.array(vs, dtype=object).T
+        arr = np.array(
+            [
+                point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+                for point in self.line
+            ],
+            dtype=object,
+        ).T
         return tuple(map(tuple, arr))
 
 
@@ -148,11 +159,12 @@ class PlotVectorMixin(OriginMixin):
         vector: Vector,
         origin: Point | Vector | None = None,
         name: str | None = None,
-    ):
+    ) -> None:
         if name is None:
             name = str(latex(vector))
         if not isinstance(vector, Vector):
-            raise TypeError("'vector' should be a valid Vector object.")
+            msg = "'vector' should be a sympy Vector object."
+            raise TypeError(msg)
         super().__init__(inertial_frame, zero_point, vector, name)
         self.origin = origin
 
@@ -162,12 +174,12 @@ class PlotVectorMixin(OriginMixin):
         return self._sympy_object
 
     @property
-    def origin_coords(self) -> npt.NDArray[np.float64]:
+    def origin_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the origin of the plotted vector."""
         return np.array([self._values[0][0]]).reshape(3)
 
     @property
-    def vector_values(self) -> npt.NDArray[np.float64]:
+    def vector_values(self) -> np.ndarray[np.float64]:
         """Values of the plotted vector."""
         return np.array(self._values[0][1]).reshape(3)
 
@@ -196,12 +208,13 @@ class PlotFrameMixin(OriginMixin):
         frame: ReferenceFrame,
         origin: Point | Vector | None = None,
         name: str | None = None,
-        scale: float = 0.1,
-    ):
+        scale: float = 0.1,  # noqa: ARG002
+    ) -> None:
         if name is None:
             name = frame.name
         if not isinstance(frame, ReferenceFrame):
-            raise TypeError("'frame' should be a valid ReferenceFrame object.")
+            msg = "'frame' should be a sympy ReferenceFrame object."
+            raise TypeError(msg)
         super().__init__(inertial_frame, zero_point, frame, name)
         self.origin = origin
 
@@ -248,11 +261,12 @@ class PlotBodyMixin:
         zero_point: Point,
         body: Particle | RigidBody,
         name: str | None = None,
-    ):
+    ) -> None:
         if name is None:
             name = str(body)  # Particle.name does not yet exist in SymPy 1.12
         if not isinstance(body, (Particle, RigidBody)):
-            raise TypeError("'body' should be a sympy body.")
+            msg = "'body' should be a sympy body."
+            raise TypeError(msg)
         super().__init__(inertial_frame, zero_point, body, name)
         self._expressions_self = ()
 
@@ -266,6 +280,7 @@ class PlotBodyMixin:
         """PlotFrame used for plotting the reference frame of the body."""
         if len(self._children) == 2:
             return self._children[1]
+        return None
 
     @property
     def plot_masscenter(self) -> PlotBase:

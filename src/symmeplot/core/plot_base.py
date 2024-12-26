@@ -1,3 +1,5 @@
+"""Base class for all the plot objects."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -41,14 +43,16 @@ class PlotBase(ABC):
         self,
         inertial_frame: ReferenceFrame,
         zero_point: Point,
-        sympy_object: Any,
+        sympy_object: object,
         name: str | None = None,
-    ):
+    ) -> None:
         self._children = []
         if not isinstance(inertial_frame, ReferenceFrame):
-            raise TypeError("'inertial_frame' should be a valid ReferenceFrame object.")
+            msg = "'inertial_frame' should be a valid ReferenceFrame object."
+            raise TypeError(msg)
         if not isinstance(zero_point, Point):
-            raise TypeError("'zero_point' should be a valid Point object.")
+            msg = "'zero_point' should be a valid Point object."
+            raise TypeError(msg)
         self._inertial_frame = inertial_frame
         self._zero_point = zero_point
         self._sympy_object = sympy_object
@@ -57,14 +61,15 @@ class PlotBase(ABC):
         self._values = []
         self.visible = True
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Representation showing some basic information of the instance."""
         return (
             f"{self.__class__.__name__}(inertia_frame={self.inertial_frame}, "
             f"zero_point={self.zero_point}, origin={self.origin}, name={self.name})"
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Represent the object as a string."""
         return self.name
 
     @property
@@ -78,7 +83,7 @@ class PlotBase(ABC):
         return self._zero_point
 
     @property
-    def sympy_object(self) -> Any:
+    def sympy_object(self) -> object:
         """The absolute origin with respect to which the object is positioned."""
         return self._sympy_object
 
@@ -88,7 +93,7 @@ class PlotBase(ABC):
         return self._name
 
     @name.setter
-    def name(self, name: str):
+    def name(self, name: str) -> None:
         self._name = str(name)
 
     @property
@@ -121,7 +126,7 @@ class PlotBase(ABC):
         return (self._values, *(child.values for child in self._children))
 
     @values.setter
-    def values(self, values: tuple):
+    def values(self, values: tuple) -> None:
         self._values = values[0]
         for child, vals in zip(self._children, values[1:]):
             child.values = vals
@@ -133,7 +138,7 @@ class PlotBase(ABC):
             *tuple(child.get_expressions_to_evaluate() for child in self._children),
         )
 
-    def add_artist(self, artist: ArtistBase, exprs: Expr | tuple[Expr, ...]):
+    def add_artist(self, artist: ArtistBase, exprs: Expr | tuple[Expr, ...]) -> None:
         """Add an artist to the plot object.
 
         Parameters
@@ -145,13 +150,14 @@ class PlotBase(ABC):
 
         """
         if not isinstance(artist, ArtistBase):
-            raise TypeError("'artist' should be a valid Artist object.")
+            msg = "'artist' should be a valid Artist object."
+            raise TypeError(msg)
         if not iterable(exprs):
             exprs = (exprs,)
         self._artists.append((artist, tuple(exprs)))
 
     @abstractmethod
-    def plot(self, *args, **kwargs) -> None:
+    def plot(self, *args: object, **kwargs: object) -> None:
         """Plot the associated plot objects."""
 
     def get_sympy_object_exprs(self) -> tuple[Any, ...]:
@@ -159,7 +165,7 @@ class PlotBase(ABC):
         return ()
 
     def update(self) -> None:
-        """Update the objects on the scene, based on the currect values."""
+        """Update the objects on the scene, based on the current values."""
         for args, (artist, _) in zip(self._values, self._artists):
             artist.update_data(*args)
         for child in self._children:

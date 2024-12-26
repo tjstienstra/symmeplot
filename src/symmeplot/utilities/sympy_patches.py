@@ -36,7 +36,7 @@ def _recursive_to_string(doprint, arg):
 
     if isinstance(arg, (Basic, MatrixType)):
         return doprint(arg)
-    elif iterable(arg):
+    if iterable(arg):
         if isinstance(arg, list):
             left, right = "[", "]"
         elif isinstance(arg, tuple):
@@ -46,10 +46,9 @@ def _recursive_to_string(doprint, arg):
         else:
             raise NotImplementedError("unhandled type: %s, %s" % (type(arg), arg))
         return left + ", ".join(_recursive_to_string(doprint, e) for e in arg) + right
-    elif isinstance(arg, str):
+    if isinstance(arg, str):
         return arg
-    else:
-        return doprint(arg)
+    return doprint(arg)
 
 
 def doprint(self, funcname, args, expr, *, cses=()):
@@ -109,4 +108,5 @@ def doprint(self, funcname, args, expr, *, cses=()):
 if not empty_tuple_fixed():
     _EvaluatorPrinter.doprint = doprint
     if not empty_tuple_fixed():
-        raise ValueError("Patching failed.")
+        msg = "Failed to patch sympy.lambdify to allow for empty tuples."
+        raise ValueError(msg)

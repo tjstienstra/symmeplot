@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import contextlib
 from unittest.mock import MagicMock, patch
 
@@ -9,11 +11,11 @@ import symmeplot.utilities.dummy_backend as dummy
 from symmeplot.utilities.testing import ON_CI
 
 try:
-    import symmeplot.matplotlib as matplotlib
+    from symmeplot import matplotlib
 except ImportError:
     matplotlib = None
 try:
-    import symmeplot.pyqtgraph as pyqtgraph
+    from symmeplot import pyqtgraph
 except ImportError:
     pyqtgraph = None
 
@@ -71,7 +73,7 @@ class TestScene3D:
         self.pt = me.Particle("pt", self.p3, 1)
         self.p1_coords, self.p2_coords, self.p3_coords = None, None, None
 
-    @pytest.fixture()
+    @pytest.fixture
     def _filled_scene(self, backend):
         self.scene = backend.Scene3D(self.rf, self.zp)
         self.scene.add_point(self.p1)
@@ -93,7 +95,8 @@ class TestScene3D:
             for artist in artists:
                 assert artist.visible == is_visible
         else:
-            raise ValueError("Unknown backend.")
+            msg = "Unknown backend."
+            raise ValueError(msg)
 
     @staticmethod
     def _check_plot_object_visibility(backend, plot_object, is_visible):
@@ -200,7 +203,8 @@ class TestScene3D:
             plot_body.plot_masscenter.point_coords, self.p3_coords
         )
 
-    def test_get_plot_object(self, backend, _filled_scene):
+    @pytest.mark.usefixtures("_filled_scene")
+    def test_get_plot_object(self, backend):
         # Get inertial frame by sympy object
         rf_obj = self.scene.get_plot_object(self.rf)
         assert isinstance(rf_obj, backend.PlotFrame)
@@ -227,7 +231,8 @@ class TestScene3D:
         assert isinstance(p3_obj, backend.PlotPoint)
         assert p3_obj.point is self.p3
 
-    def test_set_visibility(self, backend, _filled_scene):
+    @pytest.mark.usefixtures("_filled_scene")
+    def test_set_visibility(self, backend):
         obj = self.scene.get_plot_object("my_vector")
         self._check_plot_object_visibility(backend, obj, True)
         self.scene.set_visibility("my_vector", False)
