@@ -1,61 +1,70 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
 name = "symmeplot"
 version = "0.2.2.dev"
+authors = [
+  { name = "tjstienstra", email = "timostienstra00@gmail.com" },
+]
 description = "SymPy Mechanics Plotter"
-authors = ["tjstienstra <timostienstra00@gmail.com>"]
 readme = "README.md"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+    "sympy >=1.12",
+    "numpy >=1.23",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-sympy = "^1.12"
-numpy = "^1.21.6"
-
-matplotlib = {version = "^3.7", optional = true}
-pyqtgraph = {version = "^0.13.3", optional = true}
-pyqt6 = {version = "^6.6.1", optional = true}
-pyopengl = {version = "^3.1.7", optional = true}
-
-[tool.poetry.extras]
-mpl_backend = ["matplotlib"]
-pg_backend = ["pyqtgraph", "pyqt6", "pyopengl"]
-
-[tool.poetry.group.lint.dependencies]
-ruff = "^0.1.15"
-pre-commit = "^3.6.0"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.0.0"
-pytest-mock = "^3.12.0"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^7.2.6"
-jupyter-sphinx = "^0.5.3"
-autodocsumm = "^0.2.12"
-ipykernel = "^6.29.0"
-furo = "^2024.1.29"
+[project.optional-dependencies]
+mpl_backend = [
+    "matplotlib >=3.7",
+]
+pg_backend = [
+    "pyqtgraph >=0.13.3",
+    "pyqt6 >=6.6.1",
+    "pyopengl >=3.1.7",
+]
+lint = [
+  "ruff >= 0.8",
+]
+test = [
+  "pytest >=8",
+  "pytest-mock >= 3.12",
+]
+docs = [
+  "sphinx >=7.0",
+  "jupyter-sphinx >=0.5",
+  "autodocsumm >=0.2",
+  "ipykernel >=6",
+  "furo >=2024",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/tjstienstra/symmeplot"
 "Bug Tracker" = "https://github.com/tjstienstra/symmeplot/issues"
 "Documentation" = "https://tjstienstra.github.io/symmeplot/"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/symmeplot/_version.py"
 
-[tool.ruff]
-target-version = "py39"
+[tool.hatch.envs.default]
+features = ["test"]
+scripts.test = "pytest {args}"
+
+
+[tool.ruff.lint]
 select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "NPY", "RUF", "SIM", "TID",
           "T20", "UP"]
 ignore = ["A003", "C901", "D100", "D105", "D107", "D203", "D213", "RUF200"]
-show-source = true
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "docs/conf.py" = ["A001"]  # Ignore copyright shadowing
 "*/__init__.py" = ["D104"]
 "tests/*" = ["D", "N806", "S101"]
@@ -64,6 +73,12 @@ show-source = true
 "src/symmeplot/utilities/dummy_backend.py" = ["D"]
 
 [tool.pytest.ini_options]
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = [
+  "error",
+]
+log_cli_level = "INFO"
 testpaths = [
     "tests",
 ]

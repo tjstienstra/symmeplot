@@ -69,8 +69,9 @@ class Scene3D(SceneBase):
     _PlotFrame: type[MplPlotBase] = PlotFrame
     _PlotBody: type[MplPlotBase] = PlotBody
 
-    def __init__(self, inertial_frame, zero_point, ax=None, **inertial_frame_properties
-                 ):
+    def __init__(
+        self, inertial_frame, zero_point, ax=None, **inertial_frame_properties
+    ):
         if ax is None:
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         elif not hasattr(ax, "get_zlim"):
@@ -79,8 +80,12 @@ class Scene3D(SceneBase):
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
         self._ax = ax
         self.annot = self._ax.text2D(
-            0, 0, "", bbox={"boxstyle": "round4", "fc": "linen", "ec": "k", "lw": 1},
-            transform=None)
+            0,
+            0,
+            "",
+            bbox={"boxstyle": "round4", "fc": "linen", "ec": "k", "lw": 1},
+            transform=None,
+        )
         self.annot.set_visible(False)
         self.annot_location = "object"
         self._ax.figure.canvas.mpl_connect("motion_notify_event", self._hover)
@@ -109,7 +114,8 @@ class Scene3D(SceneBase):
         else:
             raise NotImplementedError(
                 f"Annotation location '{new_annot_location}' has not been "
-                f"implemented.")
+                f"implemented."
+            )
 
     @property
     def annot_coords(self):
@@ -144,12 +150,13 @@ class Scene3D(SceneBase):
                 axis.set_ticks_position("none")
             if ax_scale:
                 self.axes.set_position(
-                    [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale])
+                    [-(ax_scale - 1) / 2, -(ax_scale - 1) / 2, ax_scale, ax_scale]
+                )
             self.auto_zoom()
             self.axes.set_aspect("equal", adjustable="box")
 
     def as_orthogonal_projection_plot(
-            self, frame: ReferenceFrame | None = None
+        self, frame: ReferenceFrame | None = None
     ) -> None:
         """Change the axis to an orthogonal projection making the view seemingly 2D.
 
@@ -188,13 +195,13 @@ class Scene3D(SceneBase):
         """Update the annotation to the given `plot_object`."""
         self.annot.set_text(str(plot_object))
         if self.annot_location == "object":
-            x, y, _ = proj_transform(*plot_object.annot_coords,
-                                     self._ax.get_proj())
+            x, y, _ = proj_transform(*plot_object.annot_coords, self._ax.get_proj())
             self.annot.set_position(self._ax.transData.transform((x, y)))
             # self.annot.set_position_3d(plot_object.annot_coords)
         elif self.annot_location == "mouse":
-            self.annot.set_position(self._ax.transData.transform(
-                (event.xdata, event.ydata)))
+            self.annot.set_position(
+                self._ax.transData.transform((event.xdata, event.ydata))
+            )
 
     def _hover(self, event):
         """Show an annotation if the mouse is hovering over a `plot_object`."""
@@ -220,8 +227,13 @@ class Scene3D(SceneBase):
             plot_object.set_visible(False)
         self._children = [self._children[0]]
 
-    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
-                interval: int = 30, **kwargs) -> FuncAnimation:
+    def animate(
+        self,
+        get_args: Callable[[Any], tuple],
+        frames: Iterable[Any] | int,
+        interval: int = 30,
+        **kwargs,
+    ) -> FuncAnimation:
         """Animate the scene.
 
         Parameters
@@ -251,5 +263,10 @@ class Scene3D(SceneBase):
 
         if isinstance(frames, int):
             frames = range(frames)
-        return FuncAnimation(self.axes.figure, update, frames=frames, interval=interval,
-                             **{"blit": True, **kwargs})
+        return FuncAnimation(
+            self.axes.figure,
+            update,
+            frames=frames,
+            interval=interval,
+            **{"blit": True, **kwargs},
+        )

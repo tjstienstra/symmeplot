@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+
 from symmeplot.utilities.testing import ON_CI
 
 try:
@@ -36,24 +37,24 @@ class TestLine3D:
 
 class TestVector3D:
     def test_init(self):
-        vector = Vector3D([0.4, 0.2, 0.1], [.5, .6, .7], color=(1, 0, 0, 1))
+        vector = Vector3D([0.4, 0.2, 0.1], [0.5, 0.6, 0.7], color=(1, 0, 0, 1))
         assert vector.get_edgecolor() == (1, 0, 0, 1)
         assert vector.get_facecolor() == (1, 0, 0, 1)
         np.testing.assert_almost_equal(vector._origin, [0.4, 0.2, 0.1])
-        np.testing.assert_almost_equal(vector._vector, [.5, .6, .7])
+        np.testing.assert_almost_equal(vector._vector, [0.5, 0.6, 0.7])
 
     def test_update_data(self):
-        vector = Vector3D([0.4, 0.2, 0.1], [.5, .6, .7])
-        vector.update_data([0.1, 0.2, 0.3], [.4, .5, .6])
+        vector = Vector3D([0.4, 0.2, 0.1], [0.5, 0.6, 0.7])
+        vector.update_data([0.1, 0.2, 0.3], [0.4, 0.5, 0.6])
         np.testing.assert_almost_equal(vector._origin, [0.1, 0.2, 0.3])
-        np.testing.assert_almost_equal(vector._vector, [.4, .5, .6])
+        np.testing.assert_almost_equal(vector._vector, [0.4, 0.5, 0.6])
 
     def test_min(self):
-        vector = Vector3D([0.4, 0.2, 0.1], [.5, -.6, .7])
+        vector = Vector3D([0.4, 0.2, 0.1], [0.5, -0.6, 0.7])
         np.testing.assert_almost_equal(vector.min(), [0.4, -0.4, 0.1])
 
     def test_max(self):
-        vector = Vector3D([0.4, 0.2, 0.1], [.5, -.6, .7])
+        vector = Vector3D([0.4, 0.2, 0.1], [0.5, -0.6, 0.7])
         np.testing.assert_almost_equal(vector.max(), [0.9, 0.2, 0.8])
 
 

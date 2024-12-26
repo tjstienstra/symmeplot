@@ -18,7 +18,7 @@ def _create_undefined_function(error: Exception, message: str) -> Callable[..., 
     return undefined_function
 
 
-class SceneBase(ABC):
+class SceneBase(ABC):  # noqa: B024
     """Base class for a visualization scene for sympy mechanics.
 
     Parameters
@@ -34,19 +34,26 @@ class SceneBase(ABC):
     """
 
     _PlotPoint: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_point' has not been implemented in this backend.")
+        NotImplementedError, "'add_point' has not been implemented in this backend."
+    )
     _PlotLine: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_line' has not been implemented in this backend.")
+        NotImplementedError, "'add_line' has not been implemented in this backend."
+    )
     _PlotVector: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_vector' has not been implemented in this backend.")
+        NotImplementedError, "'add_vector' has not been implemented in this backend."
+    )
     _PlotFrame: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_frame' has not been implemented in this backend.")
+        NotImplementedError, "'add_frame' has not been implemented in this backend."
+    )
     _PlotBody: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_body' has not been implemented in this backend.")
+        NotImplementedError, "'add_body' has not been implemented in this backend."
+    )
 
     def __init__(
-        self, inertial_frame: ReferenceFrame, zero_point: Point,
-        **inertial_frame_properties
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        **inertial_frame_properties,
     ):
         self._zero_point = zero_point
         self._inertial_frame = inertial_frame
@@ -154,8 +161,9 @@ class SceneBase(ABC):
         self.add_plot_object(obj)
         return obj
 
-    def add_vector(self, vector: Vector, origin: Point | Vector | None = None,
-                   **kwargs):
+    def add_vector(
+        self, vector: Vector, origin: Point | Vector | None = None, **kwargs
+    ):
         """Add a sympy Vector to the scene.
 
         Parameters
@@ -173,13 +181,15 @@ class SceneBase(ABC):
             The added plot object.
 
         """
-        obj = self._PlotVector(self.inertial_frame, self.zero_point, vector, origin,
-                              **kwargs)
+        obj = self._PlotVector(
+            self.inertial_frame, self.zero_point, vector, origin, **kwargs
+        )
         self.add_plot_object(obj)
         return obj
 
-    def add_frame(self, frame: ReferenceFrame, origin: Point | Vector | None = None,
-                  **kwargs):
+    def add_frame(
+        self, frame: ReferenceFrame, origin: Point | Vector | None = None, **kwargs
+    ):
         """Add a sympy ReferenceFrame to the scene.
 
         Parameters
@@ -197,8 +207,9 @@ class SceneBase(ABC):
             The added plot object.
 
         """
-        obj = self._PlotFrame(self.inertial_frame, self.zero_point, frame, origin,
-                             **kwargs)
+        obj = self._PlotFrame(
+            self.inertial_frame, self.zero_point, frame, origin, **kwargs
+        )
         self.add_plot_object(obj)
         return obj
 
@@ -309,8 +320,13 @@ class SceneBase(ABC):
         for plot_object in self._children:
             plot_object.update()
 
-    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
-                interval: int = 30, **kwargs) -> None:
+    def animate(
+        self,
+        get_args: Callable[[Any], tuple],
+        frames: Iterable[Any] | int,
+        interval: int = 30,
+        **kwargs,
+    ) -> None:
         """Animate the scene.
 
         Parameters

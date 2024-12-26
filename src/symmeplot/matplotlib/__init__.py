@@ -1,6 +1,10 @@
 __all__ = [
+    "PlotBody",
+    "PlotFrame",
+    "PlotLine",
+    "PlotPoint",
+    "PlotVector",
     "Scene3D",
-    "PlotPoint", "PlotLine", "PlotVector", "PlotFrame", "PlotBody",
 ]
 
 from symmeplot.matplotlib.plot_objects import (

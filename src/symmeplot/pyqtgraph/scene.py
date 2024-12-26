@@ -67,15 +67,21 @@ class Scene3D(SceneBase):
     _PlotFrame: type[PgPlotBase] = PlotFrame
     _PlotBody: type[PgPlotBase] = PlotBody
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 view: gl.GLViewWidget | None = None, **inertial_frame_properties):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        view: gl.GLViewWidget | None = None,
+        **inertial_frame_properties,
+    ):
         if pg.QAPP is None:
             pg.mkQApp()
         if view is None:
             view = gl.GLViewWidget()
         if not isinstance(view, gl.GLViewWidget):
             raise TypeError(
-                f"Expected a pyqtgraph.opengl.GLViewWidget, got {type(view)}.")
+                f"Expected a pyqtgraph.opengl.GLViewWidget, got {type(view)}."
+            )
         self._view = view
         view.show()
         super().__init__(inertial_frame, zero_point, **inertial_frame_properties)
@@ -92,8 +98,12 @@ class Scene3D(SceneBase):
             plot_object.plot(self.view)
         pg.exec()
 
-    def animate(self, get_args: Callable[[Any], tuple], frames: Iterable[Any] | int,
-                interval: int = 30) -> None:
+    def animate(
+        self,
+        get_args: Callable[[Any], tuple],
+        frames: Iterable[Any] | int,
+        interval: int = 30,
+    ) -> None:
         """Animate the scene.
 
         Parameters
@@ -109,6 +119,7 @@ class Scene3D(SceneBase):
         """
         if isinstance(frames, int):
             frames = range(frames)
+
         def update():
             update.index += 1
             self.evaluate_system(*get_args(frames[update.index % len(frames)]))

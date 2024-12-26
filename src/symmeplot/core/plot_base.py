@@ -37,8 +37,13 @@ class PlotBase(ABC):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 sympy_object: Any, name: str | None = None):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        sympy_object: Any,
+        name: str | None = None,
+    ):
         self._children = []
         if not isinstance(inertial_frame, ReferenceFrame):
             raise TypeError("'inertial_frame' should be a valid ReferenceFrame object.")
@@ -56,7 +61,8 @@ class PlotBase(ABC):
         """Representation showing some basic information of the instance."""
         return (
             f"{self.__class__.__name__}(inertia_frame={self.inertial_frame}, "
-            f"zero_point={self.zero_point}, origin={self.origin}, name={self.name})")
+            f"zero_point={self.zero_point}, origin={self.origin}, name={self.name})"
+        )
 
     def __str__(self):
         return self.name
@@ -106,7 +112,8 @@ class PlotBase(ABC):
     def artists(self) -> tuple[ArtistBase, ...]:
         """Artists used to plot the object."""
         return tuple(a for a, _ in self._artists) + tuple(
-            a for child in self._children for a in child.artists)
+            a for child in self._children for a in child.artists
+        )
 
     @property
     def values(self) -> tuple:
@@ -121,8 +128,10 @@ class PlotBase(ABC):
 
     def get_expressions_to_evaluate(self) -> tuple:
         """Return a tuple of the necessary expressions for plotting."""
-        return (tuple(expr for _, expr in self._artists), *tuple(
-            child.get_expressions_to_evaluate() for child in self._children))
+        return (
+            tuple(expr for _, expr in self._artists),
+            *tuple(child.get_expressions_to_evaluate() for child in self._children),
+        )
 
     def add_artist(self, artist: ArtistBase, exprs: Expr | tuple[Expr, ...]):
         """Add an artist to the plot object.

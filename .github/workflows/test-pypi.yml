@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-    - name: Install poetry
-      run: pipx install poetry==1.7.1
+      uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.12
+        python-version-file: "pyproject.toml"
     - run: >-
-        poetry version patch &&
-        version=$(poetry version | awk '{print $2}') &&
-        poetry version $version.dev.$(date +%s)
-    - run: poetry build
-    - uses: pypa/gh-action-pypi-publish@v1.8.11
+        uv version patch &&
+        version=$(uv version | awk '{print $2}') &&
+        uv version $version.dev.$(date +%s)
+    - run: uv build
+    - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.TEST_PYPI_TOKEN }}

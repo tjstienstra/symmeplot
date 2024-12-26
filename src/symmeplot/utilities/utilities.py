@@ -23,9 +23,9 @@ def dcm_to_align_vectors(
     c = np.dot(v1, v2)  # cosine of angle between v1 and v2
     if c == -1:
         return np.identity(3)
-    skew = np.array([[0, -v[2], v[1]],
-                     [v[2], 0, -v[0]],
-                     [-v[1], v[0], 0]], dtype=np.float64)
+    skew = np.array(
+        [[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]], dtype=np.float64
+    )
     return np.eye(3) + skew + (skew @ skew) * (1 / (1 + c))
 
 

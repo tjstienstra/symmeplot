@@ -1,10 +1,5 @@
-try:
-    from importlib.metadata import PackageNotFoundError, version  # type: ignore
-except ImportError:  # pragma: no cover
-    from importlib_metadata import PackageNotFoundError, version  # type: ignore
+from __future__ import annotations
 
+from ._version import version as __version__
 
-try:
-    __version__ = version(__name__)
-except PackageNotFoundError:  # pragma: no cover
-    __version__ = "unknown"
+__all__ = ["__version__"]

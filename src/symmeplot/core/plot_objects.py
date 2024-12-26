@@ -9,8 +9,14 @@ from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, 
 
 from symmeplot.core.plot_base import PlotBase
 
-__all__ = ["OriginMixin", "PlotPointMixin", "PlotLineMixin", "PlotVectorMixin",
-           "PlotFrameMixin", "PlotBodyMixin"]
+__all__ = [
+    "OriginMixin",
+    "PlotBodyMixin",
+    "PlotFrameMixin",
+    "PlotLineMixin",
+    "PlotPointMixin",
+    "PlotVectorMixin",
+]
 
 
 class OriginMixin:
@@ -46,8 +52,13 @@ class PlotPointMixin:
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 point: Point, name: str | None = None):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+    ):
         if name is None:
             name = point.name
         if not isinstance(point, Point):
@@ -60,14 +71,15 @@ class PlotPointMixin:
         return self._sympy_object
 
     @property
-    def point_coords(self) -> npt.NDArray[np.float_]:
+    def point_coords(self) -> npt.NDArray[np.float64]:
         """Coordinate values of the plotted point."""
         return np.array(self._values[0]).reshape(3)
 
     def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
         """Get coordinate of the point as expressions."""
         return tuple(
-            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:])
+            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+        )
 
 
 class PlotLineMixin:
@@ -79,8 +91,13 @@ class PlotLineMixin:
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 line: Iterable[Point], name: str | None = None):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        line: Iterable[Point],
+        name: str | None = None,
+    ):
         _points = []
         if isinstance(line, Point):
             line = (line,)
@@ -96,7 +113,7 @@ class PlotLineMixin:
         return self._sympy_object
 
     @property
-    def line_coords(self) -> npt.NDArray[np.float_]:
+    def line_coords(self) -> npt.NDArray[np.float64]:
         """Coordinate values of the plotted line."""
         return np.array(self._values[0]).reshape(3, -1)
 
@@ -124,9 +141,14 @@ class PlotVectorMixin(OriginMixin):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 vector: Vector, origin: Point | Vector | None = None,
-                 name: str | None = None):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        vector: Vector,
+        origin: Point | Vector | None = None,
+        name: str | None = None,
+    ):
         if name is None:
             name = str(latex(vector))
         if not isinstance(vector, Vector):
@@ -140,12 +162,12 @@ class PlotVectorMixin(OriginMixin):
         return self._sympy_object
 
     @property
-    def origin_coords(self) -> npt.NDArray[np.float_]:
+    def origin_coords(self) -> npt.NDArray[np.float64]:
         """Coordinate values of the origin of the plotted vector."""
         return np.array([self._values[0][0]]).reshape(3)
 
     @property
-    def vector_values(self) -> npt.NDArray[np.float_]:
+    def vector_values(self) -> npt.NDArray[np.float64]:
         """Values of the plotted vector."""
         return np.array(self._values[0][1]).reshape(3)
 
@@ -154,7 +176,7 @@ class PlotVectorMixin(OriginMixin):
         return tuple(
             tuple(v.to_matrix(self.inertial_frame)[:])
             for v in (self.origin.pos_from(self.zero_point), self.vector)
-            )
+        )
 
 
 class PlotFrameMixin(OriginMixin):
@@ -167,9 +189,15 @@ class PlotFrameMixin(OriginMixin):
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 frame: ReferenceFrame, origin: Point | Vector | None = None,
-                 name: str | None = None, scale: float = 0.1):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        frame: ReferenceFrame,
+        origin: Point | Vector | None = None,
+        name: str | None = None,
+        scale: float = 0.1,
+    ):
         if name is None:
             name = frame.name
         if not isinstance(frame, ReferenceFrame):
@@ -214,8 +242,13 @@ class PlotBodyMixin:
 
     """
 
-    def __init__(self, inertial_frame: ReferenceFrame, zero_point: Point,
-                 body: Particle | RigidBody, name: str | None = None):
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        body: Particle | RigidBody,
+        name: str | None = None,
+    ):
         if name is None:
             name = str(body)  # Particle.name does not yet exist in SymPy 1.12
         if not isinstance(body, (Particle, RigidBody)):
