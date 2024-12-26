@@ -23,17 +23,22 @@ parametrize_backends = pytest.mark.parametrize(
 
 @pytest.fixture(scope="module", autouse=True)
 def mock_visualization():
-    to_patch = []
-    if matplotlib is not None:
-        to_patch.append(
-            patch("matplotlib.pyplot.subplots", return_value=(MagicMock(), MagicMock()))
-        )
-    if pyqtgraph is not None:
-        to_patch.append(patch("pyqtgraph.exec"))
-        to_patch.append(patch("pyqtgraph.opengl.GLViewWidget.show"))
     with contextlib.ExitStack() as stack:
-        for mgr in to_patch:
-            stack.enter_context(mgr)
+        if matplotlib is not None:
+            stack.enter_context(
+                patch(
+                    "matplotlib.pyplot.subplots",
+                    return_value=(MagicMock(), MagicMock()),
+                )
+            )
+        if pyqtgraph is not None:
+            stack.enter_context(patch("pyqtgraph.exec"))
+            try:
+                stack.enter_context(
+                    patch("pyqtgraph.opengl.GLViewWidget.GLViewWidget.show")
+                )
+            except ModuleNotFoundError:
+                stack.enter_context(patch("pyqtgraph.opengl.GLViewWidget.show"))
         yield
 
 @parametrize_backends
