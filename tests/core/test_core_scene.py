@@ -55,7 +55,6 @@ def mock_visualization():
 @parametrize_backends
 class TestScene3D:
     @pytest.fixture(autouse=True)
-    @pytest.mark.skipif("backend == None and not ON_CI")
     def _define_system(self):
         self.q = me.dynamicsymbols("q:3")
         self.rf = me.ReferenceFrame("rf")
