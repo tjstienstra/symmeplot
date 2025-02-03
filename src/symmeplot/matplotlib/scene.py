@@ -20,7 +20,7 @@ from symmeplot.matplotlib.plot_objects import (
 
 __all__ = ["Scene3D"]
 
-from symmeplot.utilities.utilities import calculate_euler_angels
+from symmeplot.utilities.utilities import calculate_euler_angles
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -182,7 +182,7 @@ class Scene3D(SceneBase):
         """
         frame = frame or self.inertial_frame
         self.axes.set_proj_type("ortho")
-        self.axes.view_init(**calculate_euler_angels(self.inertial_frame, frame))
+        self.axes.view_init(**calculate_euler_angles(self.inertial_frame, frame))
 
     def auto_zoom(self, scale: float = 1.1) -> tuple[float, float] | None:
         """Auto scale the axis."""
