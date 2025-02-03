@@ -35,7 +35,7 @@ def dcm_to_align_vectors(
     return np.eye(3) + skew + (skew @ skew) * (1 / (1 + c))
 
 
-def calculate_euler_angels(
+def calculate_euler_angles(
     normal_frame: ReferenceFrame,
     projection_frame: ReferenceFrame,
 ) -> dict[str, float]:
