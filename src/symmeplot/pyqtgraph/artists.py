@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from itertools import pairwise
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -70,7 +71,7 @@ def create_tube_mesh_data(  # noqa: C901
 
     verts = np.empty((rres * n_nonzero_radii + n_zero_radii, 3), dtype=np.float64)
     idx = 0
-    for li, ri in zip(lengths, radii):
+    for li, ri in zip(lengths, radii, strict=True):
         if ri == 0:
             verts[idx, 2] = li
             verts[idx, :2] = 0
@@ -86,7 +87,7 @@ def create_tube_mesh_data(  # noqa: C901
             idx += rres
 
     n_faces = 0
-    for r1, r2 in zip(radii[:-1], radii[1:]):
+    for r1, r2 in pairwise(radii):
         if r1 == 0 and r2 == 0:  # Infitenly thin tube
             continue
         if r1 == 0 or r2 == 0:  # Cone
@@ -95,7 +96,7 @@ def create_tube_mesh_data(  # noqa: C901
             n_faces += 2 * rres
     faces = np.empty((n_faces, 3), dtype=np.uint32)
     fidx, ridx = 0, 0
-    for r1, r2 in zip(radii[:-1], radii[1:]):
+    for r1, r2 in pairwise(radii):
         if r1 == 0 and r2 == 0:
             continue
         if r1 == 0:

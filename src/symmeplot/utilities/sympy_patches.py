@@ -12,7 +12,7 @@ from sympy.utilities.lambdify import _EvaluatorPrinter
 
 def empty_tuple_fixed() -> bool:
     """Test for empty tuple in lambdify."""
-    from sympy import lambdify, symbols
+    from sympy import lambdify, symbols  # noqa: PLC0415
 
     x = symbols("x")
     try:
@@ -27,12 +27,14 @@ def _recursive_to_string(doprint, arg):
     lists and tuples. This method ensures that we only call the doprint method of the
     printer with SymPy types (so that the printer safely can use SymPy-methods).
     """
-    from sympy.core.basic import Basic
+    from sympy.core.basic import Basic  # noqa: PLC0415
 
     try:
-        from sympy.matrices.matrixbase import MatrixBase as MatrixType
+        from sympy.matrices.matrixbase import MatrixBase as MatrixType  # noqa: PLC0415
     except ImportError:
-        from sympy.matrices.common import MatrixOperations as MatrixType
+        from sympy.matrices.common import (  # noqa: PLC0415
+            MatrixOperations as MatrixType,
+        )
 
     if isinstance(arg, (Basic, MatrixType)):
         return doprint(arg)
@@ -53,7 +55,7 @@ def _recursive_to_string(doprint, arg):
 
 def doprint(self, funcname, args, expr, *, cses=()):
     """Returns the function definition code as a string."""
-    from sympy.core.symbol import Dummy
+    from sympy.core.symbol import Dummy  # noqa: PLC0415
 
     funcbody = []
 
@@ -61,11 +63,11 @@ def doprint(self, funcname, args, expr, *, cses=()):
         args = [args]
 
     if cses:
-        subvars, subexprs = zip(*cses)
+        subvars, subexprs = zip(*cses, strict=True)
         exprs = [expr] + list(subexprs)
         argstrs, exprs = self._preprocess(args, exprs)
         expr, subexprs = exprs[0], exprs[1:]
-        cses = zip(subvars, subexprs)
+        cses = zip(subvars, subexprs, strict=True)
     else:
         argstrs, expr = self._preprocess(args, expr)
 

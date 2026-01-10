@@ -108,7 +108,7 @@ class SceneBase(ABC):  # noqa: B024
 
     @values.setter
     def values(self, values: tuple) -> None:
-        for plot_obj, vals in zip(self._children, values):
+        for plot_obj, vals in zip(self._children, values, strict=True):
             plot_obj.values = vals
 
     def get_expressions_to_evaluate(self) -> tuple:

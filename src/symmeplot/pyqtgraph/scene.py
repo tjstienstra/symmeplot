@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING
 
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
@@ -18,7 +18,7 @@ from symmeplot.pyqtgraph.plot_objects import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
     from sympy.physics.vector import Point, ReferenceFrame
 
@@ -103,8 +103,8 @@ class Scene3D(SceneBase):
 
     def animate(
         self,
-        get_args: Callable[[Any], tuple],
-        frames: Iterable[Any] | int,
+        get_args: Callable[[object], tuple],
+        frames: Iterable[object] | int,
         interval: int = 30,
     ) -> None:
         """Animate the scene.

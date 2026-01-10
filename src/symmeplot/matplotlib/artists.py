@@ -97,7 +97,8 @@ class Vector3D(FancyArrowPatch, MplArtistBase):
         """Project the artist to the 3D axes."""
         # https://github.com/matplotlib/matplotlib/issues/21688
         xs, ys, zs = proj_transform(
-            *[(o, o + d) for o, d in zip(self._origin, self._vector)], self.axes.M
+            *[(o, o + d) for o, d in zip(self._origin, self._vector, strict=True)],
+            self.axes.M,
         )
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         return min(zs)

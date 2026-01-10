@@ -128,7 +128,7 @@ class PlotBase(ABC):
     @values.setter
     def values(self, values: tuple) -> None:
         self._values = values[0]
-        for child, vals in zip(self._children, values[1:]):
+        for child, vals in zip(self._children, values[1:], strict=True):
             child.values = vals
 
     def get_expressions_to_evaluate(self) -> tuple:
@@ -166,7 +166,7 @@ class PlotBase(ABC):
 
     def update(self) -> None:
         """Update the objects on the scene, based on the current values."""
-        for args, (artist, _) in zip(self._values, self._artists):
+        for args, (artist, _) in zip(self._values, self._artists, strict=True):
             artist.update_data(*args)
         for child in self._children:
             child.update()
