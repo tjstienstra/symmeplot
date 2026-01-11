@@ -15,6 +15,7 @@ from symmeplot.matplotlib.plot_objects import (
     PlotFrame,
     PlotLine,
     PlotPoint,
+    PlotTracedPoint,
     PlotVector,
 )
 
@@ -72,6 +73,7 @@ class Scene3D(SceneBase):
     """
 
     _PlotPoint: type[MplPlotBase] = PlotPoint
+    _PlotTracedPoint: type[MplPlotBase] = PlotTracedPoint
     _PlotLine: type[MplPlotBase] = PlotLine
     _PlotVector: type[MplPlotBase] = PlotVector
     _PlotFrame: type[MplPlotBase] = PlotFrame

@@ -19,6 +19,7 @@ __all__ = [
     "PlotFrameMixin",
     "PlotLineMixin",
     "PlotPointMixin",
+    "PlotTracedPointMixin",
     "PlotVectorMixin",
 ]
 
@@ -87,6 +88,95 @@ class PlotPointMixin:
         return tuple(
             self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
         )
+
+
+class PlotTracedPointMixin:
+    """Mixin class for plotting a traced Point in 3D.
+
+    Notes
+    -----
+    The subclass should create and add the artist in the constructor.
+    The traced point tracks the history of a point's position and displays
+    all previous positions with optional transparency decay.
+
+    """
+
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+        frequency: int = 1,
+        alpha_decay: callable[[int], float] | None = None,
+    ) -> None:
+        """Initialize the traced point.
+
+        Parameters
+        ----------
+        inertial_frame : ReferenceFrame
+            The reference frame with respect to which the object is oriented.
+        zero_point : Point
+            The absolute origin with respect to which the object is positioned.
+        point : Point
+            The point to be traced.
+        name : str, optional
+            Name of the point.
+        frequency : int, optional
+            Frequency to log the point with. Default is 1 (shows every point).
+        alpha_decay : callable, optional
+            Function that returns the transparency of a point based on the number
+            of evaluations since it was logged. The default is `lambda _: 1.0`
+            (all points remain fully visible).
+
+        """
+        if name is None:
+            name = point.name
+        if not isinstance(point, Point):
+            msg = "'point' should be a sympy Point object."
+            raise TypeError(msg)
+        super().__init__(inertial_frame, zero_point, point, name)
+        self._frequency = frequency
+        self._alpha_decay = alpha_decay if alpha_decay is not None else lambda _: 1.0
+        self._trace_history: list[np.ndarray] = []
+        self._evaluation_count = 0
+
+    @property
+    def point(self) -> Point:
+        """The sympy Point, which is being traced."""
+        return self._sympy_object
+
+    @property
+    def frequency(self) -> int:
+        """Frequency to log the point with."""
+        return self._frequency
+
+    @property
+    def alpha_decay(self) -> callable:
+        """Function that returns the transparency based on evaluation count."""
+        return self._alpha_decay
+
+    @property
+    def trace_history(self) -> list[np.ndarray]:
+        """History of point positions."""
+        return self._trace_history
+
+    @property
+    def point_coords(self) -> np.ndarray[np.float64]:
+        """Coordinate values of the current plotted point."""
+        return np.array(self._values[0]).reshape(3)
+
+    def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
+        """Get coordinate of the point as expressions."""
+        return tuple(
+            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+        )
+
+    def _update_trace_history(self) -> None:
+        """Update the trace history with the current point coordinates."""
+        self._evaluation_count += 1
+        if self._evaluation_count % self._frequency == 0:
+            self._trace_history.append(self.point_coords.copy())
 
 
 class PlotLineMixin:

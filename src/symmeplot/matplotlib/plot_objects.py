@@ -13,15 +13,16 @@ from symmeplot.core import (
     PlotFrameMixin,
     PlotLineMixin,
     PlotPointMixin,
+    PlotTracedPointMixin,
     PlotVectorMixin,
 )
-from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
+from symmeplot.matplotlib.artists import Circle3D, Line3D, LineCollection3D, Vector3D
 from symmeplot.matplotlib.plot_base import MplPlotBase
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-__all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotVector"]
+__all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotTracedPoint", "PlotVector"]
 
 
 class PlotPoint(PlotPointMixin, MplPlotBase):
@@ -98,6 +99,147 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
             return {"marker": "o"}
         msg = f"Style '{style}' is not implemented."
         raise NotImplementedError(msg)
+
+
+class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
+    """A class for plotting a traced Point in 3D using matplotlib.
+
+    Parameters
+    ----------
+    inertial_frame : ReferenceFrame
+        The reference frame with respect to which the object is oriented.
+    zero_point : Point
+        The absolute origin with respect to which the object is positioned.
+    point : Point
+        The point that should be traced with respect to the ``zero_point``.
+    name : str, optional
+        Name of the plot object.
+    frequency : int, optional
+        Frequency to log the point with. Default is 1 (shows every point).
+    alpha_decay : callable, optional
+        Function that returns the transparency of a point based on the number
+        of evaluations since it was logged. The default is `lambda _: 1.0`
+        (all points remain fully visible).
+    color : str, optional
+        Color of the traced points. Default is 'blue'.
+    **kwargs : dict, optional
+        Kwargs that are parsed to :class:`matplotlib.collections.LineCollection`.
+
+    Examples
+    --------
+    .. jupyter-execute::
+
+        import matplotlib.pyplot as plt
+        import numpy as np
+        import sympy as sm
+        import sympy.physics.mechanics as me
+        from symmeplot.matplotlib import PlotTracedPoint
+
+        t = sm.symbols("t")
+        N, O = me.ReferenceFrame("N"), me.Point("O")
+        P = O.locatenew("P", sm.cos(t) * N.x + sm.sin(t) * N.y)
+        fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+        plot_traced = PlotTracedPoint(
+            N, O, P, frequency=1, alpha_decay=lambda i: max(0.1, 1.0 - i / 20)
+        )
+        f = sm.lambdify(t, plot_traced.get_expressions_to_evaluate())
+        for t_val in np.linspace(0, 2 * np.pi, 30):
+            plot_traced.values = f(t_val)
+            plot_traced.update()
+        plot_traced.plot(ax)
+
+    """
+
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+        frequency: int = 1,
+        alpha_decay: callable[[int], float] | None = None,
+        color: str = "blue",
+        **kwargs: object,
+    ) -> None:
+        super().__init__(inertial_frame, zero_point, point, name, frequency, alpha_decay)
+        # Create colormap that fades from transparent to the specified color
+        import matplotlib.colors as mcolors
+        color_rgba = mcolors.to_rgba(color)
+        transparent_color = color_rgba[:3] + (0.0,)
+        self._cmap = mcolors.LinearSegmentedColormap.from_list(
+            f"trace_{color}", [transparent_color, color_rgba]
+        )
+        # Set default linewidths if not provided
+        if 'linewidths' not in kwargs:
+            kwargs['linewidths'] = 2
+        self.add_artist(
+            LineCollection3D(cmap=self._cmap, **kwargs),
+            tuple((expr,) for expr in self.get_sympy_object_exprs()),
+        )
+
+    @property
+    def annot_coords(self) -> np.ndarray[np.float64]:
+        """Coordinate where the annotation text is displayed."""
+        if len(self._trace_history) > 0:
+            return self._trace_history[-1]
+        return self.point_coords
+
+    def plot(self, ax: plt.Axes | None = None) -> None:
+        """Plot the traced point.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes._subplots.Axes3DSubplot, optional
+            Axes on which the artist should be added. The default is the active axes.
+
+        """
+        if ax is None:
+            from matplotlib.pyplot import gca
+            ax = gca()
+        # For LineCollection3D, we need to use add_collection instead of add_artist
+        for artist, _ in self._artists:
+            ax.add_collection(artist)
+        for child in self._children:
+            child.plot(ax)
+
+    def update(self) -> None:
+        """Update the objects on the scene, based on the current values."""
+        # First update the point coordinates from the evaluated values
+        for args, (artist, _) in zip(self._values, self._artists, strict=True):
+            # Store the current point coordinates (but don't update artist yet)
+            pass
+
+        # Update trace history
+        self._update_trace_history()
+
+        # Create segments and alphas for the line collection
+        segments = []
+        alphas = []
+        if len(self._trace_history) > 1:
+            for i in range(len(self._trace_history) - 1):
+                segments.append([self._trace_history[i], self._trace_history[i + 1]])
+                # Calculate alpha based on how old this segment is
+                age = len(self._trace_history) - i - 1
+                alphas.append(self._alpha_decay(age))
+
+        # Update the artist with segments and alphas
+        if segments:
+            artist = self._artists[0][0]
+            # Normalize alphas to [0, 1] range for colormap
+            alphas_array = np.array(alphas)
+            if alphas_array.max() > alphas_array.min():
+                # Normalize to 0-1 range
+                normalized_alphas = (alphas_array - alphas_array.min()) / (
+                    alphas_array.max() - alphas_array.min()
+                )
+            else:
+                # All alphas are the same, use them directly
+                normalized_alphas = alphas_array
+            artist.update_data(segments, normalized_alphas)
+
+        # Update children
+        for child in self._children:
+            child.update()
 
 
 class PlotLine(PlotLineMixin, MplPlotBase):

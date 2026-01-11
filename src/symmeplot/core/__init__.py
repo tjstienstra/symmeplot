@@ -8,6 +8,7 @@ __all__ = [
     "PlotFrameMixin",
     "PlotLineMixin",
     "PlotPointMixin",
+    "PlotTracedPointMixin",
     "PlotVectorMixin",
     "SceneBase",
 ]
@@ -20,6 +21,7 @@ from symmeplot.core.plot_objects import (
     PlotFrameMixin,
     PlotLineMixin,
     PlotPointMixin,
+    PlotTracedPointMixin,
     PlotVectorMixin,
 )
 from symmeplot.core.scene import SceneBase

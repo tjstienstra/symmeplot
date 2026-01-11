@@ -47,6 +47,9 @@ class SceneBase(ABC):  # noqa: B024
     _PlotPoint: type[PlotBase] = _create_undefined_function(
         NotImplementedError, "'add_point' has not been implemented in this backend."
     )
+    _PlotTracedPoint: type[PlotBase] = _create_undefined_function(
+        NotImplementedError, "'add_point_trace' has not been implemented in this backend."
+    )
     _PlotLine: type[PlotBase] = _create_undefined_function(
         NotImplementedError, "'add_line' has not been implemented in this backend."
     )
@@ -143,6 +146,45 @@ class SceneBase(ABC):  # noqa: B024
 
         """
         obj = self._PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs)
+        self.add_plot_object(obj)
+        return obj
+
+    def add_point_trace(
+        self,
+        point: Point | Vector,
+        frequency: int = 1,
+        alpha_decay: Callable[[int], float] | None = None,
+        **kwargs: object,
+    ) -> PlotBase:
+        """Add a traced point to the scene.
+
+        Parameters
+        ----------
+        point : Point or Vector
+            The point or vector to be traced in space.
+        frequency : int, optional
+            Frequency to log the point with. Default is 1 (shows every point).
+        alpha_decay : callable, optional
+            Function that returns the transparency of a point based on the number
+            of evaluations since it was logged. The default is `lambda _: 1.0`
+            (all points remain fully visible).
+        **kwargs :
+            Keyword arguments are parsed to the plot object.
+
+        Returns
+        -------
+        PlotTracedPoint
+            The added plot object.
+
+        """
+        obj = self._PlotTracedPoint(
+            self.inertial_frame,
+            self.zero_point,
+            point,
+            frequency=frequency,
+            alpha_decay=alpha_decay,
+            **kwargs,
+        )
         self.add_plot_object(obj)
         return obj
 
