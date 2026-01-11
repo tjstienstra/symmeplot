@@ -6,11 +6,9 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 import numpy as np
-from matplotlib.collections import LineCollection
 from matplotlib.patches import Circle, FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
-from mpl_toolkits.mplot3d.art3d import PathPatch3D
+from mpl_toolkits.mplot3d.art3d import Line3DCollection, PathPatch3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 from symmeplot.core import ArtistBase
@@ -109,8 +107,8 @@ class LineCollection3D(Line3DCollection, MplArtistBase):
             segments = []
         super().__init__(segments, *args, **kwargs)
         self._segments_3d = (
-            np.array(segments, dtype=np.float64) 
-            if len(segments) > 0 
+            np.array(segments, dtype=np.float64)
+            if len(segments) > 0
             else np.empty((0, 2, 3))
         )
         if alphas is not None:

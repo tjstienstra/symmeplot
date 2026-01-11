@@ -48,7 +48,8 @@ class SceneBase(ABC):  # noqa: B024
         NotImplementedError, "'add_point' has not been implemented in this backend."
     )
     _PlotTracedPoint: type[PlotBase] = _create_undefined_function(
-        NotImplementedError, "'add_point_trace' has not been implemented in this backend."
+        NotImplementedError,
+        "'add_point_trace' has not been implemented in this backend.",
     )
     _PlotLine: type[PlotBase] = _create_undefined_function(
         NotImplementedError, "'add_line' has not been implemented in this backend."

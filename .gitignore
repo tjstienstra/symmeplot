@@ -4,3 +4,7 @@ docs/_build
 docs/jupyter_execute
 dist
 src/symmeplot/_version.py
+__pycache__/
+*.pyc
+*.pyo
+

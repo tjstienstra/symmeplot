@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 import numpy as np
 from sympy import Expr, sympify
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
@@ -22,7 +24,14 @@ from symmeplot.matplotlib.plot_base import MplPlotBase
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-__all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotTracedPoint", "PlotVector"]
+__all__ = [
+    "PlotBody",
+    "PlotFrame",
+    "PlotLine",
+    "PlotPoint",
+    "PlotTracedPoint",
+    "PlotVector",
+]
 
 
 class PlotPoint(PlotPointMixin, MplPlotBase):
@@ -161,17 +170,18 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
         color: str = "blue",
         **kwargs: object,
     ) -> None:
-        super().__init__(inertial_frame, zero_point, point, name, frequency, alpha_decay)
+        super().__init__(
+            inertial_frame, zero_point, point, name, frequency, alpha_decay
+        )
         # Create colormap that fades from transparent to the specified color
-        import matplotlib.colors as mcolors
         color_rgba = mcolors.to_rgba(color)
-        transparent_color = color_rgba[:3] + (0.0,)
+        transparent_color = (*color_rgba[:3], 0.0)
         self._cmap = mcolors.LinearSegmentedColormap.from_list(
             f"trace_{color}", [transparent_color, color_rgba]
         )
         # Set default linewidths if not provided
-        if 'linewidths' not in kwargs:
-            kwargs['linewidths'] = 2
+        if "linewidths" not in kwargs:
+            kwargs["linewidths"] = 2
         self.add_artist(
             LineCollection3D(cmap=self._cmap, **kwargs),
             tuple((expr,) for expr in self.get_sympy_object_exprs()),
@@ -194,8 +204,7 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
 
         """
         if ax is None:
-            from matplotlib.pyplot import gca
-            ax = gca()
+            ax = plt.gca()
         # For LineCollection3D, we need to use add_collection instead of add_artist
         for artist, _ in self._artists:
             ax.add_collection(artist)
@@ -204,11 +213,6 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
 
     def update(self) -> None:
         """Update the objects on the scene, based on the current values."""
-        # First update the point coordinates from the evaluated values
-        for args, (artist, _) in zip(self._values, self._artists, strict=True):
-            # Store the current point coordinates (but don't update artist yet)
-            pass
-
         # Update trace history
         self._update_trace_history()
 
