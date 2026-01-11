@@ -21,7 +21,7 @@ dependencies as well: ::
 Installation Developers
 -----------------------
 SymMePlot uses `uv`_ as package manager. To install SymMePlot after installing
-`poetry`_ and cloning the repository, run: ::
+`uv`_ and cloning the repository, run: ::
 
     uv venv
     uv pip install -e .

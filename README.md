@@ -1,33 +1,41 @@
 # SymMePlot
+
 [![PyPI](https://img.shields.io/pypi/v/symmeplot.svg)](https://pypi.org/project/symmeplot/)
 [![Tests](https://github.com/tjstienstra/symmeplot/workflows/Tests/badge.svg)](https://github.com/tjstienstra/symmeplot/actions?workflow=Tests)
 
-SymMePlot is a visualization tool designed for mechanical systems created using the
-mechanics module in [SymPy], `sympy.physics.mechanics`.
+SymMePlot is a visualization tool designed for mechanical systems created using
+the mechanics module in [SymPy], `sympy.physics.mechanics`.
 
 The `sympy.physics.mechanics` module allows users to define mechanical systems
-symbolically to derive their analytic equations of motion. During this process, users
-can construct various objects such as reference frames, points, bodies, and more.
+symbolically to derive their analytic equations of motion. During this process,
+users can construct various objects such as reference frames, points, bodies,
+and more.
 
-SymMePlot enhances this process by providing a way to visualize these constructed
-objects. It integrates with visualization backends like [Matplotlib], and creates visual
-representations based on the parametrization of the symbols involved in the system.
+SymMePlot enhances this process by providing a way to visualize these
+constructed objects. It integrates with visualization backends like
+[Matplotlib], and creates visual representations based on the parametrization of
+the symbols involved in the system.
 
-SymMePlot is available on both PyPI and Conda-Forge. To install the latest release
-including [Matplotlib] from PyPI, run: ::
+SymMePlot is available on both PyPI and Conda-Forge. To install the latest
+release including [Matplotlib] from PyPI, run:
+
 ```bash
 pip install symmeplot matplotlib
 ```
 
 ## Usage
+
 Most of your programs are expected to follow this structure:
-1. Creation of the system in sympy using the objects from `sympy.physics.mechanics`.
+
+1. Creation of the system in sympy using the objects from
+   `sympy.physics.mechanics`.
 2. Initiate a `Scene` with the inertial frame and absolute origin.
 3. Add your frames, vectors and points to the plotter instance.
 4. Lambdify and evaluate the system.
 5. Plot the system.
 
 Below is a basic example of how this looks in practise:
+
 ```python
 import numpy as np
 from symmeplot.matplotlib import Scene3D

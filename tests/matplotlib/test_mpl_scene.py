@@ -50,7 +50,7 @@ class TestScene3D:
         assert hasattr(scene.axes, "get_zlim")
 
     def test_scene_init_with_ax(self):
-        fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+        _, ax = plt.subplots(subplot_kw={"projection": "3d"})
         scene = Scene3D(self.rf, self.zp, ax=ax)
         assert scene.axes == ax
 

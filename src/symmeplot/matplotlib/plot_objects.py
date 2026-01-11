@@ -320,7 +320,7 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
         properties = self._get_style_properties(style)
         for prop in properties:
             prop.update(kwargs)
-        for vector, prop in zip(frame, properties):
+        for vector, prop in zip(frame, properties, strict=True):
             self._children.append(
                 PlotVector(inertial_frame, zero_point, scale * vector, origin, **prop)
             )
@@ -339,7 +339,7 @@ class PlotFrame(PlotFrameMixin, MplPlotBase):
             return properties
         if style == "default":
             colors = "rgb"
-            for color, prop in zip(colors, properties):
+            for color, prop in zip(colors, properties, strict=True):
                 prop.update({"style": "default", "color": color})
             return properties
         msg = f"Style '{style}' is not implemented."

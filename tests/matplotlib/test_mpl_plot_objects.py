@@ -27,7 +27,7 @@ class TestPlotPoint:
         self.s = sm.symbols("s:3")
         self.rf, self.zp = me.ReferenceFrame("inertial_frame"), me.Point("zero_point")
         self.p = self.zp.locatenew(
-            "point", sum(si * v for si, v in zip(self.s, self.rf))
+            "point", sum(si * v for si, v in zip(self.s, self.rf, strict=True))
         )
 
     @pytest.fixture
@@ -66,7 +66,9 @@ class TestPlotLine:
     def _define_line(self):
         self.s = sm.symbols("s:3")
         self.rf, self.zp = me.ReferenceFrame("inertial_frame"), me.Point("zero_point")
-        self.p1 = self.zp.locatenew("p1", sum(si * v for si, v in zip(self.s, self.rf)))
+        self.p1 = self.zp.locatenew(
+            "p1", sum(si * v for si, v in zip(self.s, self.rf, strict=True))
+        )
         self.p2 = self.p1.locatenew("p2", 0.6 * self.rf.x + 0.3 * self.rf.z)
         self.p3 = self.p2.locatenew("p3", 0.6 * self.rf.y)
         self.line = (self.p1, self.p2, self.p3)
@@ -109,7 +111,7 @@ class TestPlotVector:
         self.s = sm.symbols("s:3")
         self.rf, self.zp = me.ReferenceFrame("inertial_frame"), me.Point("zero_point")
         self.o = self.zp.locatenew("origin", 0.3 * self.rf.x + 0.2 * self.rf.y)
-        self.v = sum(si * v for si, v in zip(self.s, self.rf))
+        self.v = sum(si * v for si, v in zip(self.s, self.rf, strict=True))
 
     @pytest.fixture
     def _basic_plot_vector(self):

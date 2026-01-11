@@ -12,6 +12,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from docutils import nodes as docutils_nodes
+
 import symmeplot
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -32,6 +34,28 @@ extensions = [
     "autodocsumm",
     "jupyter_sphinx",
 ]
+
+
+def setup(app: object) -> None:
+    """Do setup for Sphinx app to register custom roles."""
+
+    def mpltype_role(
+        _name: str,
+        _rawtext: str,
+        text: str,
+        _lineno: int,
+        _inliner: object,
+        options: dict[str, object] | None = None,
+        _content: list[str] | None = None,
+    ) -> tuple[list[object], list[object]]:
+        """Handle :mpltype: role."""
+        if options is None:
+            options = {}
+        node = docutils_nodes.literal(text, text, **options)
+        return [node], []
+
+    app.add_role("mpltype", mpltype_role)
+
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

@@ -10,7 +10,7 @@ authors = [
 ]
 description = "SymPy Mechanics Plotter"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -18,31 +18,31 @@ classifiers = [
 ]
 dependencies = [
     "sympy >=1.12",
-    "numpy >=1.23",
+    "numpy >=2.1",
 ]
 
 [project.optional-dependencies]
 mpl_backend = [
-    "matplotlib >=3.7",
+    "matplotlib >=3.9",
 ]
 pg_backend = [
-    "pyqtgraph >=0.13.3",
-    "pyqt6 >=6.6.1",
-    "pyopengl >=3.1.7",
+    "pyqtgraph >=0.14.0",
+    "pyqt6 >=6.10",
+    "pyopengl >=3.1.10",
 ]
 lint = [
-  "ruff >= 0.8",
+  "ruff >= 0.14, < 0.15",
 ]
 test = [
-  "pytest >=8",
-  "pytest-mock >= 3.12",
+  "pytest >=9",
+  "pytest-mock >= 3.15",
 ]
 docs = [
-  "sphinx >=7.0",
+  "sphinx >=8,<9",
   "jupyter-sphinx >=0.5",
   "autodocsumm >=0.2",
-  "ipykernel >=6",
-  "furo >=2024",
+  "ipykernel >=7",
+  "furo >=2025",
 ]
 
 [project.urls]

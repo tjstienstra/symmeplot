@@ -38,7 +38,7 @@ class TestPlotPointMixin:
         self.l = sm.symbols("l:3")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.P1 = self.O.locatenew(
-            "P1", sum(li * self.Ni for li, self.Ni in zip(self.l, self.N))
+            "P1", sum(li * self.Ni for li, self.Ni in zip(self.l, self.N, strict=True))
         )
 
         self.plot_object = backend.PlotPoint(self.N, self.O, self.P1)
@@ -98,7 +98,7 @@ class TestPlotVectorMixin:
         self.l = sm.symbols("l:3")
         self.N, self.O = me.ReferenceFrame("N"), me.Point("O")
         self.P = self.O.locatenew("P", self.N.x)
-        self.v = sum(li * self.Ni for li, self.Ni in zip(self.l, self.N))
+        self.v = sum(li * self.Ni for li, self.Ni in zip(self.l, self.N, strict=True))
 
         self.plot_object = backend.PlotVector(
             self.N, self.O, self.v, self.P, name="vector"

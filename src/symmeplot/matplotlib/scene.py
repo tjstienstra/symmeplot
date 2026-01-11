@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +23,7 @@ __all__ = ["Scene3D"]
 from symmeplot.utilities.utilities import calculate_euler_angles
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
     from matplotlib.backend_bases import MouseEvent
     from sympy.physics.vector import Point, ReferenceFrame
@@ -85,7 +85,7 @@ class Scene3D(SceneBase):
         **inertial_frame_properties: object,
     ) -> None:
         if ax is None:
-            fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+            _, ax = plt.subplots(subplot_kw={"projection": "3d"})
         elif not hasattr(ax, "get_zlim"):
             msg = "The axes should be a 3d axes"
             raise TypeError(msg)
