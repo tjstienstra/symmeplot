@@ -9,7 +9,7 @@ from sympy import Expr, latex
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
     from symmeplot.core.plot_base import PlotBase
 
@@ -48,6 +48,12 @@ class OriginMixin:
         else:
             msg = "'origin' should be a valid Point object."
             raise TypeError(msg)
+
+    def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
+        """Get coordinate of the origin as expressions."""
+        return tuple(
+            self.origin.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+        )
 
 
 class PlotPointMixin:
@@ -108,7 +114,9 @@ class PlotTracedPointMixin:
         point: Point,
         name: str | None = None,
         frequency: int = 1,
-        alpha_decay: callable[[int], float] | None = None,
+        alpha_decays: (
+            Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]] | None
+        ) = None,
     ) -> None:
         """Initialize the traced point.
 
@@ -124,10 +132,13 @@ class PlotTracedPointMixin:
             Name of the point.
         frequency : int, optional
             Frequency to log the point with. Default is 1 (shows every point).
-        alpha_decay : callable, optional
+        alpha_decays : callable, optional
             Function that returns the transparency of a point based on the number
-            of evaluations since it was logged. The default is `lambda _: 1.0`
-            (all points remain fully visible).
+            of evaluations since it was logged. This input is an array of integers
+            representing the age of each logged point, and the output should be an
+            array of floats between 0 and 1 representing the alpha values. If None,
+            no transparency decay is applied. Default is None. Hint: you can use
+            `np.vectorize` to vectorize a function for this purpose.
 
         """
         if name is None:
@@ -137,8 +148,12 @@ class PlotTracedPointMixin:
             raise TypeError(msg)
         super().__init__(inertial_frame, zero_point, point, name)
         self._frequency = frequency
-        self._alpha_decay = alpha_decay if alpha_decay is not None else lambda _: 1.0
-        self._trace_history: list[np.ndarray] = []
+        self._alpha_decays = (
+            alpha_decays
+            if alpha_decays is not None
+            else lambda ages: np.ones_like(ages, dtype=np.float64)
+        )
+        self._trace_history: list[tuple[float, float, float]] = []
         self._evaluation_count = 0
 
     @property
@@ -152,19 +167,28 @@ class PlotTracedPointMixin:
         return self._frequency
 
     @property
-    def alpha_decay(self) -> callable:
+    def alpha_decays(self) -> Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]]:
         """Function that returns the transparency based on evaluation count."""
-        return self._alpha_decay
+        return self._alpha_decays
 
     @property
-    def trace_history(self) -> list[np.ndarray]:
+    def trace_history(self) -> np.ndarray[np.float64]:
         """History of point positions."""
-        return self._trace_history
+        return np.array(self._trace_history)
 
     @property
     def point_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the current plotted point."""
-        return np.array(self._values[0]).reshape(3)
+        return np.asarray(self._values[0]).reshape(3)
+
+    @property
+    def _current_alpha_values(self) -> np.ndarray[np.float64]:
+        """Get the current alpha values for the traced points."""
+        n_points = len(self._trace_history)
+        if n_points == 0:
+            return np.array([], dtype=np.float64)
+        ages = np.arange(n_points - 1, -1, -1, dtype=np.int64) * self._frequency
+        return self._alpha_decays(ages)
 
     def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
         """Get coordinate of the point as expressions."""
@@ -176,7 +200,7 @@ class PlotTracedPointMixin:
         """Update the trace history with the current point coordinates."""
         self._evaluation_count += 1
         if self._evaluation_count % self._frequency == 0:
-            self._trace_history.append(self.point_coords.copy())
+            self._trace_history.append(self._values[0])
 
 
 class PlotLineMixin:
@@ -213,9 +237,11 @@ class PlotLineMixin:
     @property
     def line_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the plotted line."""
-        return np.array(self._values[0]).reshape(3, -1)
+        return np.asarray(self._values[0]).reshape(3, -1)
 
-    def get_sympy_object_exprs(self) -> tuple[tuple[Expr, ...], ...]:
+    def get_sympy_object_exprs(
+        self,
+    ) -> tuple[tuple[Expr, ...], tuple[Expr, ...], tuple[Expr, ...]]:
         """Arguments of the sympy object artist in expression form.
 
         Notes

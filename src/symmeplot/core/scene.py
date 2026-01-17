@@ -10,6 +10,7 @@ from sympy import lambdify
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
+    import numpy as np
     from sympy.physics.mechanics import (
         Particle,
         Point,
@@ -154,7 +155,8 @@ class SceneBase(ABC):  # noqa: B024
         self,
         point: Point | Vector,
         frequency: int = 1,
-        alpha_decay: Callable[[int], float] | None = None,
+        alpha_decays: Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]]
+        | None = None,
         **kwargs: object,
     ) -> PlotBase:
         """Add a traced point to the scene.
@@ -165,10 +167,13 @@ class SceneBase(ABC):  # noqa: B024
             The point or vector to be traced in space.
         frequency : int, optional
             Frequency to log the point with. Default is 1 (shows every point).
-        alpha_decay : callable, optional
+        alpha_decays : callable, optional
             Function that returns the transparency of a point based on the number
-            of evaluations since it was logged. The default is `lambda _: 1.0`
-            (all points remain fully visible).
+            of evaluations since it was logged. This input is an array of integers
+            representing the age of each logged point, and the output should be an
+            array of floats between 0 and 1 representing the alpha values. If None,
+            no transparency decay is applied. Default is None. Hint: you can use
+            `np.vectorize` to vectorize a function for this purpose.
         **kwargs :
             Keyword arguments are parsed to the plot object.
 
@@ -183,7 +188,7 @@ class SceneBase(ABC):  # noqa: B024
             self.zero_point,
             point,
             frequency=frequency,
-            alpha_decay=alpha_decay,
+            alpha_decays=alpha_decays,
             **kwargs,
         )
         self.add_plot_object(obj)

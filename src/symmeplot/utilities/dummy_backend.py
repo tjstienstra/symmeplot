@@ -9,6 +9,7 @@ from symmeplot.core import (
     PlotFrameMixin,
     PlotLineMixin,
     PlotPointMixin,
+    PlotTracedPointMixin,
     PlotVectorMixin,
     SceneBase,
 )
@@ -50,6 +51,17 @@ class PlotPoint(PlotPointMixin, _PlotBase):
     def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         self.add_artist(DummyArtist(), self.get_sympy_object_exprs())
+
+
+class PlotTracedPoint(PlotTracedPointMixin, _PlotBase):
+    def __init__(self, *args: object, **kwargs: object) -> None:
+        super().__init__(*args, **kwargs)
+        self.add_artist(DummyArtist(), self.get_sympy_object_exprs())
+
+    def update(self) -> None:
+        self._update_trace_history()
+        for child in self._children:
+            child.update()
 
 
 class PlotLine(PlotLineMixin, _PlotBase):
@@ -97,6 +109,7 @@ class PlotBody(PlotBodyMixin, _PlotBase):
 
 class Scene3D(SceneBase):
     _PlotPoint: type[PlotBase] = PlotPoint
+    _PlotTracedPoint: type[PlotBase] = PlotTracedPoint
     _PlotLine: type[PlotBase] = PlotLine
     _PlotVector: type[PlotBase] = PlotVector
     _PlotFrame: type[PlotBase] = PlotFrame

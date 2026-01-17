@@ -5,10 +5,13 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
+import matplotlib as mpl
 import numpy as np
+from matplotlib.markers import MarkerStyle
 from matplotlib.patches import Circle, FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Line3D as _Line3D
-from mpl_toolkits.mplot3d.art3d import Line3DCollection, PathPatch3D
+from mpl_toolkits.mplot3d.art3d import Path3DCollection as _Path3DCollection
+from mpl_toolkits.mplot3d.art3d import PathPatch3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 from symmeplot.core import ArtistBase
@@ -19,7 +22,7 @@ if TYPE_CHECKING:
 
     from matplotlib.path import Path
 
-__all__ = ["Circle3D", "Line3D", "LineCollection3D", "Vector3D"]
+__all__ = ["Circle3D", "Line3D", "Scatter3D", "Vector3D"]
 
 
 class MplArtistBase(ArtistBase):
@@ -72,78 +75,101 @@ class Line3D(_Line3D, MplArtistBase):
         return np.array([axes.max() for axes in self.get_data_3d()])
 
 
-class LineCollection3D(Line3DCollection, MplArtistBase):
-    """Artist to plot 3D line collections with varying alpha values.
+class Scatter3D(_Path3DCollection, MplArtistBase):
+    """Artist to plot 3D scatter points with varying alpha values.
 
-    Notes
-    -----
-    This class is designed to handle traced points where each segment can have
-    different transparency values to create a fade effect.
+    This class wraps matplotlib's Path3DCollection.
 
     """
 
     def __init__(
         self,
-        segments: Sequence[Sequence[Sequence[float]]] | None = None,
-        alphas: Sequence[float] | None = None,
-        *args: object,
+        marker: str | None = None,
+        s: float | None = None,
         **kwargs: object,
     ) -> None:
-        """Initialize the LineCollection3D.
+        """Initialize the Scatter3D.
 
         Parameters
         ----------
-        segments : sequence of sequences of sequences of float, optional
-            Line segments in the form [[[x0, y0, z0], [x1, y1, z1]], ...].
-        alphas : sequence of float, optional
-            Alpha values for each segment.
-        *args
-            Additional positional arguments passed to Line3DCollection.
         **kwargs
-            Additional keyword arguments passed to Line3DCollection.
+            Keyword arguments passed to Path3DCollection. Common options:
+            - facecolors, edgecolors: Colors for the markers
+            - linewidths: Edge width of markers
 
         """
-        if segments is None:
-            segments = []
-        super().__init__(segments, *args, **kwargs)
-        self._segments_3d = (
-            np.array(segments, dtype=np.float64)
-            if len(segments) > 0
-            else np.empty((0, 2, 3))
+        # Parse marker and size like ax.scatter does.
+        if marker is None:
+            marker = mpl.rcParams["scatter.marker"]
+        marker_obj = marker if isinstance(marker, MarkerStyle) else MarkerStyle(marker)
+        self._marker_path = marker_obj.get_path().transformed(
+            marker_obj.get_transform()
         )
-        if alphas is not None:
-            self.set_array(np.array(alphas, dtype=np.float64))
+        if s is None:
+            s = (
+                20
+                if mpl.rcParams["_internal.classic_mode"]
+                else mpl.rcParams["lines.markersize"] ** 2.0
+            )
+        s = np.ma.ravel(s)
+
+        super().__init__((self._marker_path,), s, **kwargs)
+
+        # Critical: set transform to Identity (scatter does this)
+        # The marker paths are in points, offset_transform handles positioning
+        self.set_transform(mpl.transforms.IdentityTransform())
+        self._offset_transform_set = "transform" in kwargs
 
     def update_data(
         self,
-        segments: Sequence[Sequence[Sequence[float]]],
-        alphas: Sequence[float],
+        points: Sequence[Sequence[float]],
+        alphas: Sequence[float] | None = None,
     ) -> None:
         """Update the data of the artist.
 
         Parameters
         ----------
-        segments : sequence of sequences of sequences of float
-            Line segments in the form [[[x0, y0, z0], [x1, y1, z1]], ...].
-        alphas : sequence of float
-            Alpha values for each segment.
+        points : sequence of sequences of float
+            Points in the form [[x0, y0, z0], [x1, y1, z1], ...].
+        alphas : sequence of float, optional
+            Alpha values for each point.
 
         """
-        self._segments_3d = np.array(segments, dtype=np.float64)
-        self.set_segments(segments)
-        self.set_array(np.array(alphas, dtype=np.float64))
+        points = np.asarray(points, dtype=np.float64)
+        if points.ndim == 1:
+            points = points.reshape(-1, 3)
+
+        if len(points) == 0:
+            self.set_paths([])
+            return
+
+        # Set paths for each point
+        self.set_paths([self._marker_path] * len(points))
+        self._offsets3d = tuple(points.T)
+        if self.axes is not None and not self._offset_transform_set:
+            self.set_offset_transform(self.axes.transData)
+
+        # Set colors with alpha values
+        if alphas is not None:
+            alphas = np.asarray(alphas, dtype=np.float64)
+            facecolors = np.resize(self.get_facecolors(), (len(points), 4))
+            facecolors[:, 3] = alphas
+            self.set_facecolors(facecolors)
+            edgecolors = np.resize(self.get_edgecolors(), (len(points), 4))
+            edgecolors[:, 3] = alphas
+            self.set_edgecolors(edgecolors)
 
     def min(self) -> np.ndarray[np.float64]:
         """Return the minimum values of the bounding box of the artist data."""
-        if len(self._segments_3d) == 0:
+        if len(self._offsets3d) == 0:
             return np.array([0.0, 0.0, 0.0])
-        return self._segments_3d.reshape(-1, 3).min(axis=0)
+        return np.min(self._offsets3d, axis=1)
 
     def max(self) -> np.ndarray[np.float64]:
         """Return the maximum values of the bounding box of the artist data."""
-        if len(self._segments_3d) == 0:
+        if len(self._offsets3d) == 0:
             return np.array([0.0, 0.0, 0.0])
-        return self._segments_3d.reshape(-1, 3).max(axis=0)
+        return np.max(self._offsets3d, axis=1)
 
 
 class Vector3D(FancyArrowPatch, MplArtistBase):

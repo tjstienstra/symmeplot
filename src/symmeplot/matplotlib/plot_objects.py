@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 from sympy import Expr, sympify
@@ -18,11 +17,11 @@ from symmeplot.core import (
     PlotTracedPointMixin,
     PlotVectorMixin,
 )
-from symmeplot.matplotlib.artists import Circle3D, Line3D, LineCollection3D, Vector3D
+from symmeplot.matplotlib.artists import Circle3D, Line3D, Scatter3D, Vector3D
 from symmeplot.matplotlib.plot_base import MplPlotBase
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
 __all__ = [
     "PlotBody",
@@ -125,14 +124,18 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
         Name of the plot object.
     frequency : int, optional
         Frequency to log the point with. Default is 1 (shows every point).
-    alpha_decay : callable, optional
+    alpha_decays : callable, optional
         Function that returns the transparency of a point based on the number
-        of evaluations since it was logged. The default is `lambda _: 1.0`
-        (all points remain fully visible).
+        of evaluations since it was logged. This input is an array of integers
+        representing the age of each logged point, and the output should be an
+        array of floats between 0 and 1 representing the alpha values. If None,
+        no transparency decay is applied. Default is None. Hint: you can use
+        `np.vectorize` to vectorize a function for this purpose.
     color : str, optional
-        Color of the traced points. Default is 'blue'.
+        Color of the traced points. Default is 'C0'.
     **kwargs : dict, optional
-        Kwargs that are parsed to :class:`matplotlib.collections.LineCollection`.
+        Kwargs that are parsed to :class:`Scatter3D` (which inherits from
+        Path3DCollection), e.g. ``facecolors``, ``edgecolors``, ``linewidths``.
 
     Examples
     --------
@@ -149,7 +152,11 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
         P = O.locatenew("P", sm.cos(t) * N.x + sm.sin(t) * N.y)
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         plot_traced = PlotTracedPoint(
-            N, O, P, frequency=1, alpha_decay=lambda i: max(0.1, 1.0 - i / 20)
+            N,
+            O,
+            P,
+            frequency=1,
+            alpha_decays=lambda i: np.maximum(0.1, 1.0 - i / 20),
         )
         f = sm.lambdify(t, plot_traced.get_expressions_to_evaluate())
         for t_val in np.linspace(0, 2 * np.pi, 30):
@@ -166,32 +173,22 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
         point: Point,
         name: str | None = None,
         frequency: int = 1,
-        alpha_decay: callable[[int], float] | None = None,
-        color: str = "blue",
+        alpha_decays: (
+            Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]] | None
+        ) = None,
         **kwargs: object,
     ) -> None:
         super().__init__(
-            inertial_frame, zero_point, point, name, frequency, alpha_decay
+            inertial_frame, zero_point, point, name, frequency, alpha_decays
         )
-        # Create colormap that fades from transparent to the specified color
-        color_rgba = mcolors.to_rgba(color)
-        transparent_color = (*color_rgba[:3], 0.0)
-        self._cmap = mcolors.LinearSegmentedColormap.from_list(
-            f"trace_{color}", [transparent_color, color_rgba]
-        )
-        # Set default linewidths if not provided
-        if "linewidths" not in kwargs:
-            kwargs["linewidths"] = 2
         self.add_artist(
-            LineCollection3D(cmap=self._cmap, **kwargs),
-            tuple((expr,) for expr in self.get_sympy_object_exprs()),
+            Scatter3D(**kwargs),
+            self.get_sympy_object_exprs(),
         )
 
     @property
     def annot_coords(self) -> np.ndarray[np.float64]:
         """Coordinate where the annotation text is displayed."""
-        if len(self._trace_history) > 0:
-            return self._trace_history[-1]
         return self.point_coords
 
     def plot(self, ax: plt.Axes | None = None) -> None:
@@ -205,7 +202,6 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
         """
         if ax is None:
             ax = plt.gca()
-        # For LineCollection3D, we need to use add_collection instead of add_artist
         for artist, _ in self._artists:
             ax.add_collection(artist)
         for child in self._children:
@@ -213,35 +209,9 @@ class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
 
     def update(self) -> None:
         """Update the objects on the scene, based on the current values."""
-        # Update trace history
         self._update_trace_history()
-
-        # Create segments and alphas for the line collection
-        segments = []
-        alphas = []
-        if len(self._trace_history) > 1:
-            for i in range(len(self._trace_history) - 1):
-                segments.append([self._trace_history[i], self._trace_history[i + 1]])
-                # Calculate alpha based on how old this segment is
-                age = len(self._trace_history) - i - 1
-                alphas.append(self._alpha_decay(age))
-
-        # Update the artist with segments and alphas
-        if segments:
-            artist = self._artists[0][0]
-            # Normalize alphas to [0, 1] range for colormap
-            alphas_array = np.array(alphas)
-            if alphas_array.max() > alphas_array.min():
-                # Normalize to 0-1 range
-                normalized_alphas = (alphas_array - alphas_array.min()) / (
-                    alphas_array.max() - alphas_array.min()
-                )
-            else:
-                # All alphas are the same, use them directly
-                normalized_alphas = alphas_array
-            artist.update_data(segments, normalized_alphas)
-
-        # Update children
+        alphas = self._current_alpha_values
+        self._artists[0][0].update_data(self.trace_history, alphas)
         for child in self._children:
             child.update()
 
