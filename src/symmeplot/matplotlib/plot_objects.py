@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import matplotlib.pyplot as plt
 import numpy as np
 from sympy import Expr, sympify
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
@@ -13,15 +14,23 @@ from symmeplot.core import (
     PlotFrameMixin,
     PlotLineMixin,
     PlotPointMixin,
+    PlotTracedPointMixin,
     PlotVectorMixin,
 )
-from symmeplot.matplotlib.artists import Circle3D, Line3D, Vector3D
+from symmeplot.matplotlib.artists import Circle3D, Line3D, Scatter3D, Vector3D
 from symmeplot.matplotlib.plot_base import MplPlotBase
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
-__all__ = ["PlotBody", "PlotFrame", "PlotLine", "PlotPoint", "PlotVector"]
+__all__ = [
+    "PlotBody",
+    "PlotFrame",
+    "PlotLine",
+    "PlotPoint",
+    "PlotTracedPoint",
+    "PlotVector",
+]
 
 
 class PlotPoint(PlotPointMixin, MplPlotBase):
@@ -98,6 +107,113 @@ class PlotPoint(PlotPointMixin, MplPlotBase):
             return {"marker": "o"}
         msg = f"Style '{style}' is not implemented."
         raise NotImplementedError(msg)
+
+
+class PlotTracedPoint(PlotTracedPointMixin, MplPlotBase):
+    """A class for plotting a traced Point in 3D using matplotlib.
+
+    Parameters
+    ----------
+    inertial_frame : ReferenceFrame
+        The reference frame with respect to which the object is oriented.
+    zero_point : Point
+        The absolute origin with respect to which the object is positioned.
+    point : Point
+        The point that should be traced with respect to the ``zero_point``.
+    name : str, optional
+        Name of the plot object.
+    frequency : int, optional
+        Frequency to log the point with. Default is 1 (shows every point).
+    alpha_decays : callable, optional
+        Function that returns the transparency of a point based on the number
+        of evaluations since it was logged. This input is an array of integers
+        representing the age of each logged point, and the output should be an
+        array of floats between 0 and 1 representing the alpha values. If None,
+        no transparency decay is applied. Default is None. Hint: you can use
+        `np.vectorize` to vectorize a function for this purpose.
+    color : str, optional
+        Color of the traced points. Default is 'C0'.
+    **kwargs : dict, optional
+        Kwargs that are parsed to :class:`Scatter3D` (which inherits from
+        Path3DCollection), e.g. ``facecolors``, ``edgecolors``, ``linewidths``.
+
+    Examples
+    --------
+    .. jupyter-execute::
+
+        import matplotlib.pyplot as plt
+        import numpy as np
+        import sympy as sm
+        import sympy.physics.mechanics as me
+        from symmeplot.matplotlib import PlotTracedPoint
+
+        t = sm.symbols("t")
+        N, O = me.ReferenceFrame("N"), me.Point("O")
+        P = O.locatenew("P", sm.cos(t) * N.x + sm.sin(t) * N.y)
+        fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+        plot_traced = PlotTracedPoint(
+            N,
+            O,
+            P,
+            frequency=1,
+            alpha_decays=lambda i: np.maximum(0.1, 1.0 - i / 20),
+        )
+        f = sm.lambdify(t, plot_traced.get_expressions_to_evaluate())
+        for t_val in np.linspace(0, 2 * np.pi, 30):
+            plot_traced.values = f(t_val)
+            plot_traced.update()
+        plot_traced.plot(ax)
+
+    """
+
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+        frequency: int = 1,
+        alpha_decays: (
+            Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]] | None
+        ) = None,
+        **kwargs: object,
+    ) -> None:
+        super().__init__(
+            inertial_frame, zero_point, point, name, frequency, alpha_decays
+        )
+        self.add_artist(
+            Scatter3D(**kwargs),
+            self.get_sympy_object_exprs(),
+        )
+
+    @property
+    def annot_coords(self) -> np.ndarray[np.float64]:
+        """Coordinate where the annotation text is displayed."""
+        return self.point_coords
+
+    def plot(self, ax: plt.Axes | None = None) -> None:
+        """Plot the traced point.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes._subplots.Axes3DSubplot, optional
+            Axes on which the artist should be added. The default is the active axes.
+
+        """
+        if ax is None:
+            ax = plt.gca()
+        for artist, _ in self._artists:
+            ax.add_collection(artist)
+        for child in self._children:
+            child.plot(ax)
+
+    def update(self) -> None:
+        """Update the objects on the scene, based on the current values."""
+        self._update_trace_history()
+        alphas = self._current_alpha_values
+        self._artists[0][0].update_data(self.trace_history, alphas)
+        for child in self._children:
+            child.update()
 
 
 class PlotLine(PlotLineMixin, MplPlotBase):

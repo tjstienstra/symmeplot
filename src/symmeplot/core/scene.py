@@ -10,6 +10,7 @@ from sympy import lambdify
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
+    import numpy as np
     from sympy.physics.mechanics import (
         Particle,
         Point,
@@ -46,6 +47,10 @@ class SceneBase(ABC):  # noqa: B024
 
     _PlotPoint: type[PlotBase] = _create_undefined_function(
         NotImplementedError, "'add_point' has not been implemented in this backend."
+    )
+    _PlotTracedPoint: type[PlotBase] = _create_undefined_function(
+        NotImplementedError,
+        "'add_point_trace' has not been implemented in this backend.",
     )
     _PlotLine: type[PlotBase] = _create_undefined_function(
         NotImplementedError, "'add_line' has not been implemented in this backend."
@@ -143,6 +148,49 @@ class SceneBase(ABC):  # noqa: B024
 
         """
         obj = self._PlotPoint(self.inertial_frame, self.zero_point, point, **kwargs)
+        self.add_plot_object(obj)
+        return obj
+
+    def add_point_trace(
+        self,
+        point: Point | Vector,
+        frequency: int = 1,
+        alpha_decays: Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]]
+        | None = None,
+        **kwargs: object,
+    ) -> PlotBase:
+        """Add a traced point to the scene.
+
+        Parameters
+        ----------
+        point : Point or Vector
+            The point or vector to be traced in space.
+        frequency : int, optional
+            Frequency to log the point with. Default is 1 (shows every point).
+        alpha_decays : callable, optional
+            Function that returns the transparency of a point based on the number
+            of evaluations since it was logged. This input is an array of integers
+            representing the age of each logged point, and the output should be an
+            array of floats between 0 and 1 representing the alpha values. If None,
+            no transparency decay is applied. Default is None. Hint: you can use
+            `np.vectorize` to vectorize a function for this purpose.
+        **kwargs :
+            Keyword arguments are parsed to the plot object.
+
+        Returns
+        -------
+        PlotTracedPoint
+            The added plot object.
+
+        """
+        obj = self._PlotTracedPoint(
+            self.inertial_frame,
+            self.zero_point,
+            point,
+            frequency=frequency,
+            alpha_decays=alpha_decays,
+            **kwargs,
+        )
         self.add_plot_object(obj)
         return obj
 

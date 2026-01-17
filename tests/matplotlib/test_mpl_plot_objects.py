@@ -13,8 +13,10 @@ try:
         PlotFrame,
         PlotLine,
         PlotPoint,
+        PlotTracedPoint,
         PlotVector,
     )
+    from symmeplot.matplotlib.artists import Scatter3D
 except ImportError:
     if ON_CI:
         raise
@@ -58,6 +60,90 @@ class TestPlotPoint:
     def test_annot_coords(self):
         np.testing.assert_almost_equal(
             self.plot_point.annot_coords, np.array([0.2, 0.6, 0.3])
+        )
+
+
+class TestPlotTracedPoint:
+    @pytest.fixture(autouse=True)
+    def _define_point(self):
+        self.s = sm.symbols("s:3")
+        self.rf, self.zp = me.ReferenceFrame("inertial_frame"), me.Point("zero_point")
+        self.p = self.zp.locatenew(
+            "point", sum(si * v for si, v in zip(self.s, self.rf, strict=True))
+        )
+
+    @pytest.fixture
+    def _basic_plot_traced_point(self):
+        self.plot_traced = PlotTracedPoint(
+            self.rf, self.zp, self.p, frequency=1, color="r", s=20
+        )
+        self.evalf = sm.lambdify(self.s, self.plot_traced.get_expressions_to_evaluate())
+
+    @pytest.mark.usefixtures("_basic_plot_traced_point")
+    def test_artist(self):
+        assert len(self.plot_traced.artists) == 1
+        scatter = self.plot_traced.artists[0]
+        assert isinstance(scatter, Scatter3D)
+
+    @pytest.mark.usefixtures("_basic_plot_traced_point")
+    def test_update(self):
+        # First update
+        self.plot_traced.values = self.evalf(0.1, 0.2, 0.3)
+        self.plot_traced.update()
+        assert len(self.plot_traced.trace_history) == 1
+        np.testing.assert_almost_equal(
+            self.plot_traced.trace_history[0], [0.1, 0.2, 0.3]
+        )
+
+        # Second update
+        self.plot_traced.values = self.evalf(0.4, 0.5, 0.6)
+        self.plot_traced.update()
+        assert len(self.plot_traced.trace_history) == 2
+        np.testing.assert_almost_equal(
+            self.plot_traced.trace_history[1], [0.4, 0.5, 0.6]
+        )
+
+    @pytest.mark.usefixtures("_basic_plot_traced_point")
+    def test_annot_coords(self):
+        self.plot_traced.values = self.evalf(0.2, 0.6, 0.3)
+        np.testing.assert_almost_equal(
+            self.plot_traced.annot_coords, np.array([0.2, 0.6, 0.3])
+        )
+
+    def test_frequency(self):
+        plot_traced = PlotTracedPoint(self.rf, self.zp, self.p, frequency=2)
+        evalf = sm.lambdify(self.s, plot_traced.get_expressions_to_evaluate())
+
+        # First update - not logged (count 1, 1 % 2 != 0)
+        plot_traced.values = evalf(0.1, 0.2, 0.3)
+        plot_traced.update()
+        assert len(plot_traced.trace_history) == 0
+
+        # Second update - logged (count 2, 2 % 2 == 0)
+        plot_traced.values = evalf(0.4, 0.5, 0.6)
+        plot_traced.update()
+        assert len(plot_traced.trace_history) == 1
+        np.testing.assert_almost_equal(plot_traced.trace_history[0], [0.4, 0.5, 0.6])
+
+    def test_alpha_decays(self):
+        alpha_decay = lambda ages: np.maximum(0.1, 1.0 - ages / 10.0)  # noqa: E731
+        plot_traced = PlotTracedPoint(
+            self.rf, self.zp, self.p, frequency=1, alpha_decays=alpha_decay
+        )
+        evalf = sm.lambdify(self.s, plot_traced.get_expressions_to_evaluate())
+
+        # Add several points
+        for i in range(5):
+            plot_traced.values = evalf(i * 0.1, i * 0.1, i * 0.1)
+            plot_traced.update()
+
+        assert len(plot_traced.trace_history) == 5
+        # Check that alpha values are computed correctly
+        # Ages are [4, 3, 2, 1, 0] (oldest to newest in trace_history order)
+        expected_alphas = np.maximum(0.1, 1.0 - np.array([4, 3, 2, 1, 0]) / 10.0)
+        np.testing.assert_almost_equal(
+            plot_traced._current_alpha_values,  # noqa: SLF001
+            expected_alphas,
         )
 
 

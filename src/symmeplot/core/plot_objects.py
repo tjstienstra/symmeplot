@@ -9,7 +9,7 @@ from sympy import Expr, latex
 from sympy.physics.mechanics import Particle, Point, ReferenceFrame, RigidBody, Vector
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
     from symmeplot.core.plot_base import PlotBase
 
@@ -19,6 +19,7 @@ __all__ = [
     "PlotFrameMixin",
     "PlotLineMixin",
     "PlotPointMixin",
+    "PlotTracedPointMixin",
     "PlotVectorMixin",
 ]
 
@@ -47,6 +48,12 @@ class OriginMixin:
         else:
             msg = "'origin' should be a valid Point object."
             raise TypeError(msg)
+
+    def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
+        """Get coordinate of the origin as expressions."""
+        return tuple(
+            self.origin.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+        )
 
 
 class PlotPointMixin:
@@ -89,6 +96,113 @@ class PlotPointMixin:
         )
 
 
+class PlotTracedPointMixin:
+    """Mixin class for plotting a traced Point in 3D.
+
+    Notes
+    -----
+    The subclass should create and add the artist in the constructor.
+    The traced point tracks the history of a point's position and displays
+    all previous positions with optional transparency decay.
+
+    """
+
+    def __init__(
+        self,
+        inertial_frame: ReferenceFrame,
+        zero_point: Point,
+        point: Point,
+        name: str | None = None,
+        frequency: int = 1,
+        alpha_decays: (
+            Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]] | None
+        ) = None,
+    ) -> None:
+        """Initialize the traced point.
+
+        Parameters
+        ----------
+        inertial_frame : ReferenceFrame
+            The reference frame with respect to which the object is oriented.
+        zero_point : Point
+            The absolute origin with respect to which the object is positioned.
+        point : Point
+            The point to be traced.
+        name : str, optional
+            Name of the point.
+        frequency : int, optional
+            Frequency to log the point with. Default is 1 (shows every point).
+        alpha_decays : callable, optional
+            Function that returns the transparency of a point based on the number
+            of evaluations since it was logged. This input is an array of integers
+            representing the age of each logged point, and the output should be an
+            array of floats between 0 and 1 representing the alpha values. If None,
+            no transparency decay is applied. Default is None. Hint: you can use
+            `np.vectorize` to vectorize a function for this purpose.
+
+        """
+        if name is None:
+            name = point.name
+        if not isinstance(point, Point):
+            msg = "'point' should be a sympy Point object."
+            raise TypeError(msg)
+        super().__init__(inertial_frame, zero_point, point, name)
+        self._frequency = frequency
+        self._alpha_decays = (
+            alpha_decays
+            if alpha_decays is not None
+            else lambda ages: np.ones_like(ages, dtype=np.float64)
+        )
+        self._trace_history: list[tuple[float, float, float]] = []
+        self._evaluation_count = 0
+
+    @property
+    def point(self) -> Point:
+        """The sympy Point, which is being traced."""
+        return self._sympy_object
+
+    @property
+    def frequency(self) -> int:
+        """Frequency to log the point with."""
+        return self._frequency
+
+    @property
+    def alpha_decays(self) -> Callable[[np.ndarray[np.int64]], np.ndarray[np.float64]]:
+        """Function that returns the transparency based on evaluation count."""
+        return self._alpha_decays
+
+    @property
+    def trace_history(self) -> np.ndarray[np.float64]:
+        """History of point positions."""
+        return np.array(self._trace_history)
+
+    @property
+    def point_coords(self) -> np.ndarray[np.float64]:
+        """Coordinate values of the current plotted point."""
+        return np.asarray(self._values[0]).reshape(3)
+
+    @property
+    def _current_alpha_values(self) -> np.ndarray[np.float64]:
+        """Get the current alpha values for the traced points."""
+        n_points = len(self._trace_history)
+        if n_points == 0:
+            return np.array([], dtype=np.float64)
+        ages = np.arange(n_points - 1, -1, -1, dtype=np.int64) * self._frequency
+        return self._alpha_decays(ages)
+
+    def get_sympy_object_exprs(self) -> tuple[Expr, Expr, Expr]:
+        """Get coordinate of the point as expressions."""
+        return tuple(
+            self.point.pos_from(self.zero_point).to_matrix(self.inertial_frame)[:]
+        )
+
+    def _update_trace_history(self) -> None:
+        """Update the trace history with the current point coordinates."""
+        self._evaluation_count += 1
+        if self._evaluation_count % self._frequency == 0:
+            self._trace_history.append(self._values[0])
+
+
 class PlotLineMixin:
     """Mixin class for plotting lines in 3D.
 
@@ -123,9 +237,11 @@ class PlotLineMixin:
     @property
     def line_coords(self) -> np.ndarray[np.float64]:
         """Coordinate values of the plotted line."""
-        return np.array(self._values[0]).reshape(3, -1)
+        return np.asarray(self._values[0]).reshape(3, -1)
 
-    def get_sympy_object_exprs(self) -> tuple[tuple[Expr, ...], ...]:
+    def get_sympy_object_exprs(
+        self,
+    ) -> tuple[tuple[Expr, ...], tuple[Expr, ...], tuple[Expr, ...]]:
         """Arguments of the sympy object artist in expression form.
 
         Notes

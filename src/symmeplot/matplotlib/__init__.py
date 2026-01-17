@@ -5,6 +5,7 @@ __all__ = [
     "PlotFrame",
     "PlotLine",
     "PlotPoint",
+    "PlotTracedPoint",
     "PlotVector",
     "Scene3D",
 ]
@@ -14,6 +15,7 @@ from symmeplot.matplotlib.plot_objects import (
     PlotFrame,
     PlotLine,
     PlotPoint,
+    PlotTracedPoint,
     PlotVector,
 )
 from symmeplot.matplotlib.scene import Scene3D
