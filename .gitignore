@@ -7,4 +7,4 @@ src/symmeplot/_version.py
 __pycache__/
 *.pyc
 *.pyo
-
+.venv
