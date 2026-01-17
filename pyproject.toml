@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "symmeplot"
-version = "0.2.2.dev"
+dynamic = ["version"]
 authors = [
   { name = "tjstienstra", email = "timostienstra00@gmail.com" },
 ]
