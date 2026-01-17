@@ -10,7 +10,7 @@ authors = [
 ]
 description = "SymPy Mechanics Plotter"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -18,17 +18,17 @@ classifiers = [
 ]
 dependencies = [
     "sympy >=1.12",
-    "numpy >=2.1",
+    "numpy",
 ]
 
 [project.optional-dependencies]
 mpl_backend = [
-    "matplotlib >=3.9",
+    "matplotlib",
 ]
 pg_backend = [
-    "pyqtgraph >=0.14.0",
-    "pyqt6 >=6.10",
-    "pyopengl >=3.1.10",
+    "pyqtgraph",
+    "pyqt6",
+    "pyopengl",
 ]
 lint = [
   "ruff >= 0.14, < 0.15",
