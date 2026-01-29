@@ -1,0 +1,1429 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Pyqtgraph’s PlotBase" href="plot_base.html"><link rel="prev" title="Pyqtgraph’s Scene" href="scene.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+        <title>Pyqtgraph’s Plot Objects - symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=acfd86a5" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../guides/installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../matplotlib/index.html">SymMePlot Matplotlib</a><input aria-label="Toggle navigation of SymMePlot Matplotlib" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../matplotlib/scene.html">Matplotlib’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matplotlib/plot_objects.html">Matplotlib’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matplotlib/plot_base.html">Matplotlib’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matplotlib/artists.html">Matplotlib’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">SymMePlot Pyqtgraph</a><input aria-label="Toggle navigation of SymMePlot Pyqtgraph" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="scene.html">Pyqtgraph’s Scene</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Pyqtgraph’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_base.html">Pyqtgraph’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="artists.html">Pyqtgraph’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../core/index.html">SymMePlot Core</a><input aria-label="Toggle navigation of SymMePlot Core" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/scene.html">Core’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/plot_objects.html">Core’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/plot_base.html">Core’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/artists.html">Core’s Artists</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/api/pyqtgraph/plot_objects.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-symmeplot.pyqtgraph.plot_objects">
+<span id="pyqtgraph-s-plot-objects"></span><h1>Pyqtgraph’s Plot Objects<a class="headerlink" href="#module-symmeplot.pyqtgraph.plot_objects" title="Link to this heading">¶</a></h1>
+<p>PyQtGraph plot objects for plotting SymPy physics objects in 3D.</p>
+<p><strong>Classes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody" title="symmeplot.pyqtgraph.plot_objects.PlotBody"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotBody</span></code></a>(inertial_frame, zero_point, body[, ...])</p></td>
+<td><p>A class for plotting a body in 3D using pyqtgraph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame" title="symmeplot.pyqtgraph.plot_objects.PlotFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotFrame</span></code></a>(inertial_frame, zero_point, frame)</p></td>
+<td><p>A class for plotting a ReferenceFrame in 3D using pyqtgraph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine" title="symmeplot.pyqtgraph.plot_objects.PlotLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotLine</span></code></a>(inertial_frame, zero_point, line[, ...])</p></td>
+<td><p>A class for plotting lines in 3D using pyqtgraph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint" title="symmeplot.pyqtgraph.plot_objects.PlotPoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotPoint</span></code></a>(inertial_frame, zero_point, point)</p></td>
+<td><p>A class for plotting a Point in 3D using pyqtgraph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector" title="symmeplot.pyqtgraph.plot_objects.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(inertial_frame, zero_point, vector)</p></td>
+<td><p>A class for plotting a Vector in 3D using pyqtgraph.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.pyqtgraph.plot_objects.</span></span><span class="sig-name descname"><span class="pre">PlotBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inertial_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ReferenceFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Particle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RigidBody</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_point_properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_frame_properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/plot_objects.html#symmeplot.core.plot_objects.PlotBodyMixin" title="symmeplot.core.plot_objects.PlotBodyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotBodyMixin</span></code></a>, <a class="reference internal" href="plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase" title="symmeplot.pyqtgraph.plot_base.PgPlotBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PgPlotBase</span></code></a></p>
+<p>A class for plotting a body in 3D using pyqtgraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inertial_frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame with respect to which the object is oriented.</p></li>
+<li><p><strong>zero_point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a>) – The absolute origin with respect to which the object is positioned.</p></li>
+<li><p><strong>body</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/mechanics/api/part_bod.html#sympy.physics.mechanics.rigidbody.RigidBody" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.mechanics.rigidbody.RigidBody</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/mechanics/api/part_bod.html#sympy.physics.mechanics.particle.Particle" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.mechanics.particle.Particle</span></code></a>) – The body that should be plotted.</p></li>
+<li><p><strong>origin</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>, <em>optional</em>) – The origin of the frame with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. If a
+<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a> is provided the <code class="docutils literal notranslate"><span class="pre">origin</span></code> is at the
+tip of the vector with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>style</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <em>optional</em>) – Reference to what style should be used for plotting the body. The default style
+is <code class="docutils literal notranslate"><span class="pre">'default'</span></code>. Available styles:
+- None: No properties of the vectors will be set.
+- ‘default’: Uses a frame with as color ‘rgb’ for xyz.</p></li>
+<li><p><strong>plot_frame_properties</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Dictionary of keyword arguments that should be parsed to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">symemplot.pyqtgraph.plot_objects.PlotFrame</span></code>.</p></li>
+<li><p><strong>plot_point_properties</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Dictionary of keyword arguments that should be parsed to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">symemplot.pyqtgraph.plot_objects.PlotPoint</span></code> representing the center of
+mass.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Kwargs that are parsed to both internally used plot objects.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist" title="symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_artist</span></code></a>(artist, exprs)</p></td>
+<td><p>Add an artist to the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate" title="symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_expressions_to_evaluate</span></code></a>()</p></td>
+<td><p>Return a tuple of the necessary expressions for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs" title="symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sympy_object_exprs</span></code></a>()</p></td>
+<td><p>Return the expressions used in plotting the sympy object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot" title="symmeplot.pyqtgraph.plot_objects.PlotBody.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(view)</p></td>
+<td><p>Plot the associated plot objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.update" title="symmeplot.pyqtgraph.plot_objects.PlotBody.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
+<td><p>Update the objects on the scene, based on the current values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.artists" title="symmeplot.pyqtgraph.plot_objects.PlotBody.artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></a></p></td>
+<td><p>Artists used to plot the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.body" title="symmeplot.pyqtgraph.plot_objects.PlotBody.body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">body</span></code></a></p></td>
+<td><p>The sympy body, which is being plotted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.children" title="symmeplot.pyqtgraph.plot_objects.PlotBody.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p>Child objects in the plot hierarchy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame" title="symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_frame</span></code></a></p></td>
+<td><p>The reference frame with respect to which the object is oriented.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.name" title="symmeplot.pyqtgraph.plot_objects.PlotBody.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame" title="symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_frame</span></code></a></p></td>
+<td><p>PlotFrame used for plotting the reference frame of the body.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter" title="symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_masscenter</span></code></a></p></td>
+<td><p>PlotPoint used for plotting the center of mass of the body.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object" title="symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sympy_object</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.values" title="symmeplot.pyqtgraph.plot_objects.PlotBody.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p>List of evaluated values for the object's variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.visible" title="symmeplot.pyqtgraph.plot_objects.PlotBody.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a></p></td>
+<td><p>If the object is be visible in the plot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point" title="symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_point</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Expr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Expr</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist" title="Link to this definition">¶</a></dt>
+<dd><p>Add an artist to the plot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ArtistBase</span></code>) – The artist to be added.</p></li>
+<li><p><strong>exprs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">expression</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">expressions</span></code>) – Args used to update the artist in the form of expressions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.artists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.artists" title="Link to this definition">¶</a></dt>
+<dd><p>Artists used to plot the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.body">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Particle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RigidBody</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.body" title="Link to this definition">¶</a></dt>
+<dd><p>The sympy body, which is being plotted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.children" title="Link to this definition">¶</a></dt>
+<dd><p>Child objects in the plot hierarchy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate">
+<span class="sig-name descname"><span class="pre">get_expressions_to_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Return a tuple of the necessary expressions for plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs">
+<span class="sig-name descname"><span class="pre">get_sympy_object_exprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs" title="Link to this definition">¶</a></dt>
+<dd><p>Return the expressions used in plotting the sympy object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inertial_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame" title="Link to this definition">¶</a></dt>
+<dd><p>The reference frame with respect to which the object is oriented.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the plot object. Default is the name of the object being plotted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gl.GLViewWidget</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the associated plot objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame" title="Link to this definition">¶</a></dt>
+<dd><p>PlotFrame used for plotting the reference frame of the body.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_masscenter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter" title="Link to this definition">¶</a></dt>
+<dd><p>PlotPoint used for plotting the center of mass of the body.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sympy_object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the objects on the scene, based on the current values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.values" title="Link to this definition">¶</a></dt>
+<dd><p>List of evaluated values for the object’s variables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.visible" title="Link to this definition">¶</a></dt>
+<dd><p>If the object is be visible in the plot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.pyqtgraph.plot_objects.</span></span><span class="sig-name descname"><span class="pre">PlotFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inertial_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ReferenceFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ReferenceFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Vector</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin" title="symmeplot.core.plot_objects.PlotFrameMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotFrameMixin</span></code></a>, <a class="reference internal" href="plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase" title="symmeplot.pyqtgraph.plot_base.PgPlotBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PgPlotBase</span></code></a></p>
+<p>A class for plotting a ReferenceFrame in 3D using pyqtgraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inertial_frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame with respect to which the object is oriented.</p></li>
+<li><p><strong>zero_point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a>) – The absolute origin with respect to which the object is positioned.</p></li>
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame that should be plotted.</p></li>
+<li><p><strong>origin</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>, <em>optional</em>) – The origin of the frame with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. If a
+<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a> is provided the <cite>origin</cite> is at the
+tip of the vector with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>style</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <em>optional</em>) – Reference to what style should be used for plotting the frame. The default style
+is <code class="docutils literal notranslate"><span class="pre">'default'</span></code>. Available styles:
+- None: No properties of the vectors will be set.
+- ‘default’: Nice default frame with as color ‘rgb’ for xyz.</p></li>
+<li><p><strong>scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – Length of the vectors of the reference frame.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Kwargs that are parsed to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">symmeplot.pyqtgraph.plot_objects.PlotVector`s,</span> <span class="pre">which</span> <span class="pre">possibly</span> <span class="pre">parses</span>
+<span class="pre">them</span> <span class="pre">to</span> <span class="pre">:class:`pyqtgraph.opengl.items.GLLinePlotItem</span></code>, so
+<code class="docutils literal notranslate"><span class="pre">color=(1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> will make all vectors of the reference frame red.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_artist</span></code></a>(artist, exprs)</p></td>
+<td><p>Add an artist to the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_expressions_to_evaluate</span></code></a>()</p></td>
+<td><p>Return a tuple of the necessary expressions for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sympy_object_exprs</span></code></a>()</p></td>
+<td><p>Get coordinate of the origin as expressions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.plot" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(view)</p></td>
+<td><p>Plot the associated plot objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.update" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
+<td><p>Update the objects on the scene, based on the current values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.artists" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></a></p></td>
+<td><p>Artists used to plot the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.children" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p>Child objects in the plot hierarchy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.frame" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame</span></code></a></p></td>
+<td><p>The sympy ReferenceFrame, which is being plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_frame</span></code></a></p></td>
+<td><p>The reference frame with respect to which the object is oriented.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.name" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.origin" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a></p></td>
+<td><p>The origin of the object with respect to the <cite>zero_point</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sympy_object</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.values" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p>List of evaluated values for the object's variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectors</span></code></a></p></td>
+<td><p>The PlotVectors used to plot the reference frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.visible" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a></p></td>
+<td><p>If the object is be visible in the plot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.x" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>PlotVector used for the unit vector in the x direction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.y" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>PlotVector used for the unit vector in the y direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.z" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></a></p></td>
+<td><p>PlotVector used for the unit vector in the z direction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point" title="symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_point</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Expr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Expr</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist" title="Link to this definition">¶</a></dt>
+<dd><p>Add an artist to the plot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ArtistBase</span></code>) – The artist to be added.</p></li>
+<li><p><strong>exprs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">expression</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">expressions</span></code>) – Args used to update the artist in the form of expressions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.artists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.artists" title="Link to this definition">¶</a></dt>
+<dd><p>Artists used to plot the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.children" title="Link to this definition">¶</a></dt>
+<dd><p>Child objects in the plot hierarchy.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.frame" title="Link to this definition">¶</a></dt>
+<dd><p>The sympy ReferenceFrame, which is being plotted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate">
+<span class="sig-name descname"><span class="pre">get_expressions_to_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Return a tuple of the necessary expressions for plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs">
+<span class="sig-name descname"><span class="pre">get_sympy_object_exprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs" title="Link to this definition">¶</a></dt>
+<dd><p>Get coordinate of the origin as expressions.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inertial_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame" title="Link to this definition">¶</a></dt>
+<dd><p>The reference frame with respect to which the object is oriented.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the plot object. Default is the name of the object being plotted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.origin">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.origin" title="Link to this definition">¶</a></dt>
+<dd><p>The origin of the object with respect to the <cite>zero_point</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gl.GLViewWidget</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the associated plot objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sympy_object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the objects on the scene, based on the current values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.values" title="Link to this definition">¶</a></dt>
+<dd><p>List of evaluated values for the object’s variables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vectors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors" title="Link to this definition">¶</a></dt>
+<dd><p>The PlotVectors used to plot the reference frame.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.visible" title="Link to this definition">¶</a></dt>
+<dd><p>If the object is be visible in the plot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.x" title="Link to this definition">¶</a></dt>
+<dd><p>PlotVector used for the unit vector in the x direction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.y" title="Link to this definition">¶</a></dt>
+<dd><p>PlotVector used for the unit vector in the y direction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.z">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.z" title="Link to this definition">¶</a></dt>
+<dd><p>PlotVector used for the unit vector in the z direction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.pyqtgraph.plot_objects.</span></span><span class="sig-name descname"><span class="pre">PlotLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inertial_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ReferenceFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Point</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/plot_objects.html#symmeplot.core.plot_objects.PlotLineMixin" title="symmeplot.core.plot_objects.PlotLineMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotLineMixin</span></code></a>, <a class="reference internal" href="plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase" title="symmeplot.pyqtgraph.plot_base.PgPlotBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PgPlotBase</span></code></a></p>
+<p>A class for plotting lines in 3D using pyqtgraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inertial_frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame with respect to which the object is oriented.</p></li>
+<li><p><strong>zero_point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a>) – The absolute origin with respect to which the object is positioned.</p></li>
+<li><p><strong>points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>) – The points or vectors through which the line should be plotted with respect to
+the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. If a vector is provided, the <code class="docutils literal notranslate"><span class="pre">origin</span></code> will be at the tip
+of the vector with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <em>optional</em>) – The name of the line. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Kwargs that are parsed to <code class="xref py py-class docutils literal notranslate"><span class="pre">pyqtgraph.opengl.items.GLLinePlotItem</span></code>, so
+<code class="docutils literal notranslate"><span class="pre">color=(1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> will make the plotted line red.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist" title="symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_artist</span></code></a>(artist, exprs)</p></td>
+<td><p>Add an artist to the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate" title="symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_expressions_to_evaluate</span></code></a>()</p></td>
+<td><p>Return a tuple of the necessary expressions for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs" title="symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sympy_object_exprs</span></code></a>()</p></td>
+<td><p>Arguments of the sympy object artist in expression form.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.plot" title="symmeplot.pyqtgraph.plot_objects.PlotLine.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(view)</p></td>
+<td><p>Plot the associated plot objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.update" title="symmeplot.pyqtgraph.plot_objects.PlotLine.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
+<td><p>Update the objects on the scene, based on the current values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.artists" title="symmeplot.pyqtgraph.plot_objects.PlotLine.artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></a></p></td>
+<td><p>Artists used to plot the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.children" title="symmeplot.pyqtgraph.plot_objects.PlotLine.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p>Child objects in the plot hierarchy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame" title="symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_frame</span></code></a></p></td>
+<td><p>The reference frame with respect to which the object is oriented.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line" title="symmeplot.pyqtgraph.plot_objects.PlotLine.line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line</span></code></a></p></td>
+<td><p>The points that spawn the line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords" title="symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_coords</span></code></a></p></td>
+<td><p>Coordinate values of the plotted line.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.name" title="symmeplot.pyqtgraph.plot_objects.PlotLine.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the plot object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object" title="symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sympy_object</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.values" title="symmeplot.pyqtgraph.plot_objects.PlotLine.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p>List of evaluated values for the object's variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.visible" title="symmeplot.pyqtgraph.plot_objects.PlotLine.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a></p></td>
+<td><p>If the object is be visible in the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point" title="symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_point</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Expr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Expr</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist" title="Link to this definition">¶</a></dt>
+<dd><p>Add an artist to the plot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ArtistBase</span></code>) – The artist to be added.</p></li>
+<li><p><strong>exprs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">expression</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">expressions</span></code>) – Args used to update the artist in the form of expressions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.artists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.artists" title="Link to this definition">¶</a></dt>
+<dd><p>Artists used to plot the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.children" title="Link to this definition">¶</a></dt>
+<dd><p>Child objects in the plot hierarchy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate">
+<span class="sig-name descname"><span class="pre">get_expressions_to_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Return a tuple of the necessary expressions for plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs">
+<span class="sig-name descname"><span class="pre">get_sympy_object_exprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs" title="Link to this definition">¶</a></dt>
+<dd><p>Arguments of the sympy object artist in expression form.</p>
+<p class="rubric">Notes</p>
+<p>The form of the expression is <code class="docutils literal notranslate"><span class="pre">((x0,</span> <span class="pre">x1,</span> <span class="pre">...),</span> <span class="pre">(y0,</span> <span class="pre">y1,</span> <span class="pre">...),</span> <span class="pre">(z0,</span> <span class="pre">z1,</span> <span class="pre">...))</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inertial_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame" title="Link to this definition">¶</a></dt>
+<dd><p>The reference frame with respect to which the object is oriented.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.line">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">line</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line" title="Link to this definition">¶</a></dt>
+<dd><p>The points that spawn the line.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">line_coords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords" title="Link to this definition">¶</a></dt>
+<dd><p>Coordinate values of the plotted line.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the plot object. Default is the name of the object being plotted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gl.GLViewWidget</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the associated plot objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sympy_object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the objects on the scene, based on the current values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.values" title="Link to this definition">¶</a></dt>
+<dd><p>List of evaluated values for the object’s variables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.visible" title="Link to this definition">¶</a></dt>
+<dd><p>If the object is be visible in the plot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.pyqtgraph.plot_objects.</span></span><span class="sig-name descname"><span class="pre">PlotPoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inertial_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/plot_objects.html#symmeplot.core.plot_objects.PlotPointMixin" title="symmeplot.core.plot_objects.PlotPointMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotPointMixin</span></code></a>, <a class="reference internal" href="plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase" title="symmeplot.pyqtgraph.plot_base.PgPlotBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PgPlotBase</span></code></a></p>
+<p>A class for plotting a Point in 3D using pyqtgraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inertial_frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame with respect to which the object is oriented.</p></li>
+<li><p><strong>zero_point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a>) – The absolute origin with respect to which the object is positioned.</p></li>
+<li><p><strong>point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>) – The point or vector that should be plotted with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.
+If a vector is provided, the <code class="docutils literal notranslate"><span class="pre">origin</span></code> will be at the tip of the vector with
+respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. If not specified, the default is the
+<code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Kwargs that are parsed to <code class="xref py py-class docutils literal notranslate"><span class="pre">pyqtgraph.opengl.items.GLScatterPlotItem</span></code>, so
+<code class="docutils literal notranslate"><span class="pre">color=(1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> will make the plotted point red.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_artist</span></code></a>(artist, exprs)</p></td>
+<td><p>Add an artist to the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_expressions_to_evaluate</span></code></a>()</p></td>
+<td><p>Return a tuple of the necessary expressions for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sympy_object_exprs</span></code></a>()</p></td>
+<td><p>Get coordinate of the point as expressions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.plot" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(view)</p></td>
+<td><p>Plot the associated plot objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.update" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
+<td><p>Update the objects on the scene, based on the current values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.artists" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></a></p></td>
+<td><p>Artists used to plot the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.children" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p>Child objects in the plot hierarchy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_frame</span></code></a></p></td>
+<td><p>The reference frame with respect to which the object is oriented.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.name" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the plot object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a></p></td>
+<td><p>The sympy Point, which is being plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_coords</span></code></a></p></td>
+<td><p>Coordinate values of the plotted point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sympy_object</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.values" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p>List of evaluated values for the object's variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.visible" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a></p></td>
+<td><p>If the object is be visible in the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point" title="symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_point</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Expr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Expr</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist" title="Link to this definition">¶</a></dt>
+<dd><p>Add an artist to the plot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ArtistBase</span></code>) – The artist to be added.</p></li>
+<li><p><strong>exprs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">expression</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">expressions</span></code>) – Args used to update the artist in the form of expressions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.artists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.artists" title="Link to this definition">¶</a></dt>
+<dd><p>Artists used to plot the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.children" title="Link to this definition">¶</a></dt>
+<dd><p>Child objects in the plot hierarchy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate">
+<span class="sig-name descname"><span class="pre">get_expressions_to_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Return a tuple of the necessary expressions for plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs">
+<span class="sig-name descname"><span class="pre">get_sympy_object_exprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs" title="Link to this definition">¶</a></dt>
+<dd><p>Get coordinate of the point as expressions.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inertial_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame" title="Link to this definition">¶</a></dt>
+<dd><p>The reference frame with respect to which the object is oriented.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the plot object. Default is the name of the object being plotted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gl.GLViewWidget</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the associated plot objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point" title="Link to this definition">¶</a></dt>
+<dd><p>The sympy Point, which is being plotted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">point_coords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords" title="Link to this definition">¶</a></dt>
+<dd><p>Coordinate values of the plotted point.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sympy_object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the objects on the scene, based on the current values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.values" title="Link to this definition">¶</a></dt>
+<dd><p>List of evaluated values for the object’s variables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.visible" title="Link to this definition">¶</a></dt>
+<dd><p>If the object is be visible in the plot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.pyqtgraph.plot_objects.</span></span><span class="sig-name descname"><span class="pre">PlotVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inertial_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ReferenceFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Point</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Vector</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin" title="symmeplot.core.plot_objects.PlotVectorMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotVectorMixin</span></code></a>, <a class="reference internal" href="plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase" title="symmeplot.pyqtgraph.plot_base.PgPlotBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PgPlotBase</span></code></a></p>
+<p>A class for plotting a Vector in 3D using pyqtgraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inertial_frame</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></code></a>) – The reference frame with respect to which the object is oriented.</p></li>
+<li><p><strong>zero_point</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a>) – The absolute origin with respect to which the object is positioned.</p></li>
+<li><p><strong>vector</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>) – The vector that should be plotted with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>origin</strong> (<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.point.Point</span></code></a> or <a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a>, <em>optional</em>) – The origin of the vector with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. If a
+<a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.physics.vector.vector.Vector</span></code></a> is provided the <code class="docutils literal notranslate"><span class="pre">origin</span></code> is at the
+tip of the vector with respect to the <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">zero_point</span></code>.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the plot object. Default is the vector as string.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>optional</em>) – Kwargs that are parsed to <code class="xref py py-class docutils literal notranslate"><span class="pre">pyqtgraph.opengl.items.GLLinePlotItem</span></code>, so
+<code class="docutils literal notranslate"><span class="pre">color=(1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> will make the plotted vector red.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist" title="symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_artist</span></code></a>(artist, exprs)</p></td>
+<td><p>Add an artist to the plot object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate" title="symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_expressions_to_evaluate</span></code></a>()</p></td>
+<td><p>Return a tuple of the necessary expressions for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs" title="symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sympy_object_exprs</span></code></a>()</p></td>
+<td><p>Arguments of the sympy object artist in expression form.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.plot" title="symmeplot.pyqtgraph.plot_objects.PlotVector.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(view)</p></td>
+<td><p>Plot the associated plot objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.update" title="symmeplot.pyqtgraph.plot_objects.PlotVector.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
+<td><p>Update the objects on the scene, based on the current values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.artists" title="symmeplot.pyqtgraph.plot_objects.PlotVector.artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></a></p></td>
+<td><p>Artists used to plot the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.children" title="symmeplot.pyqtgraph.plot_objects.PlotVector.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p>Child objects in the plot hierarchy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame" title="symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_frame</span></code></a></p></td>
+<td><p>The reference frame with respect to which the object is oriented.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.name" title="symmeplot.pyqtgraph.plot_objects.PlotVector.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the plot object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin" title="symmeplot.pyqtgraph.plot_objects.PlotVector.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a></p></td>
+<td><p>The origin of the object with respect to the <cite>zero_point</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords" title="symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin_coords</span></code></a></p></td>
+<td><p>Coordinate values of the origin of the plotted vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object" title="symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sympy_object</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.values" title="symmeplot.pyqtgraph.plot_objects.PlotVector.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p>List of evaluated values for the object's variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector" title="symmeplot.pyqtgraph.plot_objects.PlotVector.vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector</span></code></a></p></td>
+<td><p>The sympy Vector, which is being plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values" title="symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_values</span></code></a></p></td>
+<td><p>Values of the plotted vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.visible" title="symmeplot.pyqtgraph.plot_objects.PlotVector.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a></p></td>
+<td><p>If the object is be visible in the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point" title="symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_point</span></code></a></p></td>
+<td><p>The absolute origin with respect to which the object is positioned.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Expr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Expr</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist" title="Link to this definition">¶</a></dt>
+<dd><p>Add an artist to the plot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ArtistBase</span></code>) – The artist to be added.</p></li>
+<li><p><strong>exprs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">expression</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">expressions</span></code>) – Args used to update the artist in the form of expressions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.artists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/artists.html#symmeplot.core.artists.ArtistBase" title="symmeplot.core.artists.ArtistBase"><span class="pre">ArtistBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.artists" title="Link to this definition">¶</a></dt>
+<dd><p>Artists used to plot the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/plot_base.html#symmeplot.core.plot_base.PlotBase" title="symmeplot.core.plot_base.PlotBase"><span class="pre">PlotBase</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.children" title="Link to this definition">¶</a></dt>
+<dd><p>Child objects in the plot hierarchy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate">
+<span class="sig-name descname"><span class="pre">get_expressions_to_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Return a tuple of the necessary expressions for plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs">
+<span class="sig-name descname"><span class="pre">get_sympy_object_exprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.sympy.org/dev/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.15.0.dev)"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs" title="Link to this definition">¶</a></dt>
+<dd><p>Arguments of the sympy object artist in expression form.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inertial_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.frame.ReferenceFrame</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame" title="Link to this definition">¶</a></dt>
+<dd><p>The reference frame with respect to which the object is oriented.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the plot object. Default is the name of the object being plotted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.origin">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin" title="Link to this definition">¶</a></dt>
+<dd><p>The origin of the object with respect to the <cite>zero_point</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin_coords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords" title="Link to this definition">¶</a></dt>
+<dd><p>Coordinate values of the origin of the plotted vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gl.GLViewWidget</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the associated plot objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sympy_object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the objects on the scene, based on the current values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.values" title="Link to this definition">¶</a></dt>
+<dd><p>List of evaluated values for the object’s variables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.vector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.vector.Vector</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector" title="Link to this definition">¶</a></dt>
+<dd><p>The sympy Vector, which is being plotted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values" title="Link to this definition">¶</a></dt>
+<dd><p>Values of the plotted vector.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.visible" title="Link to this definition">¶</a></dt>
+<dd><p>If the object is be visible in the plot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.sympy.org/dev/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.15.0.dev)"><span class="pre">sympy.physics.vector.point.Point</span></a></em><a class="headerlink" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point" title="Link to this definition">¶</a></dt>
+<dd><p>The absolute origin with respect to which the object is positioned.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="plot_base.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Pyqtgraph’s PlotBase</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="scene.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Pyqtgraph’s Scene</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Timo Stienstra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Pyqtgraph’s Plot Objects</a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody"><code class="docutils literal notranslate"><span class="pre">PlotBody</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist"><code class="docutils literal notranslate"><span class="pre">PlotBody.add_artist()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.artists"><code class="docutils literal notranslate"><span class="pre">PlotBody.artists</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.body"><code class="docutils literal notranslate"><span class="pre">PlotBody.body</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.children"><code class="docutils literal notranslate"><span class="pre">PlotBody.children</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate"><code class="docutils literal notranslate"><span class="pre">PlotBody.get_expressions_to_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs"><code class="docutils literal notranslate"><span class="pre">PlotBody.get_sympy_object_exprs()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame"><code class="docutils literal notranslate"><span class="pre">PlotBody.inertial_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.name"><code class="docutils literal notranslate"><span class="pre">PlotBody.name</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot"><code class="docutils literal notranslate"><span class="pre">PlotBody.plot()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame"><code class="docutils literal notranslate"><span class="pre">PlotBody.plot_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter"><code class="docutils literal notranslate"><span class="pre">PlotBody.plot_masscenter</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object"><code class="docutils literal notranslate"><span class="pre">PlotBody.sympy_object</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.update"><code class="docutils literal notranslate"><span class="pre">PlotBody.update()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.values"><code class="docutils literal notranslate"><span class="pre">PlotBody.values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.visible"><code class="docutils literal notranslate"><span class="pre">PlotBody.visible</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point"><code class="docutils literal notranslate"><span class="pre">PlotBody.zero_point</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame"><code class="docutils literal notranslate"><span class="pre">PlotFrame</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist"><code class="docutils literal notranslate"><span class="pre">PlotFrame.add_artist()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.artists"><code class="docutils literal notranslate"><span class="pre">PlotFrame.artists</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.children"><code class="docutils literal notranslate"><span class="pre">PlotFrame.children</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.frame"><code class="docutils literal notranslate"><span class="pre">PlotFrame.frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate"><code class="docutils literal notranslate"><span class="pre">PlotFrame.get_expressions_to_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs"><code class="docutils literal notranslate"><span class="pre">PlotFrame.get_sympy_object_exprs()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame"><code class="docutils literal notranslate"><span class="pre">PlotFrame.inertial_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.name"><code class="docutils literal notranslate"><span class="pre">PlotFrame.name</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.origin"><code class="docutils literal notranslate"><span class="pre">PlotFrame.origin</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.plot"><code class="docutils literal notranslate"><span class="pre">PlotFrame.plot()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object"><code class="docutils literal notranslate"><span class="pre">PlotFrame.sympy_object</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.update"><code class="docutils literal notranslate"><span class="pre">PlotFrame.update()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.values"><code class="docutils literal notranslate"><span class="pre">PlotFrame.values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors"><code class="docutils literal notranslate"><span class="pre">PlotFrame.vectors</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.visible"><code class="docutils literal notranslate"><span class="pre">PlotFrame.visible</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.x"><code class="docutils literal notranslate"><span class="pre">PlotFrame.x</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.y"><code class="docutils literal notranslate"><span class="pre">PlotFrame.y</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.z"><code class="docutils literal notranslate"><span class="pre">PlotFrame.z</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point"><code class="docutils literal notranslate"><span class="pre">PlotFrame.zero_point</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine"><code class="docutils literal notranslate"><span class="pre">PlotLine</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist"><code class="docutils literal notranslate"><span class="pre">PlotLine.add_artist()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.artists"><code class="docutils literal notranslate"><span class="pre">PlotLine.artists</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.children"><code class="docutils literal notranslate"><span class="pre">PlotLine.children</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate"><code class="docutils literal notranslate"><span class="pre">PlotLine.get_expressions_to_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs"><code class="docutils literal notranslate"><span class="pre">PlotLine.get_sympy_object_exprs()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame"><code class="docutils literal notranslate"><span class="pre">PlotLine.inertial_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line"><code class="docutils literal notranslate"><span class="pre">PlotLine.line</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords"><code class="docutils literal notranslate"><span class="pre">PlotLine.line_coords</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.name"><code class="docutils literal notranslate"><span class="pre">PlotLine.name</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.plot"><code class="docutils literal notranslate"><span class="pre">PlotLine.plot()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object"><code class="docutils literal notranslate"><span class="pre">PlotLine.sympy_object</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.update"><code class="docutils literal notranslate"><span class="pre">PlotLine.update()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.values"><code class="docutils literal notranslate"><span class="pre">PlotLine.values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.visible"><code class="docutils literal notranslate"><span class="pre">PlotLine.visible</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point"><code class="docutils literal notranslate"><span class="pre">PlotLine.zero_point</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint"><code class="docutils literal notranslate"><span class="pre">PlotPoint</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist"><code class="docutils literal notranslate"><span class="pre">PlotPoint.add_artist()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.artists"><code class="docutils literal notranslate"><span class="pre">PlotPoint.artists</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.children"><code class="docutils literal notranslate"><span class="pre">PlotPoint.children</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate"><code class="docutils literal notranslate"><span class="pre">PlotPoint.get_expressions_to_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs"><code class="docutils literal notranslate"><span class="pre">PlotPoint.get_sympy_object_exprs()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame"><code class="docutils literal notranslate"><span class="pre">PlotPoint.inertial_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.name"><code class="docutils literal notranslate"><span class="pre">PlotPoint.name</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.plot"><code class="docutils literal notranslate"><span class="pre">PlotPoint.plot()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point"><code class="docutils literal notranslate"><span class="pre">PlotPoint.point</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords"><code class="docutils literal notranslate"><span class="pre">PlotPoint.point_coords</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object"><code class="docutils literal notranslate"><span class="pre">PlotPoint.sympy_object</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.update"><code class="docutils literal notranslate"><span class="pre">PlotPoint.update()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.values"><code class="docutils literal notranslate"><span class="pre">PlotPoint.values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.visible"><code class="docutils literal notranslate"><span class="pre">PlotPoint.visible</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point"><code class="docutils literal notranslate"><span class="pre">PlotPoint.zero_point</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector"><code class="docutils literal notranslate"><span class="pre">PlotVector</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist"><code class="docutils literal notranslate"><span class="pre">PlotVector.add_artist()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.artists"><code class="docutils literal notranslate"><span class="pre">PlotVector.artists</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.children"><code class="docutils literal notranslate"><span class="pre">PlotVector.children</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate"><code class="docutils literal notranslate"><span class="pre">PlotVector.get_expressions_to_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs"><code class="docutils literal notranslate"><span class="pre">PlotVector.get_sympy_object_exprs()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame"><code class="docutils literal notranslate"><span class="pre">PlotVector.inertial_frame</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.name"><code class="docutils literal notranslate"><span class="pre">PlotVector.name</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin"><code class="docutils literal notranslate"><span class="pre">PlotVector.origin</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords"><code class="docutils literal notranslate"><span class="pre">PlotVector.origin_coords</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.plot"><code class="docutils literal notranslate"><span class="pre">PlotVector.plot()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object"><code class="docutils literal notranslate"><span class="pre">PlotVector.sympy_object</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.update"><code class="docutils literal notranslate"><span class="pre">PlotVector.update()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.values"><code class="docutils literal notranslate"><span class="pre">PlotVector.values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector"><code class="docutils literal notranslate"><span class="pre">PlotVector.vector</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values"><code class="docutils literal notranslate"><span class="pre">PlotVector.vector_values</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.visible"><code class="docutils literal notranslate"><span class="pre">PlotVector.visible</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point"><code class="docutils literal notranslate"><span class="pre">PlotVector.zero_point</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=107c1b0b"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    </body>
+</html>

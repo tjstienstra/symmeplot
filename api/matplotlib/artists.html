@@ -1,0 +1,781 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="SymMePlot Pyqtgraph" href="../pyqtgraph/index.html"><link rel="prev" title="Matplotlib’s PlotBase" href="plot_base.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+        <title>Matplotlib’s Artists - symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=acfd86a5" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../guides/installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">SymMePlot Matplotlib</a><input aria-label="Toggle navigation of SymMePlot Matplotlib" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="scene.html">Matplotlib’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_objects.html">Matplotlib’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_base.html">Matplotlib’s PlotBase</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Matplotlib’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pyqtgraph/index.html">SymMePlot Pyqtgraph</a><input aria-label="Toggle navigation of SymMePlot Pyqtgraph" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pyqtgraph/scene.html">Pyqtgraph’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyqtgraph/plot_objects.html">Pyqtgraph’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyqtgraph/plot_base.html">Pyqtgraph’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyqtgraph/artists.html">Pyqtgraph’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../core/index.html">SymMePlot Core</a><input aria-label="Toggle navigation of SymMePlot Core" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/scene.html">Core’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/plot_objects.html">Core’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/plot_base.html">Core’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/artists.html">Core’s Artists</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/api/matplotlib/artists.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-symmeplot.matplotlib.artists">
+<span id="matplotlib-s-artists"></span><h1>Matplotlib’s Artists<a class="headerlink" href="#module-symmeplot.matplotlib.artists" title="Link to this heading">¶</a></h1>
+<p>Artists of the matplotlib backend.</p>
+<p><strong>Classes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D" title="symmeplot.matplotlib.artists.Circle3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Circle3D</span></code></a>(center, radius[, normal])</p></td>
+<td><p>Artist to plot 3D circles.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D" title="symmeplot.matplotlib.artists.Line3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Line3D</span></code></a>(x, y, z, *args, **kwargs)</p></td>
+<td><p>Artist to plot 3D lines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D" title="symmeplot.matplotlib.artists.Scatter3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scatter3D</span></code></a>([marker, s])</p></td>
+<td><p>Artist to plot 3D scatter points with varying alpha values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D" title="symmeplot.matplotlib.artists.Vector3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Vector3D</span></code></a>(origin, vector, *args, **kwargs)</p></td>
+<td><p>Artist to plot 3D vectors.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Circle3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.matplotlib.artists.</span></span><span class="sig-name descname"><span class="pre">Circle3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Circle3D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.art3d.PathPatch3D.html#mpl_toolkits.mplot3d.art3d.PathPatch3D" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PathPatch3D</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">MplArtistBase</span></code></p>
+<p>Artist to plot 3D circles.</p>
+<p class="rubric">Notes</p>
+<p>This class is inspired by <a class="reference external" href="https://stackoverflow.com/a/18228967/20185124">https://stackoverflow.com/a/18228967/20185124</a></p>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.max" title="symmeplot.matplotlib.artists.Circle3D.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p>Return the maximum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.min" title="symmeplot.matplotlib.artists.Circle3D.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p>Return the minimum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.set" title="symmeplot.matplotlib.artists.Circle3D.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*[, agg_filter, alpha, animated, ...])</p></td>
+<td><p>Set multiple properties at once.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.update_data" title="symmeplot.matplotlib.artists.Circle3D.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a>(center, radius, normal)</p></td>
+<td><p>Update the data of the artist.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Circle3D.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">np.array</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Circle3D.max" title="Link to this definition">¶</a></dt>
+<dd><p>Return the maximum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Circle3D.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">np.array</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Circle3D.min" title="Link to this definition">¶</a></dt>
+<dd><p>Return the minimum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Circle3D.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_filter=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animated=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antialiased=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_box=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_on=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_path=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatch=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_layout=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouseover=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_effects=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterized=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sketch_params=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder=&lt;UNSET&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Circle3D.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set multiple properties at once.</p>
+<p>Supported properties are</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><p>3d_properties: unknown
+agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array and two offsets from the bottom left corner of the image
+alpha: scalar or None
+animated: bool
+antialiased or aa: bool or None
+capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
+clip_box: <cite>~matplotlib.transforms.BboxBase</cite> or None
+clip_on: bool
+clip_path: Patch or (Path, Transform) or None
+color: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+edgecolor or ec: <code class="docutils literal notranslate"><span class="pre">color</span></code> or None
+facecolor or fc: <code class="docutils literal notranslate"><span class="pre">color</span></code> or None
+figure: <cite>~matplotlib.figure.Figure</cite>
+fill: bool
+gid: str
+hatch: {‘/’, ‘\’, ‘|’, ‘-’, ‘+’, ‘x’, ‘o’, ‘O’, ‘.’, ‘*’}
+in_layout: bool
+joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
+label: object
+linestyle or ls: {‘-’, ‘–’, ‘-.’, ‘:’, ‘’, (offset, on-off-seq), …}
+linewidth or lw: float or None
+mouseover: bool
+path_effects: list of <cite>.AbstractPathEffect</cite>
+picker: None or bool or float or callable
+rasterized: bool
+sketch_params: (scale: float, length: float, randomness: float)
+snap: bool or None
+transform: <cite>~matplotlib.transforms.Transform</cite>
+url: str
+visible: bool
+zorder: float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Circle3D.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Circle3D.update_data" title="Link to this definition">¶</a></dt>
+<dd><p>Update the data of the artist.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Line3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.matplotlib.artists.</span></span><span class="sig-name descname"><span class="pre">Line3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Line3D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.art3d.Line3D.html#mpl_toolkits.mplot3d.art3d.Line3D" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line3D</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">MplArtistBase</span></code></p>
+<p>Artist to plot 3D lines.</p>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.max" title="symmeplot.matplotlib.artists.Line3D.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p>Return the maximum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.min" title="symmeplot.matplotlib.artists.Line3D.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p>Return the minimum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.set" title="symmeplot.matplotlib.artists.Line3D.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*[, agg_filter, alpha, animated, ...])</p></td>
+<td><p>Set multiple properties at once.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.update_data" title="symmeplot.matplotlib.artists.Line3D.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a>(x, y, z)</p></td>
+<td><p>Update the data of the artist.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Line3D.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Line3D.max" title="Link to this definition">¶</a></dt>
+<dd><p>Return the maximum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Line3D.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Line3D.min" title="Link to this definition">¶</a></dt>
+<dd><p>Return the minimum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Line3D.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_filter=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animated=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antialiased=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_box=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_on=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_path=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dash_capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dash_joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashes=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_3d=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drawstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gapcolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_layout=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markeredgecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markeredgewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markerfacecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markerfacecoloralt=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markersize=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markevery=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouseover=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_effects=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pickradius=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterized=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sketch_params=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solid_capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solid_joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdata=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder=&lt;UNSET&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Line3D.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set multiple properties at once.</p>
+<p>Supported properties are</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><p>3d_properties: float or array of floats
+agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array and two offsets from the bottom left corner of the image
+alpha: scalar or None
+animated: bool
+antialiased or aa: bool
+clip_box: <cite>~matplotlib.transforms.BboxBase</cite> or None
+clip_on: bool
+clip_path: Patch or (Path, Transform) or None
+color or c: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+dash_capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
+dash_joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
+dashes: sequence of floats (on/off ink in points) or (None, None)
+data: (2, N) array or two 1D arrays
+data_3d: unknown
+drawstyle or ds: {‘default’, ‘steps’, ‘steps-pre’, ‘steps-mid’, ‘steps-post’}, default: ‘default’
+figure: <cite>~matplotlib.figure.Figure</cite>
+fillstyle: {‘full’, ‘left’, ‘right’, ‘bottom’, ‘top’, ‘none’}
+gapcolor: <code class="docutils literal notranslate"><span class="pre">color</span></code> or None
+gid: str
+in_layout: bool
+label: object
+linestyle or ls: {‘-’, ‘–’, ‘-.’, ‘:’, ‘’, (offset, on-off-seq), …}
+linewidth or lw: float
+marker: marker style string, <cite>~.path.Path</cite> or <cite>~.markers.MarkerStyle</cite>
+markeredgecolor or mec: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+markeredgewidth or mew: float
+markerfacecolor or mfc: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+markerfacecoloralt or mfcalt: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+markersize or ms: float
+markevery: None or int or (int, int) or slice or list[int] or float or (float, float) or list[bool]
+mouseover: bool
+path_effects: list of <cite>.AbstractPathEffect</cite>
+picker: float or callable[[Artist, Event], tuple[bool, dict]]
+pickradius: float
+rasterized: bool
+sketch_params: (scale: float, length: float, randomness: float)
+snap: bool or None
+solid_capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
+solid_joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
+transform: <cite>~matplotlib.transforms.Transform</cite>
+url: str
+visible: bool
+xdata: 1D array
+ydata: 1D array
+zorder: float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Line3D.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Line3D.update_data" title="Link to this definition">¶</a></dt>
+<dd><p>Update the data of the artist.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Scatter3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.matplotlib.artists.</span></span><span class="sig-name descname"><span class="pre">Scatter3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Scatter3D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.art3d.Path3DCollection.html#mpl_toolkits.mplot3d.art3d.Path3DCollection" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path3DCollection</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">MplArtistBase</span></code></p>
+<p>Artist to plot 3D scatter points with varying alpha values.</p>
+<p>This class wraps matplotlib’s Path3DCollection.</p>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.max" title="symmeplot.matplotlib.artists.Scatter3D.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p>Return the maximum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.min" title="symmeplot.matplotlib.artists.Scatter3D.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p>Return the minimum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.set" title="symmeplot.matplotlib.artists.Scatter3D.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*[, agg_filter, alpha, animated, ...])</p></td>
+<td><p>Set multiple properties at once.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.update_data" title="symmeplot.matplotlib.artists.Scatter3D.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a>(points[, alphas])</p></td>
+<td><p>Update the data of the artist.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Scatter3D.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Scatter3D.max" title="Link to this definition">¶</a></dt>
+<dd><p>Return the maximum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Scatter3D.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Scatter3D.min" title="Link to this definition">¶</a></dt>
+<dd><p>Return the minimum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Scatter3D.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_filter=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animated=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antialiased=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clim=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_box=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_on=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_path=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depthshade=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatch=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_layout=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouseover=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_effects=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pickradius=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterized=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sketch_params=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_zpos=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder=&lt;UNSET&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Scatter3D.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set multiple properties at once.</p>
+<p>Supported properties are</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><p>3d_properties: float or array of floats
+agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array and two offsets from the bottom left corner of the image
+alpha: array-like or scalar or None
+animated: bool
+antialiased or aa or antialiaseds: bool or list of bools
+array: array-like or None
+capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
+clim: (vmin: float, vmax: float)
+clip_box: <cite>~matplotlib.transforms.BboxBase</cite> or None
+clip_on: bool
+clip_path: Patch or (Path, Transform) or None
+cmap: <cite>.Colormap</cite> or str or None
+color: <code class="docutils literal notranslate"><span class="pre">color</span></code> or list of RGBA tuples
+depthshade: bool
+edgecolor or ec or edgecolors: <code class="docutils literal notranslate"><span class="pre">color</span></code> or list of <code class="docutils literal notranslate"><span class="pre">color</span></code> or ‘face’
+facecolor or facecolors or fc: <code class="docutils literal notranslate"><span class="pre">color</span></code> or list of <code class="docutils literal notranslate"><span class="pre">color</span></code>
+figure: <cite>~matplotlib.figure.Figure</cite>
+gid: str
+hatch: {‘/’, ‘\’, ‘|’, ‘-’, ‘+’, ‘x’, ‘o’, ‘O’, ‘.’, ‘*’}
+in_layout: bool
+joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
+label: object
+linestyle or dashes or linestyles or ls: str or tuple or list thereof
+linewidth or linewidths or lw: float or list of floats
+mouseover: bool
+norm: <cite>.Normalize</cite> or str or None
+offset_transform or transOffset: <cite>.Transform</cite>
+offsets: (N, 2) or (2,) array-like
+path_effects: list of <cite>.AbstractPathEffect</cite>
+paths: unknown
+picker: None or bool or float or callable
+pickradius: float
+rasterized: bool
+sizes: <cite>numpy.ndarray</cite> or None
+sketch_params: (scale: float, length: float, randomness: float)
+snap: bool or None
+sort_zpos: unknown
+transform: <cite>~matplotlib.transforms.Transform</cite>
+url: str
+urls: list of str or None
+visible: bool
+zorder: float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Scatter3D.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Scatter3D.update_data" title="Link to this definition">¶</a></dt>
+<dd><p>Update the data of the artist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sequence</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">sequences</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Points in the form [[x0, y0, z0], [x1, y1, z1], …].</p></li>
+<li><p><strong>alphas</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sequence</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – Alpha values for each point.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symmeplot.matplotlib.artists.</span></span><span class="sig-name descname"><span class="pre">Vector3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.FancyArrowPatch.html#matplotlib.patches.FancyArrowPatch" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FancyArrowPatch</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">MplArtistBase</span></code></p>
+<p>Artist to plot 3D vectors.</p>
+<p class="rubric">Notes</p>
+<p>This class is inspired by
+<a class="reference external" href="https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c">https://gist.github.com/WetHat/1d6cd0f7309535311a539b42cccca89c</a></p>
+<p><strong>Methods:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.do_3d_projection" title="symmeplot.matplotlib.artists.Vector3D.do_3d_projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_3d_projection</span></code></a>([renderer])</p></td>
+<td><p>Project the artist to the 3D axes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.max" title="symmeplot.matplotlib.artists.Vector3D.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p>Return the maximum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.min" title="symmeplot.matplotlib.artists.Vector3D.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p>Return the minimum values of the bounding box of the artist data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.set" title="symmeplot.matplotlib.artists.Vector3D.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*[, agg_filter, alpha, animated, ...])</p></td>
+<td><p>Set multiple properties at once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.update_data" title="symmeplot.matplotlib.artists.Vector3D.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a>(origin, vector)</p></td>
+<td><p>Update the data of the artist.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D.do_3d_projection">
+<span class="sig-name descname"><span class="pre">do_3d_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D.do_3d_projection" title="Link to this definition">¶</a></dt>
+<dd><p>Project the artist to the 3D axes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D.max" title="Link to this definition">¶</a></dt>
+<dd><p>Return the maximum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D.min" title="Link to this definition">¶</a></dt>
+<dd><p>Return the minimum values of the bounding box of the artist data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_filter=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animated=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antialiased=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrowstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_box=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_on=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_path=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatch=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_layout=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouseover=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_aspect=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_scale=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchA=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchB=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_effects=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterized=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sketch_params=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder=&lt;UNSET&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set multiple properties at once.</p>
+<p>Supported properties are</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><p>agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array and two offsets from the bottom left corner of the image
+alpha: scalar or None
+animated: bool
+antialiased or aa: bool or None
+arrowstyle: str or <cite>~matplotlib.patches.ArrowStyle</cite>
+capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
+clip_box: <cite>~matplotlib.transforms.BboxBase</cite> or None
+clip_on: bool
+clip_path: Patch or (Path, Transform) or None
+color: <code class="docutils literal notranslate"><span class="pre">color</span></code>
+connectionstyle: [ ‘arc3’ | ‘angle3’ | ‘angle’ | ‘arc’ | ‘bar’ ]
+edgecolor or ec: <code class="docutils literal notranslate"><span class="pre">color</span></code> or None
+facecolor or fc: <code class="docutils literal notranslate"><span class="pre">color</span></code> or None
+figure: <cite>~matplotlib.figure.Figure</cite>
+fill: bool
+gid: str
+hatch: {‘/’, ‘\’, ‘|’, ‘-’, ‘+’, ‘x’, ‘o’, ‘O’, ‘.’, ‘*’}
+in_layout: bool
+joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
+label: object
+linestyle or ls: {‘-’, ‘–’, ‘-.’, ‘:’, ‘’, (offset, on-off-seq), …}
+linewidth or lw: float or None
+mouseover: bool
+mutation_aspect: float
+mutation_scale: float
+patchA: <cite>.patches.Patch</cite>
+patchB: <cite>.patches.Patch</cite>
+path_effects: list of <cite>.AbstractPathEffect</cite>
+picker: None or bool or float or callable
+positions: unknown
+rasterized: bool
+sketch_params: (scale: float, length: float, randomness: float)
+snap: bool or None
+transform: <cite>~matplotlib.transforms.Transform</cite>
+url: str
+visible: bool
+zorder: float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symmeplot.matplotlib.artists.Vector3D.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#symmeplot.matplotlib.artists.Vector3D.update_data" title="Link to this definition">¶</a></dt>
+<dd><p>Update the data of the artist.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../pyqtgraph/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">SymMePlot Pyqtgraph</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plot_base.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Matplotlib’s PlotBase</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Timo Stienstra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Matplotlib’s Artists</a><ul>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D"><code class="docutils literal notranslate"><span class="pre">Circle3D</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.max"><code class="docutils literal notranslate"><span class="pre">Circle3D.max()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.min"><code class="docutils literal notranslate"><span class="pre">Circle3D.min()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.set"><code class="docutils literal notranslate"><span class="pre">Circle3D.set()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Circle3D.update_data"><code class="docutils literal notranslate"><span class="pre">Circle3D.update_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D"><code class="docutils literal notranslate"><span class="pre">Line3D</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.max"><code class="docutils literal notranslate"><span class="pre">Line3D.max()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.min"><code class="docutils literal notranslate"><span class="pre">Line3D.min()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.set"><code class="docutils literal notranslate"><span class="pre">Line3D.set()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Line3D.update_data"><code class="docutils literal notranslate"><span class="pre">Line3D.update_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D"><code class="docutils literal notranslate"><span class="pre">Scatter3D</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.max"><code class="docutils literal notranslate"><span class="pre">Scatter3D.max()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.min"><code class="docutils literal notranslate"><span class="pre">Scatter3D.min()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.set"><code class="docutils literal notranslate"><span class="pre">Scatter3D.set()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Scatter3D.update_data"><code class="docutils literal notranslate"><span class="pre">Scatter3D.update_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D"><code class="docutils literal notranslate"><span class="pre">Vector3D</span></code></a><ul>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.do_3d_projection"><code class="docutils literal notranslate"><span class="pre">Vector3D.do_3d_projection()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.max"><code class="docutils literal notranslate"><span class="pre">Vector3D.max()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.min"><code class="docutils literal notranslate"><span class="pre">Vector3D.min()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.set"><code class="docutils literal notranslate"><span class="pre">Vector3D.set()</span></code></a></li>
+<li><a class="reference internal" href="#symmeplot.matplotlib.artists.Vector3D.update_data"><code class="docutils literal notranslate"><span class="pre">Vector3D.update_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=107c1b0b"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    </body>
+</html>

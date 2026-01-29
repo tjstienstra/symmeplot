@@ -1,0 +1,1515 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#"><link rel="search" title="Search" href="search.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 --><title>Index - symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=acfd86a5" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">symmeplot 0.1.dev1+ga4da2bc5d.d20260129 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/matplotlib/index.html">SymMePlot Matplotlib</a><input aria-label="Toggle navigation of SymMePlot Matplotlib" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/matplotlib/scene.html">Matplotlib’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/matplotlib/plot_objects.html">Matplotlib’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/matplotlib/plot_base.html">Matplotlib’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/matplotlib/artists.html">Matplotlib’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/pyqtgraph/index.html">SymMePlot Pyqtgraph</a><input aria-label="Toggle navigation of SymMePlot Pyqtgraph" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/pyqtgraph/scene.html">Pyqtgraph’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pyqtgraph/plot_objects.html">Pyqtgraph’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pyqtgraph/plot_base.html">Pyqtgraph’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pyqtgraph/artists.html">Pyqtgraph’s Artists</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/core/index.html">SymMePlot Core</a><input aria-label="Toggle navigation of SymMePlot Core" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core/scene.html">Core’s Scene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core/plot_objects.html">Core’s Plot Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core/plot_base.html">Core’s PlotBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core/artists.html">Core’s Artists</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#X"><strong>X</strong></a> | <a href="#Y"><strong>Y</strong></a> | <a href="#Z"><strong>Z</strong></a></div>
+</section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.add_artist">add_artist() (symmeplot.core.plot_base.PlotBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.add_artist">(symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.add_artist">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.add_artist">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.add_artist">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.add_artist">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.add_artist">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.add_artist">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.add_artist">(symmeplot.pyqtgraph.plot_base.PgPlotBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.add_artist">(symmeplot.pyqtgraph.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.add_artist">(symmeplot.pyqtgraph.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.add_artist">(symmeplot.pyqtgraph.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.add_artist">(symmeplot.pyqtgraph.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.add_artist">(symmeplot.pyqtgraph.plot_objects.PlotVector method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_body">add_body() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_body">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_body">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_frame">add_frame() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_frame">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_frame">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_line">add_line() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_line">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_line">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_plot_object">add_plot_object() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_plot_object">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_plot_object">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_point">add_point() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_point">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_point">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_point_trace">add_point_trace() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_point_trace">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_point_trace">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.add_vector">add_vector() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.add_vector">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.add_vector">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.alpha_decays">alpha_decays (symmeplot.core.plot_objects.PlotTracedPointMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.alpha_decays">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.animate">animate() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.animate">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.animate">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.annot_coords">annot_coords (symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.annot_coords">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.annot_coords">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.annot_coords">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.annot_coords">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.annot_coords">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.annot_coords">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.annot_coords">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.annot_location">annot_location (symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+        <li><a href="api/core/artists.html#symmeplot.core.artists.ArtistBase">ArtistBase (class in symmeplot.core.artists)</a>
+</li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.artists">artists (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.artists">(symmeplot.core.scene.SceneBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.artists">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.artists">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.artists">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.artists">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.artists">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.artists">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.artists">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.artists">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.artists">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.artists">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.artists">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.artists">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.artists">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.artists">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.artists">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.as_orthogonal_projection_plot">as_orthogonal_projection_plot() (symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.attach_circle">attach_circle() (symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.auto_zoom">auto_zoom() (symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.axes">axes (symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotBodyMixin.body">body (symmeplot.core.plot_objects.PlotBodyMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.body">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.body">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.children">children (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.children">(symmeplot.core.scene.SceneBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.children">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.children">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.children">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.children">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.children">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.children">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.children">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.children">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.children">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.children">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.children">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.children">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.children">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.children">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.children">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Circle3D">Circle3D (class in symmeplot.matplotlib.artists)</a>
+</li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.clear">clear() (symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+        <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.contains">contains() (symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.contains">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.contains">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.contains">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.contains">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.contains">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.contains">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D.do_3d_projection">do_3d_projection() (symmeplot.matplotlib.artists.Vector3D method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.evaluate_system">evaluate_system() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.evaluate_system">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.evaluate_system">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.frame">frame (symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.frame">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.frame">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.frequency">frequency (symmeplot.core.plot_objects.PlotTracedPointMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.frequency">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.get_expressions_to_evaluate">get_expressions_to_evaluate() (symmeplot.core.plot_base.PlotBase method)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.get_expressions_to_evaluate">(symmeplot.core.scene.SceneBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.get_expressions_to_evaluate">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.get_expressions_to_evaluate">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_base.PgPlotBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.get_expressions_to_evaluate">(symmeplot.pyqtgraph.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.get_expressions_to_evaluate">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.get_plot_object">get_plot_object() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.get_plot_object">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.get_plot_object">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.get_sympy_object_exprs">get_sympy_object_exprs() (symmeplot.core.plot_base.PlotBase method)</a>
+
+        <ul>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.OriginMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.OriginMixin method)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.PlotFrameMixin method)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotLineMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.PlotLineMixin method)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotPointMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.PlotPointMixin method)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.PlotTracedPointMixin method)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin.get_sympy_object_exprs">(symmeplot.core.plot_objects.PlotVectorMixin method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.get_sympy_object_exprs">(symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.get_sympy_object_exprs">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_base.PgPlotBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.get_sympy_object_exprs">(symmeplot.pyqtgraph.plot_objects.PlotVector method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Line3D.gl_items">gl_items (symmeplot.pyqtgraph.artists.Line3D property)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.PgArtistBase.gl_items">(symmeplot.pyqtgraph.artists.PgArtistBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Point3D.gl_items">(symmeplot.pyqtgraph.artists.Point3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Vector3D.gl_items">(symmeplot.pyqtgraph.artists.Vector3D property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.inertial_frame">inertial_frame (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.inertial_frame">(symmeplot.core.scene.SceneBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.inertial_frame">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.inertial_frame">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.inertial_frame">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.inertial_frame">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.inertial_frame">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.inertial_frame">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.inertial_frame">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.inertial_frame">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.inertial_frame">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.inertial_frame">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.lambdify_system">lambdify_system() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.lambdify_system">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.lambdify_system">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotLineMixin.line">line (symmeplot.core.plot_objects.PlotLineMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.line">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.line">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Line3D">Line3D (class in symmeplot.matplotlib.artists)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Line3D">(class in symmeplot.pyqtgraph.artists)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotLineMixin.line_coords">line_coords (symmeplot.core.plot_objects.PlotLineMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.line_coords">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.line_coords">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Circle3D.max">max() (symmeplot.matplotlib.artists.Circle3D method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Line3D.max">(symmeplot.matplotlib.artists.Line3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Scatter3D.max">(symmeplot.matplotlib.artists.Scatter3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D.max">(symmeplot.matplotlib.artists.Vector3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Circle3D.min">min() (symmeplot.matplotlib.artists.Circle3D method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Line3D.min">(symmeplot.matplotlib.artists.Line3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Scatter3D.min">(symmeplot.matplotlib.artists.Scatter3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D.min">(symmeplot.matplotlib.artists.Vector3D method)</a>
+</li>
+        </ul></li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="api/core/artists.html#module-symmeplot.core.artists">symmeplot.core.artists</a>
+</li>
+          <li><a href="api/core/plot_base.html#module-symmeplot.core.plot_base">symmeplot.core.plot_base</a>
+</li>
+          <li><a href="api/core/plot_objects.html#module-symmeplot.core.plot_objects">symmeplot.core.plot_objects</a>
+</li>
+          <li><a href="api/core/scene.html#module-symmeplot.core.scene">symmeplot.core.scene</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#module-symmeplot.matplotlib.artists">symmeplot.matplotlib.artists</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#module-symmeplot.matplotlib.plot_base">symmeplot.matplotlib.plot_base</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#module-symmeplot.matplotlib.plot_objects">symmeplot.matplotlib.plot_objects</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#module-symmeplot.matplotlib.scene">symmeplot.matplotlib.scene</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#module-symmeplot.pyqtgraph.artists">symmeplot.pyqtgraph.artists</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#module-symmeplot.pyqtgraph.plot_base">symmeplot.pyqtgraph.plot_base</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#module-symmeplot.pyqtgraph.plot_objects">symmeplot.pyqtgraph.plot_objects</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#module-symmeplot.pyqtgraph.scene">symmeplot.pyqtgraph.scene</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase">MplPlotBase (class in symmeplot.matplotlib.plot_base)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.name">name (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.name">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.name">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.name">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.name">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.name">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.name">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.name">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.name">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.name">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.name">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.name">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.name">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.name">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.OriginMixin.origin">origin (symmeplot.core.plot_objects.OriginMixin property)</a>
+
+        <ul>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.origin">(symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+</li>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin.origin">(symmeplot.core.plot_objects.PlotVectorMixin property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.origin">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.origin">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.origin">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.origin">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin.origin_coords">origin_coords (symmeplot.core.plot_objects.PlotVectorMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.origin_coords">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.origin_coords">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.OriginMixin">OriginMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.PgArtistBase">PgArtistBase (class in symmeplot.pyqtgraph.artists)</a>
+</li>
+        <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase">PgPlotBase (class in symmeplot.pyqtgraph.plot_base)</a>
+</li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.plot">plot() (symmeplot.core.plot_base.PlotBase method)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.plot">(symmeplot.core.scene.SceneBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.plot">(symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.plot">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.plot">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.plot">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.plot">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.plot">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.plot">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.plot">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Line3D.plot">(symmeplot.pyqtgraph.artists.Line3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.PgArtistBase.plot">(symmeplot.pyqtgraph.artists.PgArtistBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Point3D.plot">(symmeplot.pyqtgraph.artists.Point3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Vector3D.plot">(symmeplot.pyqtgraph.artists.Vector3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.plot">(symmeplot.pyqtgraph.plot_base.PgPlotBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.plot">(symmeplot.pyqtgraph.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.plot">(symmeplot.pyqtgraph.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.plot">(symmeplot.pyqtgraph.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.plot">(symmeplot.pyqtgraph.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.plot">(symmeplot.pyqtgraph.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.plot">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotBodyMixin.plot_frame">plot_frame (symmeplot.core.plot_objects.PlotBodyMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.plot_frame">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_frame">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotBodyMixin.plot_masscenter">plot_masscenter (symmeplot.core.plot_objects.PlotBodyMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.plot_masscenter">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.plot_masscenter">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.plot_objects">plot_objects (symmeplot.core.scene.SceneBase property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.plot_objects">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.plot_objects">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase">PlotBase (class in symmeplot.core.plot_base)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody">PlotBody (class in symmeplot.matplotlib.plot_objects)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody">(class in symmeplot.pyqtgraph.plot_objects)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotBodyMixin">PlotBodyMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame">PlotFrame (class in symmeplot.matplotlib.plot_objects)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame">(class in symmeplot.pyqtgraph.plot_objects)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin">PlotFrameMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine">PlotLine (class in symmeplot.matplotlib.plot_objects)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine">(class in symmeplot.pyqtgraph.plot_objects)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotLineMixin">PlotLineMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint">PlotPoint (class in symmeplot.matplotlib.plot_objects)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint">(class in symmeplot.pyqtgraph.plot_objects)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotPointMixin">PlotPointMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint">PlotTracedPoint (class in symmeplot.matplotlib.plot_objects)</a>
+</li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin">PlotTracedPointMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector">PlotVector (class in symmeplot.matplotlib.plot_objects)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector">(class in symmeplot.pyqtgraph.plot_objects)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin">PlotVectorMixin (class in symmeplot.core.plot_objects)</a>
+</li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotPointMixin.point">point (symmeplot.core.plot_objects.PlotPointMixin property)</a>
+
+        <ul>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.point">(symmeplot.core.plot_objects.PlotTracedPointMixin property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.point">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.point">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.point">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Point3D">Point3D (class in symmeplot.pyqtgraph.artists)</a>
+</li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotPointMixin.point_coords">point_coords (symmeplot.core.plot_objects.PlotPointMixin property)</a>
+
+        <ul>
+          <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.point_coords">(symmeplot.core.plot_objects.PlotTracedPointMixin property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.point_coords">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.point_coords">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.point_coords">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Scatter3D">Scatter3D (class in symmeplot.matplotlib.artists)</a>
+</li>
+        <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D">Scene3D (class in symmeplot.matplotlib.scene)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D">(class in symmeplot.pyqtgraph.scene)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase">SceneBase (class in symmeplot.core.scene)</a>
+</li>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Circle3D.set">set() (symmeplot.matplotlib.artists.Circle3D method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Line3D.set">(symmeplot.matplotlib.artists.Line3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Scatter3D.set">(symmeplot.matplotlib.artists.Scatter3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D.set">(symmeplot.matplotlib.artists.Vector3D method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.set_visibility">set_visibility() (symmeplot.core.scene.SceneBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.set_visibility">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.set_visibility">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.core.artists
+
+        <ul>
+          <li><a href="api/core/artists.html#module-symmeplot.core.artists">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.core.plot_base
+
+        <ul>
+          <li><a href="api/core/plot_base.html#module-symmeplot.core.plot_base">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.core.plot_objects
+
+        <ul>
+          <li><a href="api/core/plot_objects.html#module-symmeplot.core.plot_objects">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.core.scene
+
+        <ul>
+          <li><a href="api/core/scene.html#module-symmeplot.core.scene">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.matplotlib.artists
+
+        <ul>
+          <li><a href="api/matplotlib/artists.html#module-symmeplot.matplotlib.artists">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.matplotlib.plot_base
+
+        <ul>
+          <li><a href="api/matplotlib/plot_base.html#module-symmeplot.matplotlib.plot_base">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.matplotlib.plot_objects
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#module-symmeplot.matplotlib.plot_objects">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    symmeplot.matplotlib.scene
+
+        <ul>
+          <li><a href="api/matplotlib/scene.html#module-symmeplot.matplotlib.scene">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.pyqtgraph.artists
+
+        <ul>
+          <li><a href="api/pyqtgraph/artists.html#module-symmeplot.pyqtgraph.artists">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.pyqtgraph.plot_base
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_base.html#module-symmeplot.pyqtgraph.plot_base">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.pyqtgraph.plot_objects
+
+        <ul>
+          <li><a href="api/pyqtgraph/plot_objects.html#module-symmeplot.pyqtgraph.plot_objects">module</a>
+</li>
+        </ul></li>
+        <li>
+    symmeplot.pyqtgraph.scene
+
+        <ul>
+          <li><a href="api/pyqtgraph/scene.html#module-symmeplot.pyqtgraph.scene">module</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.sympy_object">sympy_object (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.sympy_object">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.sympy_object">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.sympy_object">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.sympy_object">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.sympy_object">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.sympy_object">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.sympy_object">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.sympy_object">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.sympy_object">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.sympy_object">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.sympy_object">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.sympy_object">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.sympy_object">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotTracedPointMixin.trace_history">trace_history (symmeplot.core.plot_objects.PlotTracedPointMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.trace_history">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.update">update() (symmeplot.core.plot_base.PlotBase method)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.update">(symmeplot.core.scene.SceneBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.update">(symmeplot.matplotlib.plot_base.MplPlotBase method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.update">(symmeplot.matplotlib.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.update">(symmeplot.matplotlib.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.update">(symmeplot.matplotlib.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.update">(symmeplot.matplotlib.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.update">(symmeplot.matplotlib.plot_objects.PlotTracedPoint method)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.update">(symmeplot.matplotlib.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.update">(symmeplot.matplotlib.scene.Scene3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.update">(symmeplot.pyqtgraph.plot_base.PgPlotBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.update">(symmeplot.pyqtgraph.plot_objects.PlotBody method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.update">(symmeplot.pyqtgraph.plot_objects.PlotFrame method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.update">(symmeplot.pyqtgraph.plot_objects.PlotLine method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.update">(symmeplot.pyqtgraph.plot_objects.PlotPoint method)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.update">(symmeplot.pyqtgraph.plot_objects.PlotVector method)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.update">(symmeplot.pyqtgraph.scene.Scene3D method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/artists.html#symmeplot.core.artists.ArtistBase.update_data">update_data() (symmeplot.core.artists.ArtistBase method)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Circle3D.update_data">(symmeplot.matplotlib.artists.Circle3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Line3D.update_data">(symmeplot.matplotlib.artists.Line3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Scatter3D.update_data">(symmeplot.matplotlib.artists.Scatter3D method)</a>
+</li>
+          <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D.update_data">(symmeplot.matplotlib.artists.Vector3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Line3D.update_data">(symmeplot.pyqtgraph.artists.Line3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.PgArtistBase.update_data">(symmeplot.pyqtgraph.artists.PgArtistBase method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Point3D.update_data">(symmeplot.pyqtgraph.artists.Point3D method)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Vector3D.update_data">(symmeplot.pyqtgraph.artists.Vector3D method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.values">values (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.values">(symmeplot.core.scene.SceneBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.values">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.values">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.values">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.values">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.values">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.values">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.values">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.values">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.values">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.values">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.values">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.values">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.values">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.values">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.values">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin.vector">vector (symmeplot.core.plot_objects.PlotVectorMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.vector">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.vector">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/matplotlib/artists.html#symmeplot.matplotlib.artists.Vector3D">Vector3D (class in symmeplot.matplotlib.artists)</a>
+
+        <ul>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Vector3D">(class in symmeplot.pyqtgraph.artists)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotVectorMixin.vector_values">vector_values (symmeplot.core.plot_objects.PlotVectorMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.vector_values">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.vector_values">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.vectors">vectors (symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.vectors">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.vectors">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.view">view (symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.visible">visible (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.visible">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.visible">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.visible">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.visible">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.visible">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.visible">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.visible">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Line3D.visible">(symmeplot.pyqtgraph.artists.Line3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.PgArtistBase.visible">(symmeplot.pyqtgraph.artists.PgArtistBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Point3D.visible">(symmeplot.pyqtgraph.artists.Point3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/artists.html#symmeplot.pyqtgraph.artists.Vector3D.visible">(symmeplot.pyqtgraph.artists.Vector3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.visible">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.visible">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.visible">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.visible">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.visible">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.visible">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="X" class="genindex-section">
+  <h2>X</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.x">x (symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.x">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.x">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Y" class="genindex-section">
+  <h2>Y</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.y">y (symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.y">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.y">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Z" class="genindex-section">
+  <h2>Z</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/plot_objects.html#symmeplot.core.plot_objects.PlotFrameMixin.z">z (symmeplot.core.plot_objects.PlotFrameMixin property)</a>
+
+        <ul>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.z">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.z">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+        </ul></li>
+        <li><a href="api/core/plot_base.html#symmeplot.core.plot_base.PlotBase.zero_point">zero_point (symmeplot.core.plot_base.PlotBase property)</a>
+
+        <ul>
+          <li><a href="api/core/scene.html#symmeplot.core.scene.SceneBase.zero_point">(symmeplot.core.scene.SceneBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_base.html#symmeplot.matplotlib.plot_base.MplPlotBase.zero_point">(symmeplot.matplotlib.plot_base.MplPlotBase property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotBody.zero_point">(symmeplot.matplotlib.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotFrame.zero_point">(symmeplot.matplotlib.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotLine.zero_point">(symmeplot.matplotlib.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotPoint.zero_point">(symmeplot.matplotlib.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotTracedPoint.zero_point">(symmeplot.matplotlib.plot_objects.PlotTracedPoint property)</a>
+</li>
+          <li><a href="api/matplotlib/plot_objects.html#symmeplot.matplotlib.plot_objects.PlotVector.zero_point">(symmeplot.matplotlib.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/matplotlib/scene.html#symmeplot.matplotlib.scene.Scene3D.zero_point">(symmeplot.matplotlib.scene.Scene3D property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_base.html#symmeplot.pyqtgraph.plot_base.PgPlotBase.zero_point">(symmeplot.pyqtgraph.plot_base.PgPlotBase property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotBody.zero_point">(symmeplot.pyqtgraph.plot_objects.PlotBody property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotFrame.zero_point">(symmeplot.pyqtgraph.plot_objects.PlotFrame property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotLine.zero_point">(symmeplot.pyqtgraph.plot_objects.PlotLine property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotPoint.zero_point">(symmeplot.pyqtgraph.plot_objects.PlotPoint property)</a>
+</li>
+          <li><a href="api/pyqtgraph/plot_objects.html#symmeplot.pyqtgraph.plot_objects.PlotVector.zero_point">(symmeplot.pyqtgraph.plot_objects.PlotVector property)</a>
+</li>
+          <li><a href="api/pyqtgraph/scene.html#symmeplot.pyqtgraph.scene.Scene3D.zero_point">(symmeplot.pyqtgraph.scene.Scene3D property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Timo Stienstra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=107c1b0b"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    </body>
+</html>
